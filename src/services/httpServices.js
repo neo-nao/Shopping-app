@@ -1,11 +1,8 @@
 import axios from "axios";
 
-
 axios.defaults.baseURL =
-  process.env.NODE_ENV === "development"
-    ? process.env.REACT_APP_BASE_URL_DEV
-    : process.env.NODE_ENV === "production" &&
-      process.env.REACT_APP_BASE_URL_PROD;
+  process.env.REACT_APP_BASE_URL_DEV ??
+  "https://shopping-app-api.cleverapps.io";
 
 const http = {
   get: axios.get,
