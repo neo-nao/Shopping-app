@@ -12,8 +12,10 @@ import {
   FilterSection,
   selectDropdownStyles,
   useFilterOptionsData,
+  LoadingContainer,
 } from "./productPageDatas";
 import { MdOutlineDone } from "react-icons/md";
+import Loading from "../../components/common/Loading/Loading";
 
 const Product = lazy(() => import("../../components/common/Product/Product"));
 
@@ -136,15 +138,19 @@ const ProductsPage = () => {
   };
 
   const renderItems = useMemo(() => {
-    return loading ? (
-      <h1>Fetching Products...</h1>
-    ) : error ? (
-      <h1>{error}</h1>
-    ) : products && products.length ? (
-      renderProducts()
-    ) : (
-      <h1>Empty</h1>
-    );
+    if (loading)
+      return (
+        <LoadingContainer>
+          <Loading title="Fetching Products..." />
+        </LoadingContainer>
+      );
+    if (error) return <h1>{error}</h1>;
+
+    if (products) {
+      if (products.length)
+        return <ItemsContainer>{renderProducts()}</ItemsContainer>;
+      else return <h1>Empty</h1>;
+    }
   }, [loading]);
 
   return (
@@ -174,9 +180,15 @@ const ProductsPage = () => {
             }
           )}
         </FilterSection>
-        <ItemsContainer>
-          <Suspense fallback={<>Loading Products...</>}>{renderItems}</Suspense>
-        </ItemsContainer>
+        <Suspense
+          fallback={
+            <LoadingContainer>
+              <Loading title="Loading Products..." />
+            </LoadingContainer>
+          }
+        >
+          {renderItems}
+        </Suspense>
       </section>
     </>
   );

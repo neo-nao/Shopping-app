@@ -10,6 +10,7 @@ import {
 import ShortItemDetail from "../../components/ShortItemDetail/ShortItemDetail";
 import UserProduct from "./UserProduct";
 import { fetchFunc } from "../../services/requestServices";
+import Loading from "../../components/common/Loading/Loading";
 
 const calcTotalPrice = (productDetail, ownedItems) => {
   if (productDetail.length === ownedItems.length) {
@@ -75,7 +76,7 @@ const CartPage = () => {
   const renderElements = () => {
     const { loading, error } = requestStatus;
 
-    if (loading) return <>loading...</>;
+    if (loading) return <Loading />;
     if (error) return <>{error}</>;
 
     return (
