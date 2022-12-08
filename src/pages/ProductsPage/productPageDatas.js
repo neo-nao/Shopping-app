@@ -48,22 +48,6 @@ left: -1px;
 `,
 };
 
-const LoadingContainer = styled.div`
-  height: calc(100vh - 185px);
-  position: relative;
-
-  & > div {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -75%);
-  }
-
-  @media (max-width: 378px) {
-    height: calc(100vh - 245px);
-  }
-`;
-
 const filterDropdownDatas = [
   {
     id: 1,
@@ -134,5 +118,4 @@ export {
   selectDropdownStyles,
   filterDropdownDatas,
   useFilterOptionsData,
-  LoadingContainer,
 };

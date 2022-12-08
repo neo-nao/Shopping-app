@@ -21,7 +21,6 @@ const HeaderStyled = styled.header`
   backdrop-filter: blur(4px) saturate(180%);
 
   &.header-at-top {
-    background-color: transparent;
     height: 6.25rem;
   }
   z-index: 10;
