@@ -16,6 +16,7 @@ const LoadingContainer = styled.div`
 const LoadingTitle = styled.h3`
   font-family: var(--primary-font);
   font-size: 22.5px;
+  text-align: center;
 `;
 
 const LoadingSpinner = styled.span`

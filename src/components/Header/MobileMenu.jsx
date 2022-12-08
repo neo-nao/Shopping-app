@@ -6,15 +6,15 @@ import { toggleMobileMenu } from "../../redux/elements/elementSlice";
 
 const MenuButton = styled.button`
   transition: transform 0.1s ease;
-  width: 60px;
-  height: 60px;
+  width: 45px;
+  height: 45px;
   background-color: unset;
   cursor: pointer;
   display: none;
 
   .hamburger-icon {
-    width: 75%;
-    height: 75%;
+    width: 100%;
+    height: 100%;
   }
 
   :active {

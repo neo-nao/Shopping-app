@@ -12,10 +12,10 @@ import {
   FilterSection,
   selectDropdownStyles,
   useFilterOptionsData,
-  LoadingContainer,
 } from "./productPageDatas";
 import { MdOutlineDone } from "react-icons/md";
 import Loading from "../../components/common/Loading/Loading";
+import FullPageHeight from "../../components/common/FullPageHeight/FullPageHeight";
 
 const Product = lazy(() => import("../../components/common/Product/Product"));
 
@@ -140,9 +140,12 @@ const ProductsPage = () => {
   const renderItems = useMemo(() => {
     if (loading)
       return (
-        <LoadingContainer>
+        <FullPageHeight
+          centerElements
+          style={{ height: "calc(100% - 6.25rem - 85.25px)" }}
+        >
           <Loading title="Fetching Products..." />
-        </LoadingContainer>
+        </FullPageHeight>
       );
     if (error) return <h1>{error}</h1>;
 
@@ -182,9 +185,12 @@ const ProductsPage = () => {
         </FilterSection>
         <Suspense
           fallback={
-            <LoadingContainer>
+            <FullPageHeight
+              centerElements
+              style={{ height: "calc(100% - 6.25rem - 85.25px)" }}
+            >
               <Loading title="Loading Products..." />
-            </LoadingContainer>
+            </FullPageHeight>
           }
         >
           {renderItems}
