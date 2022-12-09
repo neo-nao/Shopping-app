@@ -13,7 +13,9 @@ import { fetchFunc } from "../../services/requestServices";
 import Loading from "../../components/common/Loading/Loading";
 import FullPageHeight from "../../components/common/FullPageHeight/FullPageHeight";
 import { GrLogin } from "react-icons/gr";
+import { MdOutlineRemoveShoppingCart } from "react-icons/md";
 import DotLoading from "../../components/common/DotLoading/DotLoading";
+import MessageBox from "../../components/common/MessageBox/MessageBox";
 
 const calcTotalPrice = (productDetail, ownedItems) => {
   if (productDetail.length === ownedItems.length) {
@@ -27,15 +29,14 @@ const calcTotalPrice = (productDetail, ownedItems) => {
   }
 };
 
-let productFetchLoading = false;
-
 const CartPage = () => {
   const [userProducts, setUserProducts] = useState([]);
+  const [productFetchLoading, setProductFetchLoading] = useState(false);
   const { requestStatus, user } = useSelector((state) => state.user);
 
   useEffect(() => {
-    if (user && user.cart.items && user.cart.items.length) {
-      productFetchLoading = true;
+    if (user && user.cart.items) {
+      setProductFetchLoading(true);
 
       const reqParam = user.cart.items
         .map(({ productID }, idx) =>
@@ -44,12 +45,12 @@ const CartPage = () => {
         .join("");
 
       const getProducts = async () => {
-        const res = await fetchFunc("/products" + reqParam);
+        const res = reqParam ? await fetchFunc("/products" + reqParam) : [];
 
         setUserProducts(res);
       };
 
-      getProducts().then(() => (productFetchLoading = false));
+      getProducts().then(() => setProductFetchLoading(false));
     }
   }, [user && user.cart.items]);
 
@@ -88,6 +89,17 @@ const CartPage = () => {
         );
       if (error) return <>{error}</>;
 
+      if (userProducts.length < 1)
+        return (
+          <FullPageHeight centerElements>
+            <MessageBox
+              icon={<MdOutlineRemoveShoppingCart />}
+              title="Cart is empty"
+              fontSize="30px"
+            />
+          </FullPageHeight>
+        );
+
       return (
         <section>
           <UserProductsContainer>
@@ -101,11 +113,15 @@ const CartPage = () => {
                   <TotalPriceDescription>
                     <h3>Total Price : </h3>
                     <h3>
-                      {userProducts.length > 0 &&
+                      {!productFetchLoading ? (
+                        userProducts.length > 0 &&
                         user &&
-                        !productFetchLoading &&
-                        calcTotalPrice(userProducts, user.cart.items)}{" "}
-                      ${/* <DotLoading /> */}
+                        !productFetchLoading && (
+                          <>{calcTotalPrice(userProducts, user.cart.items)} $</>
+                        )
+                      ) : (
+                        <DotLoading />
+                      )}
                     </h3>
                   </TotalPriceDescription>
                   <Button
@@ -123,26 +139,13 @@ const CartPage = () => {
           </UserProductsContainer>
         </section>
       );
-    } else
-      return (
-        <FullPageHeight centerElements>
-          <div
-            style={{
-              width: "90%",
-              height: "200px",
-              display: "flex",
-              flexDirection: "column",
-              justifyContent: "space-evenly",
-              alignItems: "center",
-            }}
-          >
-            <GrLogin style={{ fontSize: "60px" }} />
-            <h1 style={{ textAlign: "center" }}>
-              Please log into your account first
-            </h1>
-          </div>
-        </FullPageHeight>
-      );
+    }
+
+    return (
+      <FullPageHeight centerElements>
+        <MessageBox icon={<GrLogin />} title="Please log into your account" />
+      </FullPageHeight>
+    );
   };
 
   return renderElements();
