@@ -5,13 +5,13 @@ import {
   getAsyncProducts,
   filterProducts,
   clearFilter,
+  resetFilter,
 } from "../../redux/prodcuts/productsSlice";
 import Dropdown from "../../components/common/Dropdown/Dropdown";
 import {
   ItemsContainer,
   FilterSection,
   selectDropdownStyles,
-  useFilterOptionsData,
 } from "./productPageDatas";
 import { MdOutlineDone } from "react-icons/md";
 import Loading from "../../components/common/Loading/Loading";
@@ -22,15 +22,78 @@ const Product = lazy(() => import("../../components/common/Product/Product"));
 const ProductsPage = () => {
   const { loading, error, products } = useSelector((state) => state.products);
 
+  const initialFilterDatasState = useMemo(
+    () => [
+      {
+        id: 1,
+        openerText: "Category",
+        options: [
+          { id: 1, text: "Unset", accessText: "Unset" },
+          { id: 2, text: "Athlete", accessText: "Athlete" },
+          { id: 3, text: "Walking", accessText: "Walking" },
+          { id: 4, text: "Hiking", accessText: "Hiking" },
+          { id: 5, text: "Dancing", accessText: "Dancing" },
+        ],
+      },
+      {
+        id: 2,
+        openerText: "Type",
+        options: [
+          { id: 1, text: "Unset", accessText: "Unset" },
+          { id: 2, text: "Sneaker", accessText: "Sneaker" },
+          { id: 3, text: "Chuck taylor", accessText: "Chuck taylor" },
+          { id: 4, text: "Boots", accessText: "Boots" },
+          { id: 5, text: "Kids", accessText: "Kids" },
+          { id: 6, text: "Formal", accessText: "Formal" },
+        ],
+        dropdownMenuStyle: `
+    ${selectDropdownStyles.dropdownMenuStyle}
+    @media (max-width:355px) and (min-width:261px){
+      left: calc(-100% - 20px);
+    }
+    `,
+      },
+      {
+        id: 3,
+        openerText: "Color",
+        options: [
+          { id: 1, text: "Unset", accessText: "Unset" },
+          { id: 2, text: "Red", accessText: "Red" },
+          { id: 3, text: "Orange", accessText: "Orange" },
+          { id: 4, text: "Yellow", accessText: "Yellow" },
+          { id: 5, text: "Green", accessText: "Green" },
+          { id: 6, text: "Blue", accessText: "Blue" },
+          { id: 7, text: "Purple", accessText: "Purple" },
+          { id: 8, text: "Brown", accessText: "Brown" },
+          { id: 9, text: "Black", accessText: "Black" },
+          { id: 10, text: "White", accessText: "White" },
+        ],
+        dropdownMenuStyle: `
+    ${selectDropdownStyles.dropdownMenuStyle}
+    @media (max-width:500px) and (min-width:378px){
+      left: calc(-100% - 11px) !important;
+    }
+    @media (max-width:266px){
+      left: 0;
+    }
+    `,
+      },
+    ],
+    []
+  );
+
   const [currentOption, setCurrentOption] = useState(null);
 
-  const [filterOptionsData, setFilterOptionsData] = useFilterOptionsData();
+  const [filterOptionsData, setFilterOptionsData] = useState(
+    initialFilterDatasState
+  );
 
   const [dynamicURL, setDynamicURL] = useState(null);
 
   const filteredProducts = useSelector(
     (state) => state.products.filteredOptions
   );
+
   const dispatch = useDispatch();
 
   const navigate = useNavigate();
@@ -104,6 +167,10 @@ const ProductsPage = () => {
     } else {
       fetchProducts();
     }
+
+    return () => {
+      dispatch(resetFilter());
+    };
   }, []);
 
   const handleFilterSelect = (handlerKey, options, itemId) => {
@@ -121,8 +188,6 @@ const ProductsPage = () => {
     } else {
       if (filteredProducts[handlerKey].length) {
         dispatch(clearFilter(handlerKey));
-        options.forEach((option) => (option.text = option.accessText));
-        navigate("/products");
       }
     }
   };

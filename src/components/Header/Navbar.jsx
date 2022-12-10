@@ -4,6 +4,7 @@ import { NavLink } from "react-router-dom";
 import styled from "styled-components";
 import { toggleMobileMenu } from "../../redux/elements/elementSlice";
 import { flexbox } from "../../styles/extendableStyles/ExtendableStyles.styled";
+import { useLocation } from "react-router-dom";
 
 const NavList = styled.ul`
   ${(props) =>
@@ -63,13 +64,15 @@ const Navbar = ({ navDatas, direction }) => {
     direction === "vertical" && dispatch(toggleMobileMenu());
   };
 
+  const location = useLocation();
+
   return (
     <nav style={{ width: "100%" }}>
       <NavList direction={direction}>
         {navDatas.map(({ id, to, text }) => (
           <li key={id} onClick={handleCloseMenu}>
             <NavLink
-              to={to}
+              to={location.search || to}
               className={(navProps) => (navProps.isActive ? "link-active" : "")}
               end
             >

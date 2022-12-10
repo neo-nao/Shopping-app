@@ -14,6 +14,7 @@ import Loading from "../../components/common/Loading/Loading";
 import FullPageHeight from "../../components/common/FullPageHeight/FullPageHeight";
 import { GrLogin } from "react-icons/gr";
 import { MdOutlineRemoveShoppingCart } from "react-icons/md";
+import { BiCommentError } from "react-icons/bi";
 import DotLoading from "../../components/common/DotLoading/DotLoading";
 import MessageBox from "../../components/common/MessageBox/MessageBox";
 
@@ -87,7 +88,13 @@ const CartPage = () => {
             <Loading />
           </FullPageHeight>
         );
-      if (error) return <>{error}</>;
+
+      if (error)
+        return (
+          <FullPageHeight>
+            <MessageBox icon={<BiCommentError />} title={error} />
+          </FullPageHeight>
+        );
 
       if (userProducts.length < 1)
         return (

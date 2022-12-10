@@ -53,6 +53,10 @@ const productsSlice = createSlice({
     clearFilter: (state, action) => {
       state.filteredOptions[action.payload] = [];
     },
+    resetFilter: (state) => {
+      state.filteredOptions = initialState.filteredOptions;
+      state.products = initialState.products;
+    },
   },
   extraReducers: {
     [getAsyncProducts.pending]: (state) => {
@@ -69,5 +73,6 @@ const productsSlice = createSlice({
   },
 });
 
-export const { filterProducts, clearFilter } = productsSlice.actions;
+export const { filterProducts, clearFilter, resetFilter } =
+  productsSlice.actions;
 export default productsSlice.reducer;
