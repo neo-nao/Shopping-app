@@ -12,8 +12,13 @@ const navDatas = [
 ];
 
 const Main = styled.main`
+  --footer-height: 5rem;
   position: relative;
-  min-height: calc(100vh - 21.25rem);
+  min-height: calc(100vh - (6.25rem + var(--footer-height)));
+
+  @media (max-width: 800px) {
+    --footer-height: 15rem;
+  }
 `;
 
 const Layout = ({ children }) => {
