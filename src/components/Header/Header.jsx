@@ -13,12 +13,12 @@ const HeaderStyled = styled.header`
   transition: background-color 0.6s ease, height 0.35s ease;
   width: 100%;
   height: 5rem;
-  background-color: rgba(255, 255, 255, 0.9);
+  background-color: rgba(255, 255, 255, 0.8);
   position: sticky;
   ${flexbox({})}
   top: 0;
   left: 0;
-  backdrop-filter: blur(4px) saturate(180%);
+  backdrop-filter: blur(2px) saturate(180%);
 
   &.header-at-top {
     height: 6.25rem;

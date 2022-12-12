@@ -1,4 +1,3 @@
-import { memo } from "react";
 import styled from "styled-components";
 import { flexbox } from "../../../styles/extendableStyles/ExtendableStyles.styled";
 
@@ -9,7 +8,7 @@ const Container = styled.section`
 
 const InnerElementContainer = styled.div`
   width: 100%;
-  height: calc(100% - 6.25rem);
+  height: 100%;
 
   ${(props) => props.centerElements && flexbox()}
 `;

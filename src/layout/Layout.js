@@ -16,6 +16,13 @@ const Main = styled.main`
   position: relative;
   min-height: calc(100vh - (6.25rem + var(--footer-height)));
 
+  &::-webkit-scrollbar {
+    width: 5px;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: red;
+  }
+
   @media (max-width: 800px) {
     --footer-height: 15rem;
   }
