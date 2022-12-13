@@ -29,8 +29,8 @@ const ImageSection = styled.section`
   cursor: pointer;
   & > img {
     transition: transform 0.3s ease;
-    width: 100%;
-    height: 100%;
+    width: 105%;
+    height: 105%;
     object-fit: cover;
   }
 
