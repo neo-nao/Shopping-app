@@ -2,7 +2,7 @@ import Header from "../components/Header/Header";
 import Footer from "../components/Footer/Footer";
 import styled from "styled-components";
 import SliderMenu from "../container/SliderMenu/SliderMenu";
-import AlertBox from "../components/common/alertBox/AlertBox";
+import AlertBox from "../components/common/AlertBox/AlertBox";
 
 const navDatas = [
   { id: 1, to: "/", text: "Home" },
