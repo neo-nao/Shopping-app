@@ -10,31 +10,57 @@ import {
 import FullPageHeight from "../../components/common/FullPageHeight/FullPageHeight";
 import { LogoNoLink } from "../../components/common/Logo/Logo";
 import { MdArrowBackIosNew, MdArrowForwardIos } from "react-icons/md";
+import NextDetailList from "./NextDetailList";
 
 const slideDatas = [
   {
     id: 1,
-    title: "first slide title",
-    paragraph: "first slide paragraph",
-    image: LogoNoLink,
+    title: "who are we?",
+    paragraph: (
+      <>
+        <span>
+          Next is a new-made brand and E-commerce company creating and selling
+          various sort of shoes.
+        </span>
+        <br />
+        <span>
+          In next-co we believe quality and consumer satisfaction is our main
+          intention and we highly consider delivering the most comfort and
+          reliable shoes to our users.
+        </span>
+      </>
+    ),
   },
   {
     id: 2,
-    title: "second slide title",
-    paragraph: "second slide paragraph",
-    image: LogoNoLink,
+    title: "what do we do?",
+    paragraph:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam dignissim urna eget est malesuada, vel hendrerit justo scelerisque. Nam sit amet posuere arcu. a vulputate ipsum. Sed tempus congue nibh, non posuere ex varius eu.",
   },
   {
     id: 3,
-    title: "third slide title",
-    paragraph: "third slide paragraph",
-    image: LogoNoLink,
+    title: "how is being in next like?",
+    paragraph: (
+      <>
+        Praesent pretium mauris sit amet auctor faucibus. Ut porttitor ante
+        lectus, vitae pharetra nunc vehicula et. Donec massa lacus, vestibulum
+        <br />
+        eget magna non, condimentum mollis nisl. Nullam dictum accumsan nisl
+        dapibus fermentum.
+      </>
+    ),
   },
   {
     id: 4,
-    title: "fourth slide title",
-    paragraph: "fourth slide paragraph",
-    image: LogoNoLink,
+    title: "contact us",
+    paragraph: (
+      <>
+        We are looking forward to get in touch with you, ask us anything you
+        want or even give your feedbacks and we're ready to respond 😃
+        <br />
+        <NextDetailList id="inner" />
+      </>
+    ),
   },
 ];
 
@@ -80,7 +106,10 @@ const PageElements = () => {
     <AboutUsContainer>
       <AboutUsBox>
         <section className="image-section">
-          <ImageContainer>{slideDatas[slideIndex].image}</ImageContainer>
+          <ImageContainer>
+            {LogoNoLink}
+            <NextDetailList id="outer" />
+          </ImageContainer>
         </section>
         <DescriptionContainer>
           <section className="description-section">
