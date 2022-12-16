@@ -18,13 +18,18 @@ const AboutUsContainer = styled.div`
 const AboutUsBox = styled.section`
   width: clamp(15rem, 90%, 50rem);
   height: clamp(17rem, 80%, 30rem);
-  border: 2px solid var(--black);
   ${flexbox({ justify: "space-between" })}
 
   & > section {
     width: 50%;
     height: 100%;
     padding: 10px;
+
+    @media (min-width: 800px) {
+      &:last-child {
+        padding-right: 30px;
+      }
+    }
   }
 
   & .about-us-title,
@@ -37,12 +42,12 @@ const AboutUsBox = styled.section`
   & .about-us-title {
     font-size: 35px;
     text-transform: capitalize;
-    margin: 20px 0 30px;
+    margin: 30px 0;
   }
   & .about-us-paragraph {
     font-size: 20px;
     color: #515151;
-    transition-delay: 0.3s;
+    transition-delay: 0.25s;
   }
 
   & .text-active {
@@ -50,10 +55,66 @@ const AboutUsBox = styled.section`
     opacity: 1;
   }
 
+  & .image-section {
+    position: relative;
+  }
+
+  & .image-section::before {
+    content: "";
+    height: 0;
+    width: 3px;
+    position: absolute;
+    right: 50px;
+    background: #313131;
+    border-radius: 10px;
+
+    @media (min-width: 801px) {
+      top: 50%;
+      animation: getTall 1s ease-in-out forwards;
+    }
+
+    @media (max-width: 800px) {
+      animation: getWide 1s ease-in-out forwards;
+    }
+  }
+
+  @keyframes getTall {
+    from {
+      height: 0;
+    }
+    to {
+      height: 100%;
+      top: 0%;
+    }
+  }
+  @keyframes getWide {
+    from {
+      width: 0%;
+    }
+    to {
+      width: 100%;
+    }
+  }
+
   @media (max-width: 800px) {
     flex-direction: column;
     height: 90%;
     max-height: 40rem;
+
+    & .about-us-title,
+    & .about-us-paragraph {
+      text-align: center;
+    }
+    & .about-us-title {
+      margin-top: 0px;
+    }
+    & .about-us-paragraph {
+      padding: 0 20px;
+    }
+
+    & .description-section {
+      margin-top: 20px;
+    }
 
     & > section {
       width: 100%;
@@ -61,9 +122,50 @@ const AboutUsBox = styled.section`
       &:first-child {
         height: 50%;
 
+        &::before {
+          bottom: -10px;
+          width: 90%;
+          height: 3px;
+          left: 50%;
+          transform: translateX(-50%);
+        }
+
         & > div {
           height: 100%;
+
+          & > svg {
+            width: clamp(2rem, 70%, 10rem);
+            height: clamp(2rem, 70%, 10rem);
+            margin-top: 20px !important;
+          }
         }
+      }
+    }
+  }
+
+  @media (max-width: 500px) {
+    & .image-section {
+      & svg {
+        margin-top: 0 !important;
+      }
+
+      &::before {
+        bottom: 25px !important;
+      }
+    }
+
+    & .description-section {
+      margin-top: 0;
+    }
+    height: 95%;
+  }
+
+  @media (max-width: 400px) {
+    & .image-section {
+      height: 30% !important;
+
+      &::before {
+        bottom: 10px !important;
       }
     }
   }
@@ -71,13 +173,17 @@ const AboutUsBox = styled.section`
 
 const ImageContainer = styled.div`
   height: 100%;
-  ${flexbox()}
+  ${flexbox({ dir: "column" })}
 
   @media(min-width:800px) {
     & > svg,
     a {
       transform: scale(2.5);
     }
+  }
+
+  @media (max-width: 500px) {
+    padding: 0;
   }
 `;
 
@@ -86,19 +192,28 @@ const DescriptionContainer = styled.section`
 
   & .description-section {
     width: 100%;
-
-    @media (max-width: 800px) {
-      & h1,
-      & p {
-        text-align: center;
-      }
-    }
+    max-height: 500px;
   }
 
   & .slide-handle-buttons {
     width: 100%;
-    ${flexbox({ justify: "space-around" })}
+    ${flexbox({ justify: "space-between" })}
     margin-bottom: 20px;
+  }
+
+  @media (max-width: 500px) {
+    & .about-us-title {
+      font-size: 30px;
+      margin-bottom: 20px;
+    }
+
+    & .about-us-paragraph {
+      padding: 0;
+    }
+
+    & .slide-handle-buttons {
+      margin-bottom: 10px;
+    }
   }
 `;
 
@@ -142,6 +257,52 @@ const SlideButton = styled.button`
   }
 `;
 
+const NextDetailListContainer = styled.div`
+  width: 100%;
+  margin-top: 50px;
+
+  & .next-detail-list {
+    flex-wrap: wrap;
+    width: 272.5px;
+    float: right;
+    margin-right: 107.5px;
+
+    & > li {
+      width: 100%;
+      color: #818181;
+      margin: 7.5px;
+      font-size: large;
+      ${flexbox({ justify: "flex-end" })}
+
+      > svg {
+        margin-right: 7.5px;
+      }
+    }
+  }
+
+  @media (max-width: 800px) {
+    margin-top: 0;
+    & .next-detail-list {
+      width: 90%;
+      flex-direction: row;
+      margin: 25px auto 0;
+      float: unset;
+
+      & > li {
+        width: unset;
+        flex-grow: 1;
+        justify-content: center;
+      }
+    }
+  }
+
+  ${(props) =>
+    props.id === "outer"
+      ? `@media (max-width: 500px){display:none;}
+    `
+      : props.id === "inner" && `@media (min-width:501px){display:none;}`}
+`;
+
 export {
   AboutUsPageLargeContainer,
   AboutUsContainer,
@@ -149,4 +310,5 @@ export {
   ImageContainer,
   DescriptionContainer,
   SlideButton,
+  NextDetailListContainer,
 };
