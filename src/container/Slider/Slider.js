@@ -57,24 +57,24 @@ const Slider = ({ items }) => {
         "translateX(calc(-100% * " + sliderState.index + "))";
   }, [sliderState.index]);
 
-  useEffect(() => {
-    const autoSLideCountTime = setInterval(() => {
-      slideCountTime++;
+  // useEffect(() => {
+  //   const autoSLideCountTime = setInterval(() => {
+  //     slideCountTime++;
 
-      slideCountTime >= 25 && slide("right");
-    }, 200);
+  //     slideCountTime >= 25 && slide("right");
+  //   }, 200);
 
-    return () => {
-      clearInterval(autoSLideCountTime);
-      slideCountTime = 0;
-    };
-  }, []);
+  //   return () => {
+  //     clearInterval(autoSLideCountTime);
+  //     slideCountTime = 0;
+  //   };
+  // }, []);
 
   return (
     <SliderContainer>
       <CarouselSlider ref={sliderRef}>
-        {items.map(({ id, color }) => (
-          <SliderItem key={id} backgroundColor={color}></SliderItem>
+        {items.map(({ id, innerElement }) => (
+          <SliderItem key={id}>{innerElement}</SliderItem>
         ))}
       </CarouselSlider>
 

@@ -1,13 +1,22 @@
 import Slider from "../../container/Slider/Slider";
+import FirstSlideElements from "../../container/SliderContents/FirstSlideElements";
+import SecondSlideElements from "../../container/SliderContents/SecondSlideElements";
+import ThirdSlideElements from "../../container/SliderContents/ThirdSlideElements";
 
 const HomePage = () => {
   return (
     <div>
       <Slider
         items={[
-          { id: 1, color: "red" },
-          { id: 2, color: "yellow" },
-          { id: 3, color: "green" },
+          { id: 1, innerElement: <FirstSlideElements /> },
+          {
+            id: 2,
+            innerElement: <SecondSlideElements />,
+          },
+          {
+            id: 3,
+            innerElement: <ThirdSlideElements />,
+          },
         ]}
       />
     </div>

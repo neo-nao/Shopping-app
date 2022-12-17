@@ -70,11 +70,11 @@ const AboutUsBox = styled.section`
 
     @media (min-width: 801px) {
       top: 50%;
-      animation: getTall 1s ease-in-out forwards;
+      animation: getTall 0.75s ease-in-out forwards;
     }
 
     @media (max-width: 800px) {
-      animation: getWide 1s ease-in-out forwards;
+      animation: getWide 0.75s ease-in-out forwards;
     }
   }
 

@@ -20,7 +20,6 @@ const SliderItem = styled.div`
   width: 100%;
   height: 100%;
   flex-shrink: 0;
-  background-color: ${(props) => props.backgroundColor ?? "var(--white)"};
 `;
 
 const SlideChangeButton = styled.button`
