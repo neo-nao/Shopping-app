@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { flexbox } from "../../styles/extendableStyles/ExtendableStyles.styled";
 
 const SliderContainer = styled.section`
   width: 100%;
@@ -25,7 +26,7 @@ const SliderItem = styled.div`
 const SlideChangeButton = styled.button`
   width: 75px;
   height: 75px;
-  background-color: blue;
+  background-color: transparent;
   position: absolute;
   top: 50%;
   ${(props) =>
@@ -33,8 +34,11 @@ const SlideChangeButton = styled.button`
       ? "left:0;"
       : props.direction === "right" && "right:0;"}
   transform:translateY(-50%);
-  color: #fff;
+  font-size: 50px;
+  color: var(--white);
   cursor: pointer;
+  mix-blend-mode: difference;
+  ${flexbox()}
 `;
 
 export { SliderContainer, CarouselSlider, SliderItem, SlideChangeButton };

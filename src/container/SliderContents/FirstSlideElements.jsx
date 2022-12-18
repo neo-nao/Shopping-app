@@ -1,8 +1,10 @@
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import styled from "styled-components";
 import shoeImage from "./download.png";
 import { placeCenter } from "../../styles/extendableStyles/ExtendableStyles.styled";
+
+const windowWidth = window.innerWidth;
 
 const SlideContainer = styled.div`
   width: 100%;
@@ -46,6 +48,10 @@ const TextContainer = styled.div`
   mix-blend-mode: difference;
   ${placeCenter()}
   z-index: 1;
+  overflow: hidden;
+
+  & h1 {
+  }
 
   @media (max-width: 800px) {
     width: 65%;
@@ -56,6 +62,14 @@ const SlideTitle = styled.h1`
   font-size: 75px;
   color: var(--white);
   text-align: center;
+  transform: translateX(-100%);
+
+  &.slide-active {
+    transition: transform 1s ease;
+    transition-delay: 0.25s;
+    transform: translateX(0);
+  }
+
   @media (max-width: 500px) {
     font-size: 35px;
   }
@@ -76,8 +90,7 @@ const ShoeImageContainer = styled.div`
 
   @media (max-width: 900px) {
     min-width: 200px;
-    right: 50%;
-    transform: translateX(50%);
+    right: ${windowWidth / 2 - 155}px;
   } ;
 `;
 
@@ -86,9 +99,9 @@ function lerp(start, end, amt) {
 }
 
 const FirstSlideElements = () => {
+  const slideContainerRef = useRef();
   const imageContainerRef = useRef();
-
-  const windowWidth = window.innerWidth;
+  const titleRef = useRef();
 
   const handleMouseMove = (e) => {
     const x = lerp(
@@ -112,10 +125,24 @@ const FirstSlideElements = () => {
     imageContainerRef.current.style.transform = `translate(${x}px,${y}px)`;
   };
 
+  const options = { root: null, threshold: 0.1 };
+
+  const observer = new IntersectionObserver(([entry]) => {
+    if (entry.isIntersecting) {
+      titleRef.current.classList.add("slide-active");
+    } else {
+      titleRef.current.classList.remove("slide-active");
+    }
+  }, options);
+
+  useEffect(() => {
+    if (slideContainerRef.current) observer.observe(slideContainerRef.current);
+  }, [slideContainerRef.current]);
+
   return (
-    <SlideContainer onMouseMove={handleMouseMove}>
+    <SlideContainer onMouseMove={handleMouseMove} ref={slideContainerRef}>
       <TextContainer>
-        <SlideTitle>Classic black & white</SlideTitle>
+        <SlideTitle ref={titleRef}>Classic black & white</SlideTitle>
       </TextContainer>
       <ShoeImageContainer ref={imageContainerRef}>
         <LazyLoadImage src={shoeImage} alt="shoe" className="shoe-image" />

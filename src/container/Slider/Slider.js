@@ -5,6 +5,7 @@ import {
   SliderItem,
   SlideChangeButton,
 } from "./SliderStyled";
+import { BiLeftArrow, BiRightArrow } from "react-icons/bi";
 
 const sliderInitialState = {
   index: 0,
@@ -57,18 +58,18 @@ const Slider = ({ items }) => {
         "translateX(calc(-100% * " + sliderState.index + "))";
   }, [sliderState.index]);
 
-  // useEffect(() => {
-  //   const autoSLideCountTime = setInterval(() => {
-  //     slideCountTime++;
+  useEffect(() => {
+    const autoSLideCountTime = setInterval(() => {
+      slideCountTime++;
 
-  //     slideCountTime >= 25 && slide("right");
-  //   }, 200);
+      slideCountTime >= 25 && slide("right");
+    }, 200);
 
-  //   return () => {
-  //     clearInterval(autoSLideCountTime);
-  //     slideCountTime = 0;
-  //   };
-  // }, []);
+    return () => {
+      clearInterval(autoSLideCountTime);
+      slideCountTime = 0;
+    };
+  }, []);
 
   return (
     <SliderContainer>
@@ -78,13 +79,16 @@ const Slider = ({ items }) => {
         ))}
       </CarouselSlider>
 
-      {["left", "right"].map((val, index) => (
+      {[
+        { dir: "left", el: <BiLeftArrow /> },
+        { dir: "right", el: <BiRightArrow /> },
+      ].map((val, index) => (
         <SlideChangeButton
           key={index}
-          direction={val}
-          onClick={() => slide(val)}
+          direction={val.dir}
+          onClick={() => slide(val.dir)}
         >
-          {val}
+          {val.el}
         </SlideChangeButton>
       ))}
     </SliderContainer>

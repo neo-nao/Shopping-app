@@ -25,7 +25,7 @@ const slideDatas = [
         <br />
         <span>
           In next-co we believe quality and consumer satisfaction is our main
-          intention and we highly consider delivering the most comfort and
+          objective and we highly consider delivering the most comfort and
           reliable shoes to our users.
         </span>
       </>
@@ -34,20 +34,26 @@ const slideDatas = [
   {
     id: 2,
     title: "what do we do?",
-    paragraph:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam dignissim urna eget est malesuada, vel hendrerit justo scelerisque. Nam sit amet posuere arcu. a vulputate ipsum. Sed tempus congue nibh, non posuere ex varius eu.",
+    paragraph: (
+      <span>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam
+        dignissim urna eget est malesuada, vel hendrerit justo scelerisque. Nam
+        sit amet posuere arcu. a vulputate ipsum. Sed tempus congue nibh, non
+        posuere ex varius eu.
+      </span>
+    ),
   },
   {
     id: 3,
     title: "how is being in next like?",
     paragraph: (
-      <>
+      <span>
         Praesent pretium mauris sit amet auctor faucibus. Ut porttitor ante
         lectus, vitae pharetra nunc vehicula et. Donec massa lacus, vestibulum
         <br />
         eget magna non, condimentum mollis nisl. Nullam dictum accumsan nisl
         dapibus fermentum.
-      </>
+      </span>
     ),
   },
   {
@@ -55,8 +61,10 @@ const slideDatas = [
     title: "contact us",
     paragraph: (
       <>
-        We are looking forward to get in touch with you, ask us anything you
-        want or even give your feedbacks and we're ready to respond 😃
+        <span>
+          We are looking forward to get in touch with you, ask us anything you
+          want or even give your feedbacks and we're ready to respond 😃
+        </span>
         <br />
         <NextDetailList id="inner" />
       </>
@@ -116,9 +124,9 @@ const PageElements = () => {
             <h1 className="about-us-title" ref={titleRef}>
               {slideDatas[slideIndex].title}
             </h1>
-            <p className="about-us-paragraph" ref={paragraphRef}>
+            <div className="about-us-paragraph" ref={paragraphRef}>
               {slideDatas[slideIndex].paragraph}
-            </p>
+            </div>
           </section>
           <section className="slide-handle-buttons">
             <SlideButton
