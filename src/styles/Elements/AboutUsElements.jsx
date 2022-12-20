@@ -13,6 +13,10 @@ const AboutUsContainer = styled.div`
   height: 100%;
   min-height: 20rem;
   ${flexbox()};
+
+  @media (max-width: 500px) {
+    align-items: flex-start;
+  }
 `;
 
 const AboutUsBox = styled.section`

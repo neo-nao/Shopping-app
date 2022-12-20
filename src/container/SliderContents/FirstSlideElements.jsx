@@ -3,6 +3,8 @@ import { LazyLoadImage } from "react-lazy-load-image-component";
 import styled from "styled-components";
 import shoeImage from "./download.png";
 import { placeCenter } from "../../styles/extendableStyles/ExtendableStyles.styled";
+import ButtonOutlined from "../../components/ButtonOutlined/ButtonOutlined";
+import { themes } from "../../components/ButtonOutlined/ButtonOutlined";
 
 const windowWidth = window.innerWidth;
 
@@ -76,7 +78,8 @@ const SlideTitle = styled.h1`
 `;
 
 const ShoeImageContainer = styled.div`
-  width: clamp(300px, 55vw, 850px);
+  --img-width: 55vw;
+  width: clamp(350px, 55vw, 850px);
   height: fit-content;
   position: absolute;
   right: 0;
@@ -89,9 +92,20 @@ const ShoeImageContainer = styled.div`
   }
 
   @media (max-width: 900px) {
-    min-width: 200px;
-    right: ${windowWidth / 2 - 155}px;
-  } ;
+    --img-width: 600px;
+    width: var(--img-width);
+    right: calc(${windowWidth / 2}px - (var(--img-width) / 2));
+  }
+
+  @media (max-width: 520px) {
+    --img-width: 500px;
+  }
+  @media (max-width: 425px) {
+    --img-width: 400px;
+  }
+  @media (max-width: 335px) {
+    --img-width: 110%;
+  }
 `;
 
 function lerp(start, end, amt) {
@@ -104,25 +118,27 @@ const FirstSlideElements = () => {
   const titleRef = useRef();
 
   const handleMouseMove = (e) => {
-    const x = lerp(
-      imageContainerRef.current.style.transform.slice(
-        10,
-        imageContainerRef.current.style.transform.indexOf(",") - 2
-      ),
-      e.pageX / (windowWidth / 100) - 25,
-      0.1
-    );
+    if (windowWidth > 900) {
+      const x = lerp(
+        imageContainerRef.current.style.transform.slice(
+          10,
+          imageContainerRef.current.style.transform.indexOf(",") - 2
+        ),
+        e.pageX / (windowWidth / 100) - 25,
+        0.1
+      );
 
-    const y = lerp(
-      imageContainerRef.current.style.transform.slice(
-        imageContainerRef.current.style.transform.indexOf(",") + 1,
-        -3
-      ),
-      e.pageY / (windowWidth / 100) - 25,
-      0.1
-    );
+      const y = lerp(
+        imageContainerRef.current.style.transform.slice(
+          imageContainerRef.current.style.transform.indexOf(",") + 1,
+          -3
+        ),
+        e.pageY / (windowWidth / 100) - 25,
+        0.1
+      );
 
-    imageContainerRef.current.style.transform = `translate(${x}px,${y}px)`;
+      imageContainerRef.current.style.transform = `translate(${x}px,${y}px)`;
+    }
   };
 
   const options = { root: null, threshold: 0.1 };
@@ -141,6 +157,24 @@ const FirstSlideElements = () => {
 
   return (
     <SlideContainer onMouseMove={handleMouseMove} ref={slideContainerRef}>
+      <ButtonOutlined
+        {...(windowWidth > 900 ? themes.reverseBlack : themes.reverseWhite)}
+        width="clamp(2rem,65%,400px)"
+        cssStyle={`
+          position: absolute;
+          top: 75%;
+          left: 50%;
+          transform: translateX(-50%);
+          z-index: 1;    
+          
+          @media (max-width:900px){
+            mix-blend-mode:difference;
+            top:20%;
+          }
+        `}
+      >
+        Order
+      </ButtonOutlined>
       <TextContainer>
         <SlideTitle ref={titleRef}>Classic black & white</SlideTitle>
       </TextContainer>
