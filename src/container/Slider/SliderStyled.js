@@ -13,7 +13,6 @@ const CarouselSlider = styled.div`
   transition: transform 0.5s ease;
   width: 100%;
   height: 100%;
-  user-select: none;
   display: flex;
 `;
 
