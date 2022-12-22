@@ -5,20 +5,17 @@ import shoeImage from "./download.png";
 import { placeCenter } from "../../styles/extendableStyles/ExtendableStyles.styled";
 import ButtonOutlined from "../../components/ButtonOutlined/ButtonOutlined";
 import { themes } from "../../components/ButtonOutlined/ButtonOutlined";
+import { SlideContainer } from "../../styles/Elements/SliderElements";
 
 const windowWidth = window.innerWidth;
 
-const SlideContainer = styled.div`
-  width: 100%;
-  height: 100%;
-  background: var(--white);
-  position: relative;
+const FirstSlideContainer = styled(SlideContainer)`
   background: linear-gradient(
     to bottom right,
     var(--black) 50%,
     var(--white) 50%
   );
-  overflow: hidden;
+  user-select: none;
 
   &::before {
     content: "";
@@ -156,7 +153,7 @@ const FirstSlideElements = () => {
   }, [slideContainerRef.current]);
 
   return (
-    <SlideContainer onMouseMove={handleMouseMove} ref={slideContainerRef}>
+    <FirstSlideContainer onMouseMove={handleMouseMove} ref={slideContainerRef}>
       <ButtonOutlined
         {...(windowWidth > 900 ? themes.reverseBlack : themes.reverseWhite)}
         width="clamp(2rem,65%,400px)"
@@ -179,9 +176,14 @@ const FirstSlideElements = () => {
         <SlideTitle ref={titleRef}>Classic black & white</SlideTitle>
       </TextContainer>
       <ShoeImageContainer ref={imageContainerRef}>
-        <LazyLoadImage src={shoeImage} alt="shoe" className="shoe-image" />
+        <LazyLoadImage
+          src={shoeImage}
+          alt="shoe"
+          className="shoe-image"
+          draggable="false"
+        />
       </ShoeImageContainer>
-    </SlideContainer>
+    </FirstSlideContainer>
   );
 };
 
