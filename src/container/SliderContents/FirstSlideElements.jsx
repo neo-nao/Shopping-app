@@ -46,11 +46,8 @@ const TextContainer = styled.div`
   position: absolute;
   mix-blend-mode: difference;
   ${placeCenter()}
-  z-index: 1;
   overflow: hidden;
-
-  & h1 {
-  }
+  z-index: 1;
 
   @media (max-width: 800px) {
     width: 65%;
@@ -148,9 +145,10 @@ const FirstSlideElements = () => {
     }
   }, options);
 
-  useEffect(() => {
-    if (slideContainerRef.current) observer.observe(slideContainerRef.current);
-  }, [slideContainerRef.current]);
+  useEffect(
+    () => observer.observe(slideContainerRef.current),
+    [slideContainerRef.current]
+  );
 
   return (
     <FirstSlideContainer onMouseMove={handleMouseMove} ref={slideContainerRef}>
