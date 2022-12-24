@@ -1,147 +1,135 @@
 import { useEffect, useRef } from "react";
-import { LazyLoadImage } from "react-lazy-load-image-component";
 import styled from "styled-components";
-import shoeImage from "./download.png";
-import { placeCenter } from "../../styles/extendableStyles/ExtendableStyles.styled";
-import ButtonOutlined from "../../components/ButtonOutlined/ButtonOutlined";
-import { themes } from "../../components/ButtonOutlined/ButtonOutlined";
 import { SlideContainer } from "../../styles/Elements/SliderElements";
+import bgImage from "../../assets/images/fluid-gradient-1.jpg";
+import { LazyLoadImage } from "react-lazy-load-image-component";
+import shoeImage from "./download (1).png";
+import { placeCenter } from "../../styles/extendableStyles/ExtendableStyles.styled";
 
-const windowWidth = window.innerWidth;
-
-const FirstSlideContainer = styled(SlideContainer)`
-  background: linear-gradient(
-    to bottom right,
-    var(--black) 50%,
-    var(--white) 50%
-  );
+const SecondSlideContainer = styled(SlideContainer)`
+  background-image: url(${bgImage});
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
   user-select: none;
 
-  &::before {
-    content: "";
+  & img {
+    width: clamp(300px, 80%, 400px);
     position: absolute;
-    width: 90%;
-    height: 75%;
-    mix-blend-mode: difference;
-    border-top: 20px solid white;
-    border-left: 20px solid white;
-    top: 10%;
-    left: 25px;
+    ${placeCenter()}
+    animation: float 3s ease-in-out infinite alternate;
   }
-  &::after {
-    content: "";
-    position: absolute;
-    width: 90%;
-    height: 75%;
-    mix-blend-mode: difference;
-    border-right: 20px solid white;
-    border-bottom: 20px solid white;
-    bottom: 10%;
-    right: 25px;
+
+  @keyframes float {
+    from {
+      transform: translate(-50%, -50%);
+    }
+    to {
+      transform: translate(-50%, calc(-50% - 20px)) rotate(2deg);
+    }
   }
 `;
 
-const TextContainer = styled.div`
-  width: 638px;
-  position: absolute;
-  mix-blend-mode: difference;
-  ${placeCenter()}
-  overflow: hidden;
-  z-index: 1;
-
-  @media (max-width: 800px) {
-    width: 65%;
-  }
-`;
-
-const SlideTitle = styled.h1`
-  font-size: 75px;
+const TitleContainer = styled.div`
+  font-size: clamp(50px, 15vw, 75px);
   color: var(--white);
-  text-align: center;
-  transform: translateX(-100%);
+  text-shadow: 2px 2px var(--gray);
+  display: inline-block;
+  overflow: hidden;
+  position: absolute;
+  ${placeCenter()}
+  ${(props) =>
+    props.id === 1
+      ? `
+  top: 40%;
+  left: 50%;
+  `
+      : `
+  top: 60%;
+  left: 50%;
+  `}
 
-  &.slide-active {
-    transition: transform 1s ease;
-    transition-delay: 0.25s;
+  & > h1 {
+    transform: ${(props) =>
+      props.id === 1 ? "translateX(100%)" : "translateX(-100%)"};
+    white-space: nowrap;
+  }
+
+  &.text-active {
+    transition: left 1.25s ease;
+    left: ${(props) =>
+      props.id === 1 ? "calc(50% - 265px)" : "calc(50% + 240px)"};
+  }
+
+  &.text-active > h1 {
+    transition: transform 1.75s ease;
+    transition-delay: 0.2s;
     transform: translateX(0);
   }
 
-  @media (max-width: 500px) {
-    font-size: 35px;
-  }
-`;
-
-const ShoeImageContainer = styled.div`
-  --img-width: 55vw;
-  width: clamp(350px, 55vw, 850px);
-  height: fit-content;
-  position: absolute;
-  right: 0;
-  bottom: 8vh;
-
-  & .shoe-image {
-    width: 100%;
-    object-fit: cover;
-    filter: drop-shadow(5px 15px 15px rgba(1, 1, 1, 0.3));
-  }
-
   @media (max-width: 900px) {
-    --img-width: 600px;
-    width: var(--img-width);
-    right: calc(${windowWidth / 2}px - (var(--img-width) / 2));
+    ${(props) =>
+      props.id === 1
+        ? `
+    top: 22.5%;
+    left: 50%;
+    `
+        : `
+    top: 75%;
+    left: 50%;
+    `}
+
+    &.text-active {
+      left: ${(props) =>
+        props.id === 1 ? "calc(50% - 115px)" : "calc(50% + 140px)"};
+    }
   }
 
-  @media (max-width: 520px) {
-    --img-width: 500px;
-  }
-  @media (max-width: 425px) {
-    --img-width: 400px;
-  }
-  @media (max-width: 335px) {
-    --img-width: 110%;
+  @media (max-width: 600px) {
+    ${(props) =>
+      props.id === 1
+        ? `
+    top: 42.5%;
+    left: 75%;
+    `
+        : `
+    top: 57.5%;
+    left: 35%;
+    `}
+    z-index:1;
+
+    &.text-active {
+      left: 50%;
+    }
   }
 `;
 
-function lerp(start, end, amt) {
-  return (1 - amt) * start + amt * end;
-}
+const ViewDetailButton = styled.button`
+  padding: 10px;
+  font-size: 20px;
+  font-family: var(--primary-font);
+  border-radius: 10px;
+  color: #595959;
+  position: absolute;
+  ${placeCenter()}
+  top: 70%;
+  opacity: 0.8;
+`;
 
-const FirstSlideElements = () => {
+const options = { root: null, threshold: 0.1 };
+
+const SecondSlideElements = () => {
   const slideContainerRef = useRef();
-  const imageContainerRef = useRef();
-  const titleRef = useRef();
-
-  const handleMouseMove = (e) => {
-    if (windowWidth > 900) {
-      const x = lerp(
-        imageContainerRef.current.style.transform.slice(
-          10,
-          imageContainerRef.current.style.transform.indexOf(",") - 2
-        ),
-        e.pageX / (windowWidth / 100) - 25,
-        0.1
-      );
-
-      const y = lerp(
-        imageContainerRef.current.style.transform.slice(
-          imageContainerRef.current.style.transform.indexOf(",") + 1,
-          -3
-        ),
-        e.pageY / (windowWidth / 100) - 25,
-        0.1
-      );
-
-      imageContainerRef.current.style.transform = `translate(${x}px,${y}px)`;
-    }
-  };
-
-  const options = { root: null, threshold: 0.1 };
+  const title1Ref = useRef();
+  const title2Ref = useRef();
 
   const observer = new IntersectionObserver(([entry]) => {
     if (entry.isIntersecting) {
-      titleRef.current.classList.add("slide-active");
+      title1Ref.current.classList.add("text-active");
+      title2Ref.current.classList.add("text-active");
     } else {
-      titleRef.current.classList.remove("slide-active");
+      title1Ref.current.classList.remove("text-active");
+      title2Ref.current.classList.remove("text-active");
     }
   }, options);
 
@@ -151,38 +139,22 @@ const FirstSlideElements = () => {
   );
 
   return (
-    <FirstSlideContainer onMouseMove={handleMouseMove} ref={slideContainerRef}>
-      <ButtonOutlined
-        {...(windowWidth > 900 ? themes.reverseBlack : themes.reverseWhite)}
-        width="clamp(2rem,65%,400px)"
-        cssStyle={`
-          position: absolute;
-          top: 75%;
-          left: 50%;
-          transform: translateX(-50%);
-          z-index: 1;    
-          
-          @media (max-width:900px){
-            mix-blend-mode:difference;
-            top:20%;
-          }
-        `}
-      >
-        Order
-      </ButtonOutlined>
-      <TextContainer>
-        <SlideTitle ref={titleRef}>Classic black & white</SlideTitle>
-      </TextContainer>
-      <ShoeImageContainer ref={imageContainerRef}>
-        <LazyLoadImage
-          src={shoeImage}
-          alt="shoe"
-          className="shoe-image"
-          draggable="false"
-        />
-      </ShoeImageContainer>
-    </FirstSlideContainer>
+    <SecondSlideContainer ref={slideContainerRef}>
+      <TitleContainer id={1} ref={title1Ref}>
+        <h1>Niker</h1>
+      </TitleContainer>
+      <TitleContainer id={2} ref={title2Ref}>
+        <h1>Stay fit</h1>
+      </TitleContainer>
+      <LazyLoadImage
+        src={shoeImage}
+        alt="shoe"
+        className="shoe-image"
+        draggable="false"
+      />
+      <ViewDetailButton>View details</ViewDetailButton>
+    </SecondSlideContainer>
   );
 };
 
-export default FirstSlideElements;
+export default SecondSlideElements;
