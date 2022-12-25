@@ -6,8 +6,11 @@ import { placeCenter } from "../../styles/extendableStyles/ExtendableStyles.styl
 import ButtonOutlined from "../../components/ButtonOutlined/ButtonOutlined";
 import { themes } from "../../components/ButtonOutlined/ButtonOutlined";
 import { SlideContainer } from "../../styles/Elements/SliderElements";
+import useWindowDimensions, {
+  getWindowDimensions,
+} from "../../hooks/useWindowDimensions";
 
-const windowWidth = window.innerWidth;
+const windowDimensions = getWindowDimensions();
 
 const FirstSlideContainer = styled(SlideContainer)`
   background: linear-gradient(
@@ -88,7 +91,7 @@ const ShoeImageContainer = styled.div`
   @media (max-width: 900px) {
     --img-width: 600px;
     width: var(--img-width);
-    right: calc(${windowWidth / 2}px - (var(--img-width) / 2));
+    right: calc(${windowDimensions.width / 2}px - (var(--img-width) / 2));
   }
 
   @media (max-width: 520px) {
@@ -112,13 +115,13 @@ const FirstSlideElements = () => {
   const titleRef = useRef();
 
   const handleMouseMove = (e) => {
-    if (windowWidth > 900) {
+    if (windowDimensions.width > 900) {
       const x = lerp(
         imageContainerRef.current.style.transform.slice(
           10,
           imageContainerRef.current.style.transform.indexOf(",") - 2
         ),
-        e.pageX / (windowWidth / 100) - 25,
+        e.pageX / (windowDimensions.width / 100) - 25,
         0.1
       );
 
@@ -127,7 +130,7 @@ const FirstSlideElements = () => {
           imageContainerRef.current.style.transform.indexOf(",") + 1,
           -3
         ),
-        e.pageY / (windowWidth / 100) - 25,
+        e.pageY / (windowDimensions.width / 100) - 25,
         0.1
       );
 
@@ -150,10 +153,16 @@ const FirstSlideElements = () => {
     [slideContainerRef.current]
   );
 
+  // const size = useWindowDimensions();
+
+  // console.log(size);
+
   return (
     <FirstSlideContainer onMouseMove={handleMouseMove} ref={slideContainerRef}>
       <ButtonOutlined
-        {...(windowWidth > 900 ? themes.reverseBlack : themes.reverseWhite)}
+        {...(windowDimensions.width > 900
+          ? themes.reverseBlack
+          : themes.reverseWhite)}
         width="clamp(2rem,65%,400px)"
         cssStyle={`
           position: absolute;
