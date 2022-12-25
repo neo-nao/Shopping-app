@@ -105,15 +105,32 @@ const TitleContainer = styled.div`
 `;
 
 const ViewDetailButton = styled.button`
-  padding: 10px;
+  transition: all 0.2s ease;
+  padding: 10px 15px;
   font-size: 20px;
   font-family: var(--primary-font);
   border-radius: 10px;
   color: #595959;
   position: absolute;
-  ${placeCenter()}
-  top: 70%;
-  opacity: 0.8;
+  left: 50%;
+  top: 75%;
+  transform: translateX(-50%);
+  background: rgba(241, 241, 241, 0.6);
+  box-shadow: 0 2px 7.5px rgba(200, 200, 200, 0.6);
+  cursor: pointer;
+  backdrop-filter: blur(2px);
+  will-change: transform, box-shadow, color;
+  text-rendering: optimizeSpeed;
+
+  &:hover {
+    transform: translateX(-50%) scale(1.1);
+    color: #313131;
+    box-shadow: 0 5px 5px rgba(200, 200, 200, 0.7);
+  }
+
+  @media (max-width: 900px) and (min-width: 600px) {
+    top: 85%;
+  } ;
 `;
 
 const options = { root: null, threshold: 0.1 };
