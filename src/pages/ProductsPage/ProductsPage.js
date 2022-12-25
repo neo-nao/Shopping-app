@@ -205,10 +205,7 @@ const ProductsPage = () => {
   const renderItems = useMemo(() => {
     if (loading)
       return (
-        <FullPageHeight
-          centerElements
-          style={{ height: "calc(100% - 6.25rem - 85.25px)" }}
-        >
+        <FullPageHeight centerElements>
           <Loading title="Fetching Products..." />
         </FullPageHeight>
       );
@@ -224,40 +221,40 @@ const ProductsPage = () => {
   return (
     <>
       <section>
-        <FilterSection>
-          {filterOptionsData.map(
-            ({ id, openerText, options, dropdownMenuStyle }) => {
-              return (
-                <Dropdown
-                  key={id}
-                  openerButtonText={openerText}
-                  dropdownItemslist={options}
-                  handleDropdownItemClick={(itemId) =>
-                    handleFilterSelect(
-                      openerText.toLowerCase(),
-                      options,
-                      itemId
-                    )
-                  }
-                  {...selectDropdownStyles}
-                  dropdownMenuStyle={
-                    dropdownMenuStyle ?? selectDropdownStyles.dropdownMenuStyle
-                  }
-                />
-              );
-            }
-          )}
-        </FilterSection>
         <Suspense
           fallback={
-            <FullPageHeight
-              centerElements
-              style={{ height: "calc(100% - 6.25rem - 85.25px)" }}
-            >
+            <FullPageHeight centerElements>
               <Loading title="Loading Products..." />
             </FullPageHeight>
           }
         >
+          {!loading && !error && products && (
+            <FilterSection>
+              {filterOptionsData.map(
+                ({ id, openerText, options, dropdownMenuStyle }) => {
+                  return (
+                    <Dropdown
+                      key={id}
+                      openerButtonText={openerText}
+                      dropdownItemslist={options}
+                      handleDropdownItemClick={(itemId) =>
+                        handleFilterSelect(
+                          openerText.toLowerCase(),
+                          options,
+                          itemId
+                        )
+                      }
+                      {...selectDropdownStyles}
+                      dropdownMenuStyle={
+                        dropdownMenuStyle ??
+                        selectDropdownStyles.dropdownMenuStyle
+                      }
+                    />
+                  );
+                }
+              )}
+            </FilterSection>
+          )}
           {renderItems}
         </Suspense>
       </section>

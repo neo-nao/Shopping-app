@@ -151,7 +151,8 @@ const SecondSlideElements = () => {
   }, options);
 
   useEffect(
-    () => observer.observe(slideContainerRef.current),
+    () =>
+      slideContainerRef.current && observer.observe(slideContainerRef.current),
     [slideContainerRef.current]
   );
 
