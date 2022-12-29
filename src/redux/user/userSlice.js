@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { showAlert } from "../../redux/alert/alertSlice";
+import { hideAlert, showAlert } from "../../redux/alert/alertSlice";
 import { fetchFunc, postFunc, putFunc } from "../../services/requestServices";
 import { clearValues } from "../authFormValues/authFormSlice";
 
@@ -54,13 +54,15 @@ const asyncUserFetch = createAsyncThunk(
       const userData = Array.isArray(data) ? data[0] ?? null : data ?? null;
 
       if (!userData) {
-        dispatch(
-          showAlert({
-            title: "Failed to Login!",
-            paragraph:
-              "The entered credentials are incorrect, please correct them and try loggin again",
-          })
-        );
+        // setTimeout(() => {
+        //   dispatch(
+        //     showAlert({
+        //       title: "Failed to Login!",
+        //       paragraph:
+        //         "The entered credentials are incorrect, please correct them and try loggin again",
+        //     })
+        //   );
+        // }, 1600);
       } else {
         dispatch(asyncFetchUserCart(userData.userToken));
         params.email && params.password && dispatch(clearValues());

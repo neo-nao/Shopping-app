@@ -9,7 +9,7 @@ import LoginForm from "./LoginForm";
 import SignupForm from "./SignupForm";
 import NotFoundPage from "../NotFoundPage/NotFoundPage";
 import { firstLetterUpperCase } from "../../utils/appUtils";
-import { showAlert } from "../../redux/alert/alertSlice";
+import { hideAlert, showAlert } from "../../redux/alert/alertSlice";
 import { FormContainer, AuthForm } from "./AuthComps.styled";
 
 const validateValues = (valueObject) => {
@@ -53,11 +53,19 @@ const AuthPage = () => {
       !localStorage.getItem("user-token") &&
         localStorage.setItem("user-token", user.userToken);
       navigate("/");
+      dispatch(hideAlert());
     }
   }, [user]);
 
   const handleSubmit = (event, action, formValues) => {
     event.preventDefault();
+
+    dispatch(
+      showAlert({
+        title: "Loading...",
+        paragraph: "Please wait until the process is done",
+      })
+    );
 
     const { email, password } = formValues;
 

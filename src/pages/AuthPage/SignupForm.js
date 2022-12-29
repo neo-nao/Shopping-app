@@ -2,9 +2,7 @@ import { startTransition, useMemo, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import Button from "../../components/common/Button/Button";
-import {
-  setFormValue,
-} from "../../redux/authFormValues/authFormSlice";
+import { setFormValue } from "../../redux/authFormValues/authFormSlice";
 import { Input, authButtonStyle } from "./AuthComps.styled";
 
 const stepInputs = [
@@ -80,6 +78,7 @@ const SignupForm = ({ handleSubmit }) => {
               value={formValues[inputName]}
               onChange={(e) => handleFormValues(e, inputName)}
               placeholder={placeholder}
+              autoComplete="true"
             />
           )
         )}

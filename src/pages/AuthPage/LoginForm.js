@@ -3,9 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import { authButtonStyle, Input } from "./AuthComps.styled";
 import Button from "../../components/common/Button/Button";
-import {
-  setFormValue,
-} from "../../redux/authFormValues/authFormSlice";
+import { setFormValue } from "../../redux/authFormValues/authFormSlice";
 
 const LoginForm = ({ handleSubmit }) => {
   const formValues = useSelector((state) => state.authForm.login);
@@ -33,6 +31,7 @@ const LoginForm = ({ handleSubmit }) => {
           value={formValues["password"]}
           onChange={(e) => handleInputChange(e, "password")}
           placeholder="Password"
+          autoComplete="true"
         />
       </fieldset>
       <Button

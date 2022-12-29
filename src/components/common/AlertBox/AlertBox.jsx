@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useRef, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
@@ -60,7 +61,11 @@ const CloseButton = styled.button`
   }
 `;
 
+const animationDelay = 1000;
+
 const AlertBox = () => {
+  const [domShowing, setDomShowing] = useState(false);
+
   const alert = useSelector((state) => state.alert);
 
   const { isShowing, title, paragraph } = alert;
@@ -80,22 +85,27 @@ const AlertBox = () => {
         transform: translate(-50%,-35%)  scale(.75);
         opacity:0;
         `,
-        duration: 1000,
+        duration: animationDelay,
       }
     );
   };
 
+  console.log(domShowing);
+
   useEffect(() => {
+    // setTimeout(() => {
+    setDomShowing(isShowing);
+    // }, animationDelay);
     alertRef.current &&
       setTimeout(() => {
         alertRef.current.classList.add("alert-opened");
-      }, 20);
+      }, 0);
     alertRef.current &&
       isShowing === false &&
       alertRef.current.target.classList.add("hide-alert");
   }, [isShowing]);
 
-  return isShowing ? (
+  return domShowing ? (
     <AlertContainer ref={alertRef}>
       <CloseButton onClick={handleCloseAlert}>
         <span className="close-icon-line"></span>
