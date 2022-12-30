@@ -19,23 +19,18 @@ const alertSlice = createSlice({
       else state.delay = 0;
 
       if (state.delay !== 0) {
-        const timeout = setTimeout(() => (state.isShowing = true), state.delay);
-
-        clearTimeout(timeout);
-      } else state.isShowing = true;
+      } else {
+        state.isShowing = true;
+      }
     },
     hideAlert: (state, { payload }) => {
       if (payload && payload.delay) state.delay = payload.delay;
       else state.delay = 0;
 
       if (state.delay !== 0) {
-        const timeout = setTimeout(
-          () => (state.isShowing = false),
-          state.delay
-        );
-
-        clearTimeout(timeout);
-      } else state.isShowing = false;
+      } else {
+        state.isShowing = false;
+      }
       state.title = "";
       state.paragraph = "";
     },

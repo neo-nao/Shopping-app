@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useMemo } from "react";
 import { useRef, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
@@ -64,8 +65,7 @@ const CloseButton = styled.button`
 const animationDelay = 1000;
 
 const AlertBox = () => {
-  const [domShowing, setDomShowing] = useState(false);
-
+  const [DOMShowing, setDOMShowing] = useState(false);
   const alert = useSelector((state) => state.alert);
 
   const { isShowing, title, paragraph } = alert;
@@ -75,61 +75,68 @@ const AlertBox = () => {
   const alertRef = useRef();
 
   const handleCloseAlert = () => {
-    actionAfterAnimation(
-      () => {
-        dispatch(hideAlert());
-      },
-      {
-        element: alertRef.current,
-        animation: `
+    dispatch(hideAlert());
+  };
+
+  useEffect(() => {
+    isShowing
+      ? setDOMShowing(isShowing)
+      : alertRef.current &&
+        actionAfterAnimation(
+          () => {
+            setDOMShowing(isShowing);
+          },
+          {
+            element: alertRef.current,
+            animation: `
         transform: translate(-50%,-35%)  scale(.75);
         opacity:0;
         `,
-        duration: animationDelay,
-      }
-    );
-  };
-
-  console.log(domShowing);
+            duration: animationDelay,
+          }
+        );
+  }, [isShowing]);
 
   useEffect(() => {
-    // setTimeout(() => {
-    setDomShowing(isShowing);
-    // }, animationDelay);
     alertRef.current &&
+      isShowing === true &&
       setTimeout(() => {
         alertRef.current.classList.add("alert-opened");
-      }, 0);
+      }, 20);
     alertRef.current &&
       isShowing === false &&
       alertRef.current.target.classList.add("hide-alert");
-  }, [isShowing]);
+  }, [DOMShowing]);
 
-  return domShowing ? (
-    <AlertContainer ref={alertRef}>
-      <CloseButton onClick={handleCloseAlert}>
-        <span className="close-icon-line"></span>
-        <span className="close-icon-line"></span>
-      </CloseButton>
-      <section style={{ marginTop: "25px" }}>
-        <h1 style={{ padding: "1.5rem" }}>{title}</h1>
-      </section>
-      <section>
-        <p
-          style={{
-            padding: "10px 1.5rem",
-            fontSize: "17.5px",
-            lineHeight: "30px",
-            whiteSpace: "break-spaces",
-          }}
-        >
-          {paragraph}
-        </p>
-      </section>
-    </AlertContainer>
-  ) : (
-    ""
-  );
+  const renderAlertBox = useMemo(() => {
+    return DOMShowing ? (
+      <AlertContainer ref={alertRef}>
+        <CloseButton onClick={handleCloseAlert}>
+          <span className="close-icon-line"></span>
+          <span className="close-icon-line"></span>
+        </CloseButton>
+        <section style={{ marginTop: "25px" }}>
+          <h1 style={{ padding: "1.5rem" }}>{title}</h1>
+        </section>
+        <section>
+          <p
+            style={{
+              padding: "10px 1.5rem",
+              fontSize: "17.5px",
+              lineHeight: "30px",
+              whiteSpace: "break-spaces",
+            }}
+          >
+            {paragraph}
+          </p>
+        </section>
+      </AlertContainer>
+    ) : (
+      ""
+    );
+  }, [DOMShowing]);
+
+  return renderAlertBox;
 };
 
 export default AlertBox;

@@ -54,15 +54,19 @@ const asyncUserFetch = createAsyncThunk(
       const userData = Array.isArray(data) ? data[0] ?? null : data ?? null;
 
       if (!userData) {
-        // setTimeout(() => {
-        //   dispatch(
-        //     showAlert({
-        //       title: "Failed to Login!",
-        //       paragraph:
-        //         "The entered credentials are incorrect, please correct them and try loggin again",
-        //     })
-        //   );
-        // }, 1600);
+        const timeout = setTimeout(() => {
+          dispatch(hideAlert());
+          setTimeout(() => {
+            clearInterval(timeout);
+            dispatch(
+              showAlert({
+                title: "Failed to Login!",
+                paragraph:
+                  "The entered credentials are incorrect, please correct them and try loggin again",
+              })
+            );
+          }, 520);
+        }, 250);
       } else {
         dispatch(asyncFetchUserCart(userData.userToken));
         params.email && params.password && dispatch(clearValues());
