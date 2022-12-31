@@ -1,12 +1,12 @@
 import { useEffect, useRef } from "react";
 import styled from "styled-components";
-import { SlideContainer } from "../../styles/Elements/SliderElements";
+import { SlideContainerStyle } from "../../styles/Elements/SliderElements";
 import bgImage from "../../assets/images/fluid-gradient-1.jpg";
 import { LazyLoadImage } from "react-lazy-load-image-component";
-import shoeImage from "./download (1).png";
+import shoeImage from "../../assets/SlideImages/./slide-shoe-img-1.png";
 import { placeCenter } from "../../styles/extendableStyles/ExtendableStyles.styled";
 
-const SecondSlideContainer = styled(SlideContainer)`
+const SlideContainer = styled(SlideContainerStyle)`
   background-image: url(${bgImage});
   background-repeat: no-repeat;
   background-size: cover;
@@ -157,7 +157,7 @@ const SecondSlideElements = () => {
   );
 
   return (
-    <SecondSlideContainer ref={slideContainerRef}>
+    <SlideContainer ref={slideContainerRef}>
       <TitleContainer id={1} ref={title1Ref}>
         <h1>Niker</h1>
       </TitleContainer>
@@ -171,7 +171,7 @@ const SecondSlideElements = () => {
         draggable="false"
       />
       <ViewDetailButton>View details</ViewDetailButton>
-    </SecondSlideContainer>
+    </SlideContainer>
   );
 };
 

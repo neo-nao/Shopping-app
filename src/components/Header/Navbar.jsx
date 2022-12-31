@@ -72,7 +72,7 @@ const Navbar = ({ navDatas, direction }) => {
         {navDatas.map(({ id, to, text }) => (
           <li key={id} onClick={handleCloseMenu}>
             <NavLink
-              to={location.search || to}
+              to={text === "Products" ? location.search || to : to}
               className={(navProps) => (navProps.isActive ? "link-active" : "")}
               end
             >

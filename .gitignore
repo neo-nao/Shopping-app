@@ -5,6 +5,7 @@
 /.pnp
 .pnp.js
 /data
+/expired
 
 # testing
 /coverage

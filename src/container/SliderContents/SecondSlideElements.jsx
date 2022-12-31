@@ -1,18 +1,16 @@
 import { useEffect, useRef } from "react";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import styled from "styled-components";
-import shoeImage from "./download.png";
+import shoeImage from "../../assets/SlideImages/slide-shoe-img-2.png";
 import { placeCenter } from "../../styles/extendableStyles/ExtendableStyles.styled";
 import ButtonOutlined from "../../components/ButtonOutlined/ButtonOutlined";
 import { themes } from "../../components/ButtonOutlined/ButtonOutlined";
-import { SlideContainer } from "../../styles/Elements/SliderElements";
-import useWindowDimensions, {
-  getWindowDimensions,
-} from "../../hooks/useWindowDimensions";
+import { SlideContainerStyle } from "../../styles/Elements/SliderElements";
+import { getWindowDimensions } from "../../hooks/useWindowDimensions";
 
 const windowDimensions = getWindowDimensions();
 
-const FirstSlideContainer = styled(SlideContainer)`
+const FirstSlideContainer = styled(SlideContainerStyle)`
   background: linear-gradient(
     to bottom right,
     var(--black) 50%,
