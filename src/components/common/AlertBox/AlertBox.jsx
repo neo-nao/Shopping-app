@@ -68,7 +68,7 @@ const AlertBox = () => {
   const [DOMShowing, setDOMShowing] = useState(false);
   const alert = useSelector((state) => state.alert);
 
-  const { isShowing, title, paragraph } = alert;
+  const { isShowing, title, paragraph, removable } = alert;
 
   const dispatch = useDispatch();
 
@@ -111,10 +111,12 @@ const AlertBox = () => {
   const renderAlertBox = useMemo(() => {
     return DOMShowing ? (
       <AlertContainer ref={alertRef}>
-        <CloseButton onClick={handleCloseAlert}>
-          <span className="close-icon-line"></span>
-          <span className="close-icon-line"></span>
-        </CloseButton>
+        {removable && (
+          <CloseButton onClick={handleCloseAlert}>
+            <span className="close-icon-line"></span>
+            <span className="close-icon-line"></span>
+          </CloseButton>
+        )}
         <section style={{ marginTop: "25px" }}>
           <h1 style={{ padding: "1.5rem" }}>{title}</h1>
         </section>
