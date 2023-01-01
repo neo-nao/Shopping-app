@@ -152,10 +152,6 @@ const FirstSlideElements = () => {
     [slideContainerRef.current]
   );
 
-  // const size = useWindowDimensions();
-
-  // console.log(size);
-
   return (
     <FirstSlideContainer onMouseMove={handleMouseMove} ref={slideContainerRef}>
       <ButtonOutlined

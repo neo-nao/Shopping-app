@@ -4,6 +4,7 @@ const initialState = {
   isShowing: false,
   title: "",
   paragraph: "",
+  removable: true,
   delay: 0,
 };
 
@@ -11,9 +12,13 @@ const alertSlice = createSlice({
   name: "alert",
   initialState,
   reducers: {
-    showAlert: (state, { payload: { title, paragraph, delay } }) => {
+    showAlert: (
+      state,
+      { payload: { title, paragraph, removable = true, delay } }
+    ) => {
       state.title = title;
       state.paragraph = paragraph;
+      state.removable = removable;
 
       if (delay && delay !== 0) state.delay = delay;
       else state.delay = 0;

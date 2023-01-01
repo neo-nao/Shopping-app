@@ -64,6 +64,7 @@ const AuthPage = () => {
       showAlert({
         title: "Loading...",
         paragraph: "Please wait until the process is done",
+        removable: false,
       })
     );
 

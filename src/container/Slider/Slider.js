@@ -58,18 +58,18 @@ const Slider = ({ items }) => {
         "translateX(calc(-100% * " + sliderState.index + "))";
   }, [sliderState.index]);
 
-  // useEffect(() => {
-  //   const autoSLideCountTime = setInterval(() => {
-  //     slideCountTime++;
+  useEffect(() => {
+    const autoSLideCountTime = setInterval(() => {
+      slideCountTime++;
 
-  //     slideCountTime >= 25 && slide("right");
-  //   }, 200);
+      slideCountTime >= 25 && slide("right");
+    }, 200);
 
-  //   return () => {
-  //     clearInterval(autoSLideCountTime);
-  //     slideCountTime = 0;
-  //   };
-  // }, []);
+    return () => {
+      clearInterval(autoSLideCountTime);
+      slideCountTime = 0;
+    };
+  }, []);
 
   return (
     <SliderContainer>

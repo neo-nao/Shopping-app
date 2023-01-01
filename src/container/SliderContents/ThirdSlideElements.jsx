@@ -8,6 +8,7 @@ const SlideContainer = styled(SlideContainerStyle)`
   --secondary-pink: #f500f5;
   background: var(--white);
   position: relative;
+  user-select: none;
 
   & .shoe-image {
     width: clamp(275px, 80%, 550px);
@@ -186,7 +187,12 @@ const ThirdSlideElements = () => {
             <br /> everyone
           </h1>
         </TitleContainer>
-        <LazyLoadImage src={shoeImage} alt="Shoe" className="shoe-image" />
+        <LazyLoadImage
+          src={shoeImage}
+          alt="Shoe"
+          className="shoe-image"
+          draggable="false"
+        />
         <StandRect>
           <h2>Product presentation</h2>
         </StandRect>
