@@ -2,7 +2,6 @@ import { useState, useEffect, memo, useMemo, lazy, Suspense } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import {
-  getAsyncProducts,
   filterProducts,
   clearFilter,
   resetFilter,
@@ -19,9 +18,11 @@ import FullPageHeight from "../../components/common/FullPageHeight/FullPageHeigh
 
 const Product = lazy(() => import("../../components/common/Product/Product"));
 
-const ProductsPage = () => {
-  const { loading, error, products } = useSelector((state) => state.products);
-
+const ProductsPage = ({
+  productsFetchState: { loading, error, products },
+  productsFetchFunc,
+  filterURL: { dynamicURL, handleDynamicURL },
+}) => {
   const initialFilterDatasState = useMemo(
     () => [
       {
@@ -88,8 +89,6 @@ const ProductsPage = () => {
     initialFilterDatasState
   );
 
-  const [dynamicURL, setDynamicURL] = useState(null);
-
   const filteredProducts = useSelector(
     (state) => state.products.filteredOptions
   );
@@ -97,10 +96,6 @@ const ProductsPage = () => {
   const dispatch = useDispatch();
 
   const navigate = useNavigate();
-
-  const fetchProducts = () => {
-    dispatch(getAsyncProducts(dynamicURL));
-  };
 
   useMemo(() => {
     if (currentOption) {
@@ -150,7 +145,7 @@ const ProductsPage = () => {
         );
       }
 
-      setDynamicURL(fullURL);
+      handleDynamicURL(fullURL);
 
       setFilterOptionsData(filterDataCopy);
     }
@@ -158,14 +153,14 @@ const ProductsPage = () => {
 
   useEffect(() => {
     navigate(dynamicURL);
-    dynamicURL !== null && fetchProducts();
+    dynamicURL !== null && dynamicURL !== undefined && productsFetchFunc();
   }, [dynamicURL]);
 
   useEffect(() => {
     if (products) {
-      !products.length && fetchProducts();
+      !products.length && productsFetchFunc();
     } else {
-      fetchProducts();
+      productsFetchFunc();
     }
 
     return () => {

@@ -8,14 +8,22 @@ import AuthPage from "./pages/AuthPage/AuthPage";
 import NotFoundPage from "./pages/NotFoundPage/NotFoundPage";
 
 const routes = [
-  { id: 1, path: "/", element: <HomePage /> },
-  { id: 2, path: "/products", element: <ProductsPage /> },
-  { id: 3, path: "/special-offers", element: <SpecialOffersPage /> },
-  { id: 4, path: "/cart", element: <CartPage /> },
-  { id: 5, path: "/manage-account", element: <ManageAccountPage /> },
-  { id: 6, path: "/about-us", element: <AboutUsPage /> },
-  { id: 7, path: "/auth/*", element: <AuthPage /> },
-  { id: 8, path: "*", element: <NotFoundPage /> },
+  { id: 1, path: "/", element: (props) => <HomePage {...props} /> },
+  { id: 2, path: "/products", element: (props) => <ProductsPage {...props} /> },
+  {
+    id: 3,
+    path: "/special-offers",
+    element: (props) => <SpecialOffersPage {...props} />,
+  },
+  { id: 4, path: "/cart", element: (props) => <CartPage {...props} /> },
+  {
+    id: 5,
+    path: "/manage-account",
+    element: (props) => <ManageAccountPage {...props} />,
+  },
+  { id: 6, path: "/about-us", element: (props) => <AboutUsPage {...props} /> },
+  { id: 7, path: "/auth/*", element: (props) => <AuthPage {...props} /> },
+  { id: 8, path: "*", element: (props) => <NotFoundPage {...props} /> },
 ];
 
 export default routes;

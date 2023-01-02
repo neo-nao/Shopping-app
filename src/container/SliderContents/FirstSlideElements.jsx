@@ -145,8 +145,10 @@ const SecondSlideElements = () => {
       title1Ref.current.classList.add("text-active");
       title2Ref.current.classList.add("text-active");
     } else {
-      title1Ref.current.classList.remove("text-active");
-      title2Ref.current.classList.remove("text-active");
+      if (slideContainerRef.current) {
+        title1Ref.current.classList.remove("text-active");
+        title2Ref.current.classList.remove("text-active");
+      }
     }
   }, options);
 

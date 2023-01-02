@@ -142,7 +142,8 @@ const FirstSlideElements = () => {
     if (entry.isIntersecting) {
       titleRef.current.classList.add("slide-active");
     } else {
-      titleRef.current.classList.remove("slide-active");
+      slideContainerRef.current &&
+        titleRef.current.classList.remove("slide-active");
     }
   }, options);
 
