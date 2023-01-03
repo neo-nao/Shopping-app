@@ -20,8 +20,7 @@ const Product = lazy(() => import("../../components/common/Product/Product"));
 
 const ProductsPage = ({
   productsFetchState: { loading, error, products },
-  productsFetchFunc,
-  filterURL: { dynamicURL, handleDynamicURL },
+  getAsyncProducts,
 }) => {
   const initialFilterDatasState = useMemo(
     () => [
@@ -82,6 +81,10 @@ const ProductsPage = ({
     ],
     []
   );
+
+  const [dynamicURL, setDynamicURL] = useState(null);
+
+  const handleDynamicURL = (value) => setDynamicURL(value);
 
   const [currentOption, setCurrentOption] = useState(null);
 
@@ -147,20 +150,22 @@ const ProductsPage = ({
 
       handleDynamicURL(fullURL);
 
+      dispatch(getAsyncProducts);
+
       setFilterOptionsData(filterDataCopy);
     }
   }, [filteredProducts]);
 
   useEffect(() => {
     navigate(dynamicURL);
-    dynamicURL !== null && dynamicURL !== undefined && productsFetchFunc();
+    dynamicURL !== null && dispatch(getAsyncProducts);
   }, [dynamicURL]);
 
   useEffect(() => {
     if (products) {
-      !products.length && productsFetchFunc();
+      !products.length && dispatch(getAsyncProducts);
     } else {
-      productsFetchFunc();
+      dispatch(getAsyncProducts);
     }
 
     return () => {

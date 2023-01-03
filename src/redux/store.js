@@ -6,12 +6,14 @@ import elementSlice from "./elements/elementSlice";
 import productsSlice from "./prodcuts/productsSlice";
 import alertSlice from "./alert/alertSlice";
 import authFormSlice from "./authFormValues/authFormSlice";
+import specialOffersSlice from "./specialOffers/specialOffersSlice";
 
 const sagaMiddleware = createSagaMiddleware();
 
 const store = configureStore({
   reducer: {
     products: productsSlice,
+    specialOffers: specialOffersSlice,
     user: userSlice,
     elements: elementSlice,
     alert: alertSlice,
