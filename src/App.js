@@ -18,27 +18,29 @@ function App() {
     !user && UTK && dispatch(asyncUserFetch({ UTK }));
   }, []);
 
-  const renderRoutes = () => {
-    return routes.map(({ id, path, element }) => {
-      let props = {};
-
-      switch (path) {
-        case "/products":
-          props = {
-            productsFetchState: { loading, error, products },
-            getAsyncProducts,
-          };
-          break;
-        default:
-      }
-
-      return <Route key={id} path={path} element={element(props)} />;
-    });
-  };
+  // const renderRoutes = () => {
+  //   return;
+  // };
 
   return (
     <Layout>
-      <Routes>{renderRoutes()}</Routes>
+      <Routes>
+        {routes.map(({ id, path, element }) => {
+          let props = {};
+
+          switch (path) {
+            case "/products":
+              props = {
+                productsFetchState: { loading, error, products },
+                getAsyncProducts,
+              };
+              break;
+            default:
+          }
+
+          return <Route key={id} path={path} element={element(props)} />;
+        })}
+      </Routes>
     </Layout>
   );
 }

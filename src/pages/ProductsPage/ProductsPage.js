@@ -84,8 +84,6 @@ const ProductsPage = ({
 
   const [dynamicURL, setDynamicURL] = useState(null);
 
-  const handleDynamicURL = (value) => setDynamicURL(value);
-
   const [currentOption, setCurrentOption] = useState(null);
 
   const [filterOptionsData, setFilterOptionsData] = useState(
@@ -148,9 +146,9 @@ const ProductsPage = ({
         );
       }
 
-      handleDynamicURL(fullURL);
+      setDynamicURL(fullURL);
 
-      dispatch(getAsyncProducts);
+      console.log(fullURL);
 
       setFilterOptionsData(filterDataCopy);
     }
@@ -158,14 +156,14 @@ const ProductsPage = ({
 
   useEffect(() => {
     navigate(dynamicURL);
-    dynamicURL !== null && dispatch(getAsyncProducts);
+    dynamicURL !== null && dispatch(getAsyncProducts(dynamicURL));
   }, [dynamicURL]);
 
   useEffect(() => {
     if (products) {
-      !products.length && dispatch(getAsyncProducts);
+      !products.length && dispatch(getAsyncProducts(dynamicURL));
     } else {
-      dispatch(getAsyncProducts);
+      dispatch(getAsyncProducts(dynamicURL));
     }
 
     return () => {
