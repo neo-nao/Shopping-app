@@ -4,12 +4,9 @@ import { Routes, Route } from "react-router-dom";
 import { asyncUserFetch } from "./redux/user/userSlice";
 import routes from "./routes";
 import Layout from "./layout/Layout";
-import { getAsyncProducts } from "./redux/prodcuts/productsSlice";
 
 function App() {
   const user = useSelector((state) => state.user.user);
-
-  const { loading, error, products } = useSelector((state) => state.products);
 
   const dispatch = useDispatch();
 
@@ -18,28 +15,12 @@ function App() {
     !user && UTK && dispatch(asyncUserFetch({ UTK }));
   }, []);
 
-  // const renderRoutes = () => {
-  //   return;
-  // };
-
   return (
     <Layout>
       <Routes>
-        {routes.map(({ id, path, element }) => {
-          let props = {};
-
-          switch (path) {
-            case "/products":
-              props = {
-                productsFetchState: { loading, error, products },
-                getAsyncProducts,
-              };
-              break;
-            default:
-          }
-
-          return <Route key={id} path={path} element={element(props)} />;
-        })}
+        {routes.map(({ id, ...rest }) => (
+          <Route key={id} {...rest} />
+        ))}
       </Routes>
     </Layout>
   );

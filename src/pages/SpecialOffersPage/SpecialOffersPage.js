@@ -1,5 +1,5 @@
 import { useSelector } from "react-redux";
-import ProductsPage from "../ProductsPage/ProductsPage";
+import ProductsContainer from "../../container/ProductsContainer/ProductsContainer";
 import { getAsyncSpecialOffers } from "../../redux/specialOffers/specialOffersSlice";
 
 const SpecialOffersPage = () => {
@@ -8,7 +8,7 @@ const SpecialOffersPage = () => {
   );
 
   return (
-    <ProductsPage
+    <ProductsContainer
       productsFetchState={{ loading, error, products }}
       getAsyncProducts={getAsyncSpecialOffers}
     />
