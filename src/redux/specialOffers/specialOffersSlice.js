@@ -2,14 +2,16 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { showAlert } from "../alert/alertSlice";
 import { fetchFunc } from "../../services/requestServices";
 
-
-const specialOffersURL = "/special-offers";
+const specialOffersURL = "/products?isDiscount=true";
 
 const getAsyncSpecialOffers = createAsyncThunk(
   "specialOffers/fetch",
   async (params, { rejectWithValue, dispatch }) => {
     try {
-      const url = params ? specialOffersURL + params : specialOffersURL;
+      console.log(params);
+      const url = params
+        ? specialOffersURL + params.replace("?", "&")
+        : specialOffersURL;
 
       const response = await fetchFunc(url);
 

@@ -9,6 +9,7 @@ import { flexbox } from "../../../styles/extendableStyles/ExtendableStyles.style
 import Button from "../Button/Button";
 import { IoAddSharp } from "react-icons/io5";
 import { LazyLoadImage } from "react-lazy-load-image-component";
+import Price from "../../Price/Price";
 
 const Item = styled.div`
   height: 22rem;
@@ -64,7 +65,15 @@ const DescriptionSection = styled.section`
   }
 `;
 
-const Product = ({ id, type, price, priceType, shoeImage }) => {
+const Product = ({
+  id,
+  type,
+  price,
+  isDiscount,
+  offPrice,
+  priceType,
+  shoeImage,
+}) => {
   const userAccount = useSelector((state) => state.user.user);
 
   const dispatch = useDispatch();
@@ -101,10 +110,7 @@ const Product = ({ id, type, price, priceType, shoeImage }) => {
       <DescriptionSection className="description-section">
         <h1>{type}</h1>
         <div className="item-integration-container">
-          <h1>
-            <span style={{ marginRight: "2.5px" }}>{price}</span>
-            {priceType === "USD" && "$"}
-          </h1>
+          <Price isDiscount={isDiscount} offPrice={offPrice} price={price} />
           <Button onClick={handleAddToCart} active={isItemAdded}>
             <span style={{ padding: "0 5px" }}>
               {isItemAdded ? "Remove" : "Add"}
