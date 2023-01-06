@@ -2,10 +2,9 @@ import Slider from "../../container/Slider/Slider";
 import FirstSlideElements from "../../container/SliderContents/FirstSlideElements";
 import SecondSlideElements from "../../container/SliderContents/SecondSlideElements";
 import ThirdSlideElements from "../../container/SliderContents/ThirdSlideElements";
-import useWindowDimensions from "../../hooks/useWindowDimensions";
+import OfferPreview from "./OfferPreview";
 
 const HomePage = () => {
-  useWindowDimensions();
   return (
     <div>
       <Slider
@@ -21,6 +20,7 @@ const HomePage = () => {
           },
         ]}
       />
+      <OfferPreview />
     </div>
   );
 };
