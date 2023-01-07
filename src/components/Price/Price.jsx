@@ -10,7 +10,7 @@ const PriceContainer = styled.div`
   }
 `;
 
-const PriceTitle = ({ priceType = "USD", onDiscount, children }) => {
+const PriceTitle = ({ priceType, onDiscount, children }) => {
   return (
     <h1
       style={{
@@ -24,13 +24,13 @@ const PriceTitle = ({ priceType = "USD", onDiscount, children }) => {
   );
 };
 
-const Price = ({ isDiscount, offPrice, price }) => {
+const Price = ({ isDiscount, offPrice, price, priceType = "USD" }) => {
   return (
     <PriceContainer>
-      <PriceTitle priceType="USD" onDiscount={isDiscount}>
+      <PriceTitle priceType={priceType} onDiscount={isDiscount}>
         {price}
       </PriceTitle>
-      {isDiscount && <PriceTitle priceType="USD">{offPrice}</PriceTitle>}
+      {isDiscount && <PriceTitle priceType={priceType}>{offPrice}</PriceTitle>}
     </PriceContainer>
   );
 };

@@ -8,7 +8,6 @@ const getAsyncSpecialOffers = createAsyncThunk(
   "specialOffers/fetch",
   async (params, { rejectWithValue, dispatch }) => {
     try {
-      console.log(params);
       const url = params
         ? specialOffersURL + params.replace("?", "&")
         : specialOffersURL;
