@@ -3,10 +3,10 @@ import { placeCenter } from "../../styles/extendableStyles/ExtendableStyles.styl
 
 const PatternContainer = styled.div`
   position: absolute;
-  width: fit-content;
+  min-width: 126px;
   user-select: none;
 
-  ${(props) => props.position || ""}
+  ${(props) => props.cssStyle || ""}
 `;
 
 const Plus = styled.div`
@@ -56,7 +56,7 @@ const renderPattern = () => {
 
 const PlusPattern = (props) => {
   return (
-    <PatternContainer position={props.position}>
+    <PatternContainer cssStyle={props.cssStyle}>
       {renderPattern()}
     </PatternContainer>
   );

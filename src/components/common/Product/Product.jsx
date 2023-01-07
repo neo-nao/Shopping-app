@@ -110,7 +110,12 @@ const Product = ({
       <DescriptionSection className="description-section">
         <h1>{type}</h1>
         <div className="item-integration-container">
-          <Price isDiscount={isDiscount} offPrice={offPrice} price={price} />
+          <Price
+            isDiscount={isDiscount}
+            offPrice={offPrice}
+            price={price}
+            priceType={priceType}
+          />
           <Button onClick={handleAddToCart} active={isItemAdded}>
             <span style={{ padding: "0 5px" }}>
               {isItemAdded ? "Remove" : "Add"}
