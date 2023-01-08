@@ -4,6 +4,7 @@ import { Routes, Route } from "react-router-dom";
 import { asyncUserFetch } from "./redux/user/userSlice";
 import routes from "./routes";
 import Layout from "./layout/Layout";
+import { showAlert } from "./redux/alert/alertSlice";
 
 function App() {
   const user = useSelector((state) => state.user.user);
@@ -12,6 +13,7 @@ function App() {
 
   useEffect(() => {
     const UTK = localStorage.getItem("user-token");
+    !user && UTK && dispatch(showAlert({ title: "test", paragraph: UTK }));
     !user && UTK && dispatch(asyncUserFetch({ UTK }));
   }, []);
 
