@@ -1,3 +1,4 @@
+import { Fragment } from "react";
 import styled from "styled-components";
 import { placeCenter } from "../../styles/extendableStyles/ExtendableStyles.styled";
 
@@ -43,10 +44,10 @@ const renderPattern = () => {
   while (i < maxLength) {
     const breakPoint = maxLength / 7;
     plusComps[i] = (
-      <>
-        <Plus key={i} />
+      <Fragment key={i}>
+        <Plus />
         {(i + 1) % breakPoint === 0 && <br />}
-      </>
+      </Fragment>
     );
     i++;
   }

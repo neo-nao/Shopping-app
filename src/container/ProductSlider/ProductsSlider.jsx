@@ -130,7 +130,10 @@ const ProductSlider = ({ products }) => {
     const maxIndex = products.length - 1;
 
     if (index < 0) return maxIndex;
-    if (index > maxIndex) return 0;
+    if (index > maxIndex) {
+      const upcomingIndex = index - maxIndex - 1;
+      return upcomingIndex;
+    }
 
     return index;
   };
@@ -173,7 +176,7 @@ const ProductSlider = ({ products }) => {
             upcomingSlide.current.classList.remove("slide-left");
 
             isSliding = false;
-          }, 600);
+          }, 675);
         }
         break;
       case "right":
@@ -193,7 +196,7 @@ const ProductSlider = ({ products }) => {
             upcomingSlide.current.classList.remove("slide-right");
 
             isSliding = false;
-          }, 600);
+          }, 675);
         }
         break;
       default:
