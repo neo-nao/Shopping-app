@@ -3,6 +3,7 @@ import styled from "styled-components";
 import Product from "../../components/common/Product/Product";
 import { flexbox } from "../../styles/extendableStyles/ExtendableStyles.styled";
 import { BiLeftArrow, BiRightArrow } from "react-icons/bi";
+import { useRef } from "react";
 
 const SliderContainer = styled.div`
   width: clamp(250px, 100%, 500px);
@@ -19,7 +20,6 @@ const SliderContainer = styled.div`
 const SliderInnerContainer = styled.div`
   width: clamp(175px, 65%, 350px);
   height: 400px;
-  background: red;
   position: relative;
 
   & .product-slide {
@@ -33,19 +33,67 @@ const SliderInnerContainer = styled.div`
   }
 
   & .current-slide {
-    z-index: 1;
+    z-index: 2;
+
+    &.slide-left {
+      transition: transform 0.6s ease;
+      transform: translateX(35%) scale(0.75);
+
+      z-index: 2;
+    }
+    &.slide-right {
+      transition: transform 0.6s ease;
+      transform: translateX(-35%) scale(0.75);
+      z-index: 2;
+    }
   }
 
   & .previous-slide {
     top: 50%;
     left: -35%;
     transform: translateY(-50%) scale(0.75);
+
+    &.slide-left {
+      transition: transform 0.6s ease;
+      transform: translate(35%, -50%) scale(1);
+      z-index: 3;
+    }
+    &.slide-right {
+      transition: transform 0.6s ease;
+      transform: translate(50%, -50%) scale(0.75);
+    }
   }
 
   & .next-slide {
     top: 50%;
     right: -35%;
     transform: translateY(-50%) scale(0.75);
+
+    &.slide-left {
+      transition: transform 0.6s ease;
+      transform: translate(-50%, -50%) scale(0.75);
+    }
+    &.slide-right {
+      transition: transform 0.6s ease;
+      transform: translate(-35%, -50%) scale(1);
+      z-index: 3;
+    }
+  }
+
+  & .upcoming-slide {
+    top: 50%;
+    right: 0;
+    z-index: 1;
+    transform: translateY(-50%) scale(0.75);
+
+    &.slide-left {
+      transition: transform 0.6s ease;
+      transform: translate(-35%, -50%) scale(0.75);
+    }
+    &.slide-right {
+      transition: transform 0.6s ease;
+      transform: translate(35%, -50%) scale(0.75);
+    }
   }
 `;
 
@@ -68,8 +116,15 @@ const SlideButton = styled.button`
   }
 `;
 
+let isSliding = false;
+
 const ProductSlider = ({ products }) => {
   const [index, setIndex] = useState(0);
+
+  const prevSlide = useRef();
+  const currentSlide = useRef();
+  const nextSlide = useRef();
+  const upcomingSlide = useRef();
 
   const sliderIndexLogic = (index) => {
     const maxIndex = products.length - 1;
@@ -91,6 +146,9 @@ const ProductSlider = ({ products }) => {
       case "next": {
         return sliderIndexLogic(index + 1);
       }
+      case "upcoming": {
+        return sliderIndexLogic(index + 2);
+      }
       default:
         console.error("slide identifier is not valid!");
     }
@@ -99,10 +157,44 @@ const ProductSlider = ({ products }) => {
   const handleSlide = (dir) => {
     switch (dir) {
       case "left":
-        setIndex(sliderIndexLogic(index - 1));
+        if (!isSliding) {
+          isSliding = true;
+
+          prevSlide.current.classList.add("slide-left");
+          currentSlide.current.classList.add("slide-left");
+          nextSlide.current.classList.add("slide-left");
+          upcomingSlide.current.classList.add("slide-left");
+
+          setTimeout(() => {
+            setIndex(sliderIndexLogic(index - 1));
+            prevSlide.current.classList.remove("slide-left");
+            currentSlide.current.classList.remove("slide-left");
+            nextSlide.current.classList.remove("slide-left");
+            upcomingSlide.current.classList.remove("slide-left");
+
+            isSliding = false;
+          }, 600);
+        }
         break;
       case "right":
-        setIndex(sliderIndexLogic(index + 1));
+        if (!isSliding) {
+          isSliding = true;
+
+          prevSlide.current.classList.add("slide-right");
+          currentSlide.current.classList.add("slide-right");
+          nextSlide.current.classList.add("slide-right");
+          upcomingSlide.current.classList.add("slide-right");
+
+          setTimeout(() => {
+            setIndex(sliderIndexLogic(index + 1));
+            prevSlide.current.classList.remove("slide-right");
+            currentSlide.current.classList.remove("slide-right");
+            nextSlide.current.classList.remove("slide-right");
+            upcomingSlide.current.classList.remove("slide-right");
+
+            isSliding = false;
+          }, 600);
+        }
         break;
       default:
         console.error("slide direction is not valid");
@@ -112,14 +204,17 @@ const ProductSlider = ({ products }) => {
   return (
     <SliderContainer>
       <SliderInnerContainer>
-        <div className="product-slide previous-slide">
+        <div className="product-slide previous-slide" ref={prevSlide}>
           <Product {...products[getSliderIndex("previous")]} />
         </div>
-        <div className="product-slide current-slide">
+        <div className="product-slide current-slide" ref={currentSlide}>
           <Product {...products[getSliderIndex("current")]} />
         </div>
-        <div className="product-slide next-slide">
+        <div className="product-slide next-slide" ref={nextSlide}>
           <Product {...products[getSliderIndex("next")]} />
+        </div>
+        <div className="product-slide upcoming-slide" ref={upcomingSlide}>
+          <Product {...products[getSliderIndex("upcoming")]} />
         </div>
       </SliderInnerContainer>
       <div className="handle-slide-btns-container">
