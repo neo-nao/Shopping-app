@@ -15,6 +15,8 @@ import {
 import { MdOutlineDone } from "react-icons/md";
 import Loading from "../../components/common/Loading/Loading";
 import FullPageHeight from "../../components/common/FullPageHeight/FullPageHeight";
+import MessageBox from "../../components/common/MessageBox/MessageBox";
+import { CgUnavailable } from "react-icons/cg";
 
 const Product = lazy(() => import("../../components/common/Product/Product"));
 
@@ -205,12 +207,25 @@ const ProductsContainer = ({
           <Loading title="Fetching Products..." />
         </FullPageHeight>
       );
-    if (error) return <h1>{error}</h1>;
+    if (error)
+      return (
+        <FullPageHeight centerElements>
+          <h1>{error}</h1>
+        </FullPageHeight>
+      );
 
     if (products) {
       if (products.length)
         return <ItemsContainer>{renderProducts()}</ItemsContainer>;
-      else return <h1>Empty</h1>;
+      else
+        return (
+          <FullPageHeight centerElements>
+            <MessageBox
+              icon={<CgUnavailable />}
+              title="Nothing found here"
+            ></MessageBox>
+          </FullPageHeight>
+        );
     }
   }, [loading]);
 

@@ -30,6 +30,17 @@ const SliderInnerContainer = styled.div`
     & > * {
       height: 100%;
     }
+
+    @media (max-width: 400px) {
+      & .item-integration-container {
+        align-items: flex-end;
+      }
+
+      & .price-container {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
   }
 
   & .current-slide {
