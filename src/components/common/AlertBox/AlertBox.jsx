@@ -127,6 +127,7 @@ const AlertBox = () => {
               fontSize: "17.5px",
               lineHeight: "30px",
               whiteSpace: "break-spaces",
+              wordBreak: "break-all",
             }}
           >
             {paragraph}

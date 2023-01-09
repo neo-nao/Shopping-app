@@ -26,7 +26,7 @@ const PriceTitle = ({ priceType, onDiscount, children }) => {
 
 const Price = ({ isDiscount, offPrice, price, priceType = "USD" }) => {
   return (
-    <PriceContainer>
+    <PriceContainer className="price-container">
       <PriceTitle priceType={priceType} onDiscount={isDiscount}>
         {price}
       </PriceTitle>
