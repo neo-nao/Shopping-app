@@ -108,7 +108,8 @@ const ShortItemDetail = ({ product, quantity }) => {
     <ShortItemOverview onClick={handleItemDetailClick}>
       <ShoeTitle>{product.shoe || product.type}</ShoeTitle>
       <ShoeTitle>
-        {product.price + "$"} <IoCloseSharp className="times-icon" /> {quantity}
+        {product.offPrice ?? product.price} $
+        <IoCloseSharp className="times-icon" /> {quantity}
       </ShoeTitle>
     </ShortItemOverview>
   );

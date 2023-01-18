@@ -68,6 +68,7 @@ const DescriptionSection = styled.section`
 const Product = ({
   id,
   type,
+  shoe,
   price,
   isDiscount,
   offPrice,
@@ -108,7 +109,7 @@ const Product = ({
         <LazyLoadImage src={shoeImage} alt="ITEM" draggable="false" />
       </ImageSection>
       <DescriptionSection className="description-section">
-        <h1>{type}</h1>
+        <h1>{shoe ?? type}</h1>
         <div className="item-integration-container">
           <Price
             isDiscount={isDiscount}

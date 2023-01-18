@@ -13,6 +13,26 @@ import ProductQuantity from "../../components/ProductQuantity/ProductQuantity";
 import { FaTrashAlt } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
 import { removeUserItemPending } from "../../redux/user/userSlice";
+import styled from "styled-components";
+
+const PriceContainer = styled.div`
+  width: calc(100% - 200px);
+  position: relative;
+
+  & .off-price {
+    position: absolute;
+    top: -150%;
+  }
+
+  & .original-price {
+    color: var(--gray);
+    text-decoration: line-through;
+  }
+
+  @media (max-width: 645px) {
+    width: 100%;
+  }
+`;
 
 const UserProduct = ({ product }) => {
   const userToken = useSelector((state) => state.user.user.userToken);
@@ -42,7 +62,16 @@ const UserProduct = ({ product }) => {
           </li>
         </ul>
         <ItemIntegrationContainer>
-          <h2>{product.price}$</h2>
+          <PriceContainer>
+            {product.offPrice ? (
+              <>
+                <h2 className="off-price">{product.offPrice} $</h2>
+                <h3 className="original-price">{product.price} $</h3>
+              </>
+            ) : (
+              <h2>{product.price} $</h2>
+            )}
+          </PriceContainer>
           <ItemCounterContainer>
             <DeleteItemButton onClick={handleRemoveItem}>
               <FaTrashAlt />

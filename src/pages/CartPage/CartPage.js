@@ -21,8 +21,8 @@ import MessageBox from "../../components/common/MessageBox/MessageBox";
 const calcTotalPrice = (productDetail, ownedItems) => {
   if (productDetail.length === ownedItems.length) {
     const totalPrice = productDetail.reduce(
-      (prevVal, currVal, index) =>
-        prevVal + +currVal.price * ownedItems[index].quantity,
+      (prevVal, { price, offPrice }, index) =>
+        prevVal + (offPrice ? +offPrice : +price) * ownedItems[index].quantity,
       0
     );
 
