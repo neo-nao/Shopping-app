@@ -59,18 +59,19 @@ const specialOffersSlice = createSlice({
       state.products = initialState.products;
     },
   },
-  extraReducers: {
-    [getAsyncSpecialOffers.pending]: (state) => {
-      state.loading = true;
-    },
-    [getAsyncSpecialOffers.fulfilled]: (state, action) => {
-      state.loading = false;
-      state.products = action.payload;
-    },
-    [getAsyncSpecialOffers.rejected]: (state, action) => {
-      state.loading = false;
-      state.products = action.payload;
-    },
+  extraReducers: (builder) => {
+    builder
+      .addCase(getAsyncSpecialOffers.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(getAsyncSpecialOffers.fulfilled, (state, action) => {
+        state.loading = false;
+        state.products = action.payload;
+      })
+      .addCase(getAsyncSpecialOffers.rejected, (state, action) => {
+        state.loading = false;
+        state.products = action.payload;
+      });
   },
 });
 

@@ -58,18 +58,19 @@ const productsSlice = createSlice({
       state.products = initialState.products;
     },
   },
-  extraReducers: {
-    [getAsyncProducts.pending]: (state) => {
-      state.loading = true;
-    },
-    [getAsyncProducts.fulfilled]: (state, action) => {
-      state.loading = false;
-      state.products = action.payload;
-    },
-    [getAsyncProducts.rejected]: (state, action) => {
-      state.loading = false;
-      state.error = action.error.message;
-    },
+  extraReducers: (builder) => {
+    builder
+      .addCase(getAsyncProducts.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(getAsyncProducts.fulfilled, (state, action) => {
+        state.loading = false;
+        state.products = action.payload;
+      })
+      .addCase(getAsyncProducts.rejected, (state, action) => {
+        state.loading = false;
+        state.products = action.payload;
+      });
   },
 });
 

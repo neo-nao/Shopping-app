@@ -143,51 +143,51 @@ const userSlice = createSlice({
       state.requestStatus.error = action.error.message;
     },
   },
-  extraReducers: {
-    [asyncUserFetch.pending]: (state) => {
-      state.requestStatus.loading = true;
-    },
-    [asyncUserFetch.fulfilled]: (state, action) => {
-      state.requestStatus.loading = false;
-      state.user = action.payload;
-    },
-    [asyncUserFetch.rejected]: (state, action) => {
-      state.requestStatus.loading = false;
-      state.requestStatus.error = action.error;
-    },
-    [asyncPostUserItem.fulfilled]: (
-      state,
-      { payload: { id, productID, quantity } }
-    ) => {
-      state.user.cart.items.push({
-        id,
-        productID,
-        quantity,
-      });
-    },
-    [asyncFetchUserCart.pending]: (state) => {
-      if (state.user) state.user.cart.requestStatus.loading = true;
-    },
-    [asyncFetchUserCart.fulfilled]: (state, action) => {
-      if (state.user) {
-        state.user.cart.items = action.payload;
-        state.user.cart.requestStatus.loading = false;
-      }
-    },
-    [asyncFetchUserCart.rejected]: (state, action) => {
-      if (state.user) {
-        state.user.cart.requestStatus.error = action.payload.errorMessage;
-        state.user.cart.requestStatus.loading = false;
-      }
-    },
-    [asyncQuantityHandler.fulfilled]: (
-      state,
-      { payload: { newValue, product } }
-    ) => {
-      state.user.cart.items.find((i) => i.id === product.id).quantity =
-        newValue;
-    },
-  },
+  extraReducers: (builder) =>
+    builder
+      .addCase(asyncUserFetch.pending, (state) => {
+        state.requestStatus.loading = true;
+      })
+      .addCase(asyncUserFetch.fulfilled, (state, action) => {
+        state.requestStatus.loading = false;
+        state.user = action.payload;
+      })
+      .addCase(asyncUserFetch.rejected, (state, action) => {
+        state.requestStatus.loading = false;
+        state.requestStatus.error = action.error;
+      })
+      .addCase(
+        asyncPostUserItem.fulfilled,
+        (state, { payload: { id, productID, quantity } }) => {
+          state.user.cart.items.push({
+            id,
+            productID,
+            quantity,
+          });
+        }
+      )
+      .addCase(asyncFetchUserCart.pending, (state) => {
+        if (state.user) state.user.cart.requestStatus.loading = true;
+      })
+      .addCase(asyncFetchUserCart.fulfilled, (state, action) => {
+        if (state.user) {
+          state.user.cart.items = action.payload;
+          state.user.cart.requestStatus.loading = false;
+        }
+      })
+      .addCase(asyncFetchUserCart.rejected, (state, action) => {
+        if (state.user) {
+          state.user.cart.requestStatus.error = action.payload.errorMessage;
+          state.user.cart.requestStatus.loading = false;
+        }
+      })
+      .addCase(
+        asyncQuantityHandler.fulfilled,
+        (state, { payload: { newValue, product } }) => {
+          state.user.cart.items.find((i) => i.id === product.id).quantity =
+            newValue;
+        }
+      ),
 });
 
 export const {
