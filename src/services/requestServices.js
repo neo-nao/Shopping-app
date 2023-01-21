@@ -30,7 +30,7 @@ async function deleteFunc(url) {
 
     const res = await http.delete("/usersCart/" + selectedItem.id);
 
-    return res.statusText === "OK" && selectedItem;
+    return (res.status === 200 || res.statusText === "OK") && selectedItem;
   } catch (err) {
     console.error(err);
     return { errorMessage: err };
