@@ -32,6 +32,16 @@ const validateValues = (valueObject) => {
             firstLetterUpperCase(key) + " must contain at least 8 characters",
         });
       }
+      if (
+        key === "email" &&
+        !/^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(
+          property
+        )
+      ) {
+        errorProperties.push({
+          [key]: "Email is not valid",
+        });
+      }
     }
   }
 

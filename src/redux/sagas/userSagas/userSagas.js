@@ -1,6 +1,11 @@
 import { call, put, takeEvery } from "redux-saga/effects";
-import { deleteFunc, postFunc } from "../../../services/requestServices";
+import {
+  fetchFunc,
+  deleteFunc,
+  postFunc,
+} from "../../../services/requestServices";
 import { random } from "../../../utils/appUtils";
+import { hideAlert, showAlert } from "../../alert/alertSlice";
 import { clearValues } from "../../authFormValues/authFormSlice";
 import {
   createUserAccountFulfilled,
@@ -10,6 +15,8 @@ import {
   removeUserItemPending,
   removeUserItemRejected,
 } from "../../user/userSlice";
+
+const delay = (ms) => new Promise((res) => setTimeout(res, ms));
 
 function* asyncRemoveUserItem({ payload }) {
   const { userToken, productID } = payload;
@@ -27,22 +34,35 @@ function* asyncRemoveUserItem({ payload }) {
 
 function* asyncCreateUserAccount({ payload }) {
   try {
-    const res = yield call(() =>
-      postFunc("/users", {
-        ...payload,
-        userToken: random.createRandomString(),
-        cart: {
-          requestStatus: {
-            loading: false,
-            error: null,
-          },
-          items: [],
-        },
-      })
+    const accountExists = yield call(() =>
+      fetchFunc("/users?email=" + payload.email)
     );
 
-    yield put(clearValues());
-    yield put(createUserAccountFulfilled(res));
+    if (!accountExists.length > 0) {
+      const res = yield call(() =>
+        postFunc("/users", {
+          ...payload,
+          userToken: random.createRandomString(),
+          cart: {
+            requestStatus: {
+              loading: false,
+              error: null,
+            },
+            items: [],
+          },
+        })
+      );
+
+      yield put(clearValues());
+      yield put(createUserAccountFulfilled(res));
+    } else {
+      yield delay(300);
+      yield put(hideAlert());
+      yield delay(550);
+      yield put(
+        showAlert({ title: "Fail", paragraph: "Account already exists!" })
+      );
+    }
   } catch (err) {
     yield put(createUserAccountRejected(err));
   }
