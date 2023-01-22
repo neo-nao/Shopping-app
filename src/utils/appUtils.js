@@ -76,7 +76,7 @@ const objectToQueryString = (obj) => {
 };
 
 const firstLetterUpperCase = (text) => {
-  return text.replace(text[0], text[0].toUpperCase());
+  return text && text.replace(text[0], text[0].toUpperCase());
 };
 
 /**

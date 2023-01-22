@@ -79,6 +79,7 @@ const productDatas = [
     isDiscount: true,
     offPrice: "59.9",
     priceType: "USD",
+    itemStars: 4.5,
   },
   {
     id: 2,
@@ -90,6 +91,7 @@ const productDatas = [
     isDiscount: true,
     offPrice: "70",
     priceType: "USD",
+    itemStars: 3.5,
   },
   {
     id: 3,
@@ -101,6 +103,7 @@ const productDatas = [
     isDiscount: true,
     offPrice: "42.5",
     priceType: "USD",
+    itemStars: 4,
   },
   {
     id: 4,
@@ -112,6 +115,7 @@ const productDatas = [
     isDiscount: true,
     offPrice: "35",
     priceType: "USD",
+    itemStars: 3,
   },
 ];
 
