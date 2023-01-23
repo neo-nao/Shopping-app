@@ -25,6 +25,7 @@ html{
     --max-width: 1200px;
     --menu-font-size: 19px;
     --gray: #919191;
+    --light-gray:#d1d1d1;
     --color-transition: color 0.3s ease;
     --boxshadow-transition: box-shadow 0.3s ease;
     ;

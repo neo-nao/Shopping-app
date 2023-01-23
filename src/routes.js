@@ -6,10 +6,12 @@ import ManageAccountPage from "./pages/ManageAccountPage/ManageAccountPage";
 import AboutUsPage from "./pages/AboutUsPage/AboutUsPage";
 import AuthPage from "./pages/AuthPage/AuthPage";
 import NotFoundPage from "./pages/NotFoundPage/NotFoundPage";
+import ProductOverview from "./pages/ProductOverview/ProductOverview";
 
 const routes = [
   { id: 1, path: "/", element: <HomePage /> },
   { id: 2, path: "/products", element: <ProductsPage /> },
+  { id: 2, path: "/products/:id", element: <ProductOverview /> },
   {
     id: 3,
     path: "/special-offers",

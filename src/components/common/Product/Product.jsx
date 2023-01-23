@@ -11,14 +11,13 @@ import Button from "../Button/Button";
 import { IoAddSharp } from "react-icons/io5";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import Price from "../../Price/Price";
-import Stars from "./Stars";
-import { firstLetterUpperCase } from "../../../utils/appUtils";
+import ProductTitle from "../../ProductTitle/ProductTitle";
 
 const Item = styled.div`
   transition: border 0.2s linear;
   height: 22rem;
   background-color: var(--white);
-  border: 2px solid #d1d1d1;
+  border: 2px solid var(--light-gray);
   position: relative;
   ${flexbox({ dir: "column", justify: "space-between" })}
 
@@ -30,12 +29,12 @@ const Item = styled.div`
     border-color: var(--black);
   }
 
-  & .item-link {
+  .item-link {
     display: block;
     width: 100%;
     height: 100%;
-    padding: 7.5px;
     color: unset;
+    padding: 7.5px;
   }
 `;
 
@@ -70,12 +69,6 @@ const DescriptionSection = styled.section`
     width: 100%;
     ${flexbox({ justify: "space-between" })};
   }
-
-  & .product-title-container {
-    width: 100%;
-    margin-top: 15px;
-    ${flexbox({ justify: "space-between", align: "center" })}
-  }
 `;
 
 const Product = ({
@@ -99,7 +92,8 @@ const Product = ({
     return userAccount.cart.items.find((item) => item.productID === id) ?? null;
   };
 
-  const handleAddToCart = () => {
+  const handleAddToCart = (e) => {
+    e.preventDefault();
     if (userAccount) {
       const userToken = userAccount.userToken;
       const addedItem = checkIsItemAdded();
@@ -119,15 +113,26 @@ const Product = ({
 
   return (
     <Item>
-      <Link to={`/products/${id}`} className="item-link">
+      <Link
+        to={`/products/${id}`}
+        state={{
+          id,
+          type,
+          shoe,
+          price,
+          isDiscount,
+          offPrice,
+          priceType,
+          shoeImage,
+          itemStars,
+        }}
+        className="item-link"
+      >
         <ImageSection className="image-section">
           <LazyLoadImage src={shoeImage} alt="ITEM" draggable="false" />
         </ImageSection>
-        <DescriptionSection className="description-section">
-          <div className="product-title-container">
-            <h1>{firstLetterUpperCase(shoe) ?? firstLetterUpperCase(type)}</h1>
-            <Stars filledStars={itemStars} />
-          </div>
+        <DescriptionSection>
+          <ProductTitle shoe={shoe} type={type} itemStars={itemStars} />
           <div className="item-integration-container">
             <Price
               isDiscount={isDiscount}

@@ -133,6 +133,19 @@ class random {
   }
 }
 
+const sliderIndexLogic = (sliderArray) => (index) => {
+  const maxIndex = sliderArray - 1;
+
+  console.log(index);
+  if (index < 0 && index < -maxIndex) return (index % -maxIndex) * -1;
+
+  if (index < 0 && index > -maxIndex) return maxIndex - index;
+
+  if (index > maxIndex) return (index % maxIndex) - 1;
+
+  return index;
+};
+
 export {
   rgbToHex,
   hexToRgb,
@@ -142,4 +155,5 @@ export {
   firstLetterUpperCase,
   actionAfterAnimation,
   random,
+  sliderIndexLogic,
 };

@@ -36,6 +36,10 @@ const SpecialOfferSection = styled.section`
       width: 100%;
       height: 550px;
     }
+
+    & .product-preview-container {
+      align-items: flex-start;
+    }
   }
 `;
 
@@ -61,9 +65,6 @@ const OfferTitle = styled.div`
       font-size: 25px;
       font-weight: 500;
     }
-  }
-
-  @media (max-width: 1050px) {
   }
 `;
 

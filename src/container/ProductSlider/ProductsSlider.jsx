@@ -1,9 +1,9 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import styled from "styled-components";
 import Product from "../../components/common/Product/Product";
 import { flexbox } from "../../styles/extendableStyles/ExtendableStyles.styled";
 import { BiLeftArrow, BiRightArrow } from "react-icons/bi";
-import { useRef } from "react";
+import { sliderIndexLogic } from "../../utils/appUtils";
 
 const SliderContainer = styled.div`
   width: clamp(250px, 100%, 500px);
@@ -47,15 +47,29 @@ const SliderInnerContainer = styled.div`
     z-index: 2;
 
     &.slide-left {
-      transition: transform 0.6s ease;
-      transform: translateX(35%) scale(0.75);
-
-      z-index: 2;
+      animation: current-slide-left 0.6s ease forwards;
     }
     &.slide-right {
-      transition: transform 0.6s ease;
-      transform: translateX(-35%) scale(0.75);
-      z-index: 2;
+      animation: current-slide-right 0.6s ease forwards;
+    }
+
+    @keyframes current-slide-left {
+      from {
+        transform: translate(0) scale(1);
+      }
+      to {
+        transform: translateX(35%) scale(0.75);
+        z-index: 2;
+      }
+    }
+    @keyframes current-slide-right {
+      from {
+        transform: translate(0) scale(1);
+      }
+      to {
+        transform: translateX(-35%) scale(0.75);
+        z-index: 2;
+      }
     }
   }
 
@@ -65,13 +79,28 @@ const SliderInnerContainer = styled.div`
     transform: translateY(-50%) scale(0.75);
 
     &.slide-left {
-      transition: transform 0.6s ease;
-      transform: translate(35%, -50%) scale(1);
-      z-index: 3;
+      animation: previous-slide-left 0.6s ease forwards;
     }
     &.slide-right {
-      transition: transform 0.6s ease;
-      transform: translate(50%, -50%) scale(0.75);
+      animation: previous-slide-right 0.6s ease forwards;
+    }
+
+    @keyframes previous-slide-left {
+      from {
+        transform: translate(0, -50%) scale(0.75);
+      }
+      to {
+        transform: translate(35%, -50%) scale(1);
+        z-index: 3;
+      }
+    }
+    @keyframes previous-slide-right {
+      from {
+        transform: translateY(-50%) scale(0.75);
+      }
+      to {
+        transform: translate(35%, -50%) scale(0.75);
+      }
     }
   }
 
@@ -81,29 +110,59 @@ const SliderInnerContainer = styled.div`
     transform: translateY(-50%) scale(0.75);
 
     &.slide-left {
-      transition: transform 0.6s ease;
-      transform: translate(-50%, -50%) scale(0.75);
+      animation: next-slide-left 0.6s ease forwards;
     }
     &.slide-right {
-      transition: transform 0.6s ease;
-      transform: translate(-35%, -50%) scale(1);
-      z-index: 3;
+      animation: next-slide-right 0.6s ease forwards;
+    }
+
+    @keyframes next-slide-left {
+      from {
+        transform: translateY(-50%) scale(0.75);
+      }
+      to {
+        transform: translate(-35%, -50%) scale(0.75);
+      }
+    }
+    @keyframes next-slide-right {
+      from {
+        transform: translateY(-50%) scale(0.75);
+      }
+      to {
+        transform: translate(-35%, -50%) scale(1);
+        z-index: 3;
+      }
     }
   }
 
   & .upcoming-slide {
     top: 50%;
     right: 0;
-    z-index: 1;
     transform: translateY(-50%) scale(0.75);
+    z-index: -1;
 
     &.slide-left {
-      transition: transform 0.6s ease;
-      transform: translate(-35%, -50%) scale(0.75);
+      animation: upcoming-slide-left 0.6s ease forwards;
     }
     &.slide-right {
-      transition: transform 0.6s ease;
-      transform: translate(35%, -50%) scale(0.75);
+      animation: upcoming-slide-right 0.6s ease forwards;
+    }
+
+    @keyframes upcoming-slide-left {
+      from {
+        transform: translateY(-50%) scale(0.75);
+      }
+      to {
+        transform: translate(-35%, -50%) scale(0.75);
+      }
+    }
+    @keyframes upcoming-slide-right {
+      from {
+        transform: translateY(-50%) scale(0.75);
+      }
+      to {
+        transform: translate(35%, -50%) scale(0.75);
+      }
     }
   }
 `;
@@ -128,6 +187,15 @@ const SlideButton = styled.button`
 `;
 
 let isSliding = false;
+const slideStates = [
+  "previous-slide",
+  "current-slide",
+  "next-slide",
+  "upcoming-slide",
+];
+let slideStateIndex = 0;
+
+const slideStateLogicIndex = sliderIndexLogic(slideStates);
 
 const ProductSlider = ({ products }) => {
   const [index, setIndex] = useState(0);
@@ -137,31 +205,21 @@ const ProductSlider = ({ products }) => {
   const nextSlide = useRef();
   const upcomingSlide = useRef();
 
-  const sliderIndexLogic = (index) => {
-    const maxIndex = products.length - 1;
-
-    if (index < 0) return maxIndex;
-    if (index > maxIndex) {
-      const upcomingIndex = index - maxIndex - 1;
-      return upcomingIndex;
-    }
-
-    return index;
-  };
+  const itemsSliderIndexLogic = sliderIndexLogic(products);
 
   const getSliderIndex = (identifier) => {
     switch (identifier) {
       case "previous": {
-        return sliderIndexLogic(index - 1);
+        return itemsSliderIndexLogic(index - 1);
       }
       case "current": {
-        return sliderIndexLogic(index);
+        return itemsSliderIndexLogic(index);
       }
       case "next": {
-        return sliderIndexLogic(index + 1);
+        return itemsSliderIndexLogic(index + 1);
       }
       case "upcoming": {
-        return sliderIndexLogic(index + 2);
+        return itemsSliderIndexLogic(index + 2);
       }
       default:
         console.error("slide identifier is not valid!");
@@ -180,14 +238,14 @@ const ProductSlider = ({ products }) => {
           upcomingSlide.current.classList.add("slide-left");
 
           setTimeout(() => {
-            setIndex(sliderIndexLogic(index - 1));
+            setIndex(itemsSliderIndexLogic(index - 1));
             prevSlide.current.classList.remove("slide-left");
             currentSlide.current.classList.remove("slide-left");
             nextSlide.current.classList.remove("slide-left");
             upcomingSlide.current.classList.remove("slide-left");
 
             isSliding = false;
-          }, 675);
+          }, 625);
         }
         break;
       case "right":
@@ -199,15 +257,39 @@ const ProductSlider = ({ products }) => {
           nextSlide.current.classList.add("slide-right");
           upcomingSlide.current.classList.add("slide-right");
 
+          prevSlide.current.classList.replace(
+            slideStates[slideStateLogicIndex(slideStateIndex)],
+            slideStates[slideStateLogicIndex(slideStateIndex - 1)]
+          );
+          currentSlide.current.classList.replace(
+            slideStates[slideStateLogicIndex(slideStateIndex + 1)],
+            slideStates[slideStateLogicIndex(slideStateIndex)]
+          );
+          nextSlide.current.classList.replace(
+            slideStates[slideStateLogicIndex(slideStateIndex + 2)],
+            slideStates[slideStateLogicIndex(slideStateIndex + 1)]
+          );
+          upcomingSlide.current.classList.replace(
+            slideStates[slideStateLogicIndex(slideStateIndex + 3)],
+            slideStates[slideStateLogicIndex(slideStateIndex + 2)]
+          );
+
+          console.log(
+            slideStates[slideStateLogicIndex(slideStateIndex + 3)],
+            slideStates[slideStateLogicIndex(slideStateIndex + 2)]
+          );
+
+          slideStateIndex = slideStateLogicIndex(slideStateIndex + 1);
+
           setTimeout(() => {
-            setIndex(sliderIndexLogic(index + 1));
+            setIndex(itemsSliderIndexLogic(index + 1));
             prevSlide.current.classList.remove("slide-right");
             currentSlide.current.classList.remove("slide-right");
             nextSlide.current.classList.remove("slide-right");
             upcomingSlide.current.classList.remove("slide-right");
 
             isSliding = false;
-          }, 675);
+          }, 625);
         }
         break;
       default:
@@ -219,13 +301,13 @@ const ProductSlider = ({ products }) => {
     <SliderContainer>
       <SliderInnerContainer>
         <div className="product-slide previous-slide" ref={prevSlide}>
-          <Product {...products[getSliderIndex("previous")]} />
+          <Product {...products[products.length - 1]} />
         </div>
         <div className="product-slide current-slide" ref={currentSlide}>
-          <Product {...products[getSliderIndex("current")]} />
+          <Product {...products[0]} />
         </div>
         <div className="product-slide next-slide" ref={nextSlide}>
-          <Product {...products[getSliderIndex("next")]} />
+          <Product {...products[1]} />
         </div>
         <div className="product-slide upcoming-slide" ref={upcomingSlide}>
           <Product {...products[getSliderIndex("upcoming")]} />
