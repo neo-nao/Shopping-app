@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link } from "wouter";
 import {
   FooterStyled,
   FooterContainer,
@@ -21,16 +21,16 @@ const Footer = () => {
           <nav>
             <ul className="redirect-list">
               <li>
-                <Link to="/">Home</Link>
+                <Link href="/">Home</Link>
               </li>
               <li>
-                <Link to="/products">Products</Link>
+                <Link href="/products">Products</Link>
               </li>
               <li>
-                <Link to="/special-offers">Special offers</Link>
+                <Link href="/special-offers">Special offers</Link>
               </li>
               <li>
-                <Link to="/about-us">About us</Link>
+                <Link href="/about-us">About us</Link>
               </li>
             </ul>
           </nav>

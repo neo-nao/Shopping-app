@@ -1,6 +1,6 @@
 import { startTransition } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link } from "wouter";
 import { authButtonStyle, Input } from "./AuthComps.styled";
 import Button from "../../components/common/Button/Button";
 import { setFormValue } from "../../redux/authFormValues/authFormSlice";
@@ -42,7 +42,7 @@ const LoginForm = ({ handleSubmit }) => {
         Login
       </Button>
       <div className="switch-auth-action-link-container">
-        <Link to="/auth/sign-up" className="create-acc-link">
+        <Link href="/auth/sign-up" className="create-acc-link">
           Create Account
         </Link>
       </div>

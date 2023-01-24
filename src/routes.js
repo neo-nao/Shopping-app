@@ -9,23 +9,28 @@ import NotFoundPage from "./pages/NotFoundPage/NotFoundPage";
 import ProductOverview from "./pages/ProductOverview/ProductOverview";
 
 const routes = [
-  { id: 1, path: "/", element: <HomePage /> },
-  { id: 2, path: "/products", element: <ProductsPage /> },
-  { id: 2, path: "/products/:id", element: <ProductOverview /> },
+  { id: 1, path: "/", component: HomePage },
+  { id: 2, path: "/products", component: ProductsPage },
+  { id: 2, path: "/products/:id", component: ProductOverview },
   {
     id: 3,
     path: "/special-offers",
-    element: <SpecialOffersPage />,
+    component: SpecialOffersPage,
   },
-  { id: 4, path: "/cart", element: <CartPage /> },
+  { id: 4, path: "/cart", component: CartPage },
   {
     id: 5,
     path: "/manage-account",
-    element: <ManageAccountPage />,
+    component: ManageAccountPage,
   },
-  { id: 6, path: "/about-us", element: <AboutUsPage /> },
-  { id: 7, path: "/auth/*", element: <AuthPage /> },
-  { id: 8, path: "*", element: <NotFoundPage /> },
+  { id: 6, path: "/about-us", component: AboutUsPage },
+  {
+    id: 7,
+    path: "/auth/:method",
+    nested: true,
+    element: <AuthPage />,
+  },
+  { id: 8, component: NotFoundPage },
 ];
 
 export default routes;

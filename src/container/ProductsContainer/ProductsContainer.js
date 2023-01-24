@@ -1,6 +1,6 @@
 import { useState, useEffect, memo, useMemo, lazy, Suspense } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useLocation } from "wouter";
 import {
   filterProducts,
   clearFilter,
@@ -96,7 +96,7 @@ const ProductsContainer = ({
 
   const dispatch = useDispatch();
 
-  const navigate = useNavigate();
+  const [, navigate] = useLocation();
 
   useMemo(() => {
     if (currentOption) {
@@ -153,7 +153,7 @@ const ProductsContainer = ({
   }, [filteredProducts]);
 
   useEffect(() => {
-    navigate(dynamicURL);
+    dynamicURL && navigate(dynamicURL);
     dynamicURL !== null && dispatch(getAsyncProducts(dynamicURL));
   }, [dynamicURL]);
 

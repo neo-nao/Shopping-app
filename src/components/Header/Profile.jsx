@@ -8,7 +8,7 @@ import {
   DropdownItemContainer,
 } from "./ProfileStyled";
 import { MdKeyboardArrowDown } from "react-icons/md";
-import { Link } from "react-router-dom";
+import { Link } from "wouter";
 
 const dropdownItemsData = [
   { id: 1, to: "/cart", text: "Cart" },
@@ -48,7 +48,7 @@ const MenuDropdownItem = () => {
           {dropdownItemsData.map(({ id, to, text }) => (
             <li key={id} onClick={handleMenuDisplay}>
               <SliderMenuListItem>
-                <Link to={to} className="menu-dropdown-link">
+                <Link href={to} className="menu-dropdown-link">
                   {text}
                 </Link>
               </SliderMenuListItem>

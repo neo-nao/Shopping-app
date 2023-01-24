@@ -1,10 +1,9 @@
 import { memo } from "react";
 import { useDispatch } from "react-redux";
-import { NavLink } from "react-router-dom";
+import { Link, useLocation } from "wouter";
 import styled from "styled-components";
 import { toggleMobileMenu } from "../../redux/elements/elementSlice";
 import { flexbox } from "../../styles/extendableStyles/ExtendableStyles.styled";
-import { useLocation } from "react-router-dom";
 
 const NavList = styled.ul`
   ${(props) =>
@@ -71,17 +70,15 @@ const Navbar = ({ navDatas, direction }) => {
       <NavList direction={direction}>
         {navDatas.map(({ id, to, text }) => (
           <li key={id} onClick={handleCloseMenu}>
-            <NavLink
-              to={
+            <Link
+              href={
                 to === "/products" || to === "/special-offers"
                   ? location.search || to
                   : to
               }
-              className={(navProps) => (navProps.isActive ? "link-active" : "")}
-              end
             >
               {text}
-            </NavLink>
+            </Link>
           </li>
         ))}
       </NavList>

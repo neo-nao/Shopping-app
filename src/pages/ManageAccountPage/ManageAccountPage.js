@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useLocation } from "wouter";
 import styled from "styled-components";
 import { logout } from "../../redux/user/userSlice";
 import { flexbox } from "../../styles/extendableStyles/ExtendableStyles.styled";
@@ -66,7 +66,7 @@ const ManageAccountPage = () => {
 
   const dispatch = useDispatch();
 
-  const navigate = useNavigate();
+  const [, navigate] = useLocation();
 
   const { name, lastName, displayEmail, password } = userAccount ?? {};
 

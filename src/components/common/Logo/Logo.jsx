@@ -1,7 +1,7 @@
-import { Link } from "react-router-dom";
+import { Link } from "wouter";
 
 const Logo = (
-  <Link to="/">
+  <Link href="/">
     <svg
       fill="none"
       height="18.2741116751"

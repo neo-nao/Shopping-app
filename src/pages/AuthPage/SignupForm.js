@@ -1,6 +1,6 @@
 import { startTransition, useMemo, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link } from "wouter";
 import Button from "../../components/common/Button/Button";
 import { setFormValue } from "../../redux/authFormValues/authFormSlice";
 import { Input, authButtonStyle } from "./AuthComps.styled";
@@ -87,7 +87,7 @@ const SignupForm = ({ handleSubmit }) => {
         {isLastStep ? "Sign up" : "Next step"}
       </Button>
       <div className="switch-auth-action-link-container">
-        <Link to="/auth/login" className="create-acc-link">
+        <Link href="/auth/login" className="create-acc-link">
           Log in
         </Link>
       </div>

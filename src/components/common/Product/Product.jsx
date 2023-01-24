@@ -1,5 +1,5 @@
 import { memo } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useRouter } from "wouter";
 import { useSelector, useDispatch } from "react-redux";
 import {
   asyncPostUserItem,
@@ -86,7 +86,8 @@ const Product = ({
 
   const dispatch = useDispatch();
 
-  const navigate = useNavigate();
+  const [, navigate] = useLocation();
+  const router = useRouter();
 
   const checkIsItemAdded = () => {
     return userAccount.cart.items.find((item) => item.productID === id) ?? null;
@@ -114,18 +115,20 @@ const Product = ({
   return (
     <Item>
       <Link
-        to={`/products/${id}`}
-        state={{
-          id,
-          type,
-          shoe,
-          price,
-          isDiscount,
-          offPrice,
-          priceType,
-          shoeImage,
-          itemStars,
-        }}
+        href={`/products/${id}`}
+        onClick={() =>
+          (router.itemState = {
+            id,
+            type,
+            shoe,
+            price,
+            isDiscount,
+            offPrice,
+            priceType,
+            shoeImage,
+            itemStars,
+          })
+        }
         className="item-link"
       >
         <ImageSection className="image-section">

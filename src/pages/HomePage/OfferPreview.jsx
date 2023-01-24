@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { Link } from "react-router-dom";
+import { Link } from "wouter";
 import {
   flexbox,
   placeCenter,
@@ -130,7 +130,7 @@ const OfferPreview = () => {
             offer
             <span>get up to 60% off</span>
           </h1>
-          <Link to="/special-offers" style={{ display: "inline-block" }}>
+          <Link href="/special-offers">
             <Button
               style={{
                 fontSize: "20px",

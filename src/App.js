@@ -1,9 +1,10 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Routes, Route } from "react-router-dom";
+import { Route, Switch } from "wouter";
 import { asyncUserFetch } from "./redux/user/userSlice";
 import routes from "./routes";
 import Layout from "./layout/Layout";
+import NestedRoutes from "./container/NestedRoutes/NestedRoutes";
 
 function App() {
   const user = useSelector((state) => state.user.user);
@@ -17,11 +18,17 @@ function App() {
 
   return (
     <Layout>
-      <Routes>
-        {routes.map(({ id, ...rest }) => (
-          <Route key={id} {...rest} />
-        ))}
-      </Routes>
+      <Switch>
+        {routes.map(({ id, path, nested, element, ...rest }) =>
+          !nested ? (
+            <Route key={id} path={path} {...rest} />
+          ) : (
+            <NestedRoutes key={id} path={path}>
+              {element}
+            </NestedRoutes>
+          )
+        )}
+      </Switch>
     </Layout>
   );
 }

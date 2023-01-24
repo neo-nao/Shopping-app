@@ -1,5 +1,5 @@
 import { memo, useRef, useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link } from "wouter";
 import { MdKeyboardArrowDown } from "react-icons/md";
 import {
   DropdownContainer,
@@ -73,7 +73,7 @@ const Dropdown = ({
               <li key={id}>
                 {to ? (
                   <Link
-                    to={to}
+                    href={to}
                     onClick={() => closeOnClick && handleDropdownState(false)}
                   >
                     {text}
