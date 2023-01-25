@@ -28,7 +28,7 @@ const routes = [
     id: 7,
     path: "/auth/:method",
     nested: true,
-    element: <AuthPage />,
+    Element: AuthPage,
   },
   { id: 8, component: NotFoundPage },
 ];

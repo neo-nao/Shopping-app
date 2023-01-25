@@ -42,7 +42,7 @@ const LoginForm = ({ handleSubmit }) => {
         Login
       </Button>
       <div className="switch-auth-action-link-container">
-        <Link href="/auth/sign-up" className="create-acc-link">
+        <Link href="/sign-up" className="create-acc-link">
           Create Account
         </Link>
       </div>

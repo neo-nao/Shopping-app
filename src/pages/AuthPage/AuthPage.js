@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { Route, useLocation, useRoute } from "wouter";
+import { Route, useLocation, Switch } from "wouter";
 import { useDispatch, useSelector } from "react-redux";
 import {
   asyncUserFetch,
@@ -48,14 +48,8 @@ const validateValues = (valueObject) => {
   return errorProperties;
 };
 
-const AuthPage = (props) => {
-  const [pathname, navigate] = useLocation();
-
-  const [match, params] = useRoute("/:method");
-
-  console.log(props);
-
-  console.log(params, pathname);
+const AuthPage = ({ navigate }) => {
+  const [pathname] = useLocation();
 
   const {
     user: { user },
@@ -66,6 +60,7 @@ const AuthPage = (props) => {
     if (user) {
       !localStorage.getItem("user-token") &&
         localStorage.setItem("user-token", user.userToken);
+
       navigate("/");
       dispatch(hideAlert());
     }
@@ -135,17 +130,19 @@ const AuthPage = (props) => {
   return (
     <FormContainer>
       <h1 id="form-title">{renderTitle()}</h1>
-      <Route path="/login">
-        <AuthForm onSubmit={(e) => handleSubmit(e, "login")}>
-          <LoginForm handleSubmit={handleSubmit} />
-        </AuthForm>
-      </Route>
-      <Route path="/sign-up">
-        <AuthForm onSubmit={(e) => handleSubmit(e, "signup")}>
-          <SignupForm handleSubmit={handleSubmit} />
-        </AuthForm>
-      </Route>
-      <Route component={NotFoundPage} />
+      <Switch>
+        <Route path="/login">
+          <AuthForm onSubmit={(e) => handleSubmit(e, "login")}>
+            <LoginForm handleSubmit={handleSubmit} />
+          </AuthForm>
+        </Route>
+        <Route path="/sign-up">
+          <AuthForm onSubmit={(e) => handleSubmit(e, "signup")}>
+            <SignupForm handleSubmit={handleSubmit} />
+          </AuthForm>
+        </Route>
+        <Route component={NotFoundPage} />
+      </Switch>
     </FormContainer>
   );
 };

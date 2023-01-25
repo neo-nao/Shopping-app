@@ -1,17 +1,17 @@
-import { Router, useLocation, useRoute } from "wouter";
+import { Router, useLocation, useRouter } from "wouter";
 
 const NestedRoutes = ({ path, nestedPath, children }) => {
   const [location] = useLocation();
-  const [, params = null] = useRoute("/auth/:method");
+  const router = useRouter();
 
-  const nestedBase = `${path}${params.method ? "/" + params.method : ""}`;
+  const nestedBase = `${router.base}${location}`;
 
-  console.log(nestedBase);
+  const nestedPathIndex = path.slice(1).indexOf("/");
 
-  if (!location.startsWith(path)) return null;
+  const mainPath = path.slice(0, nestedPathIndex + 1);
 
   return (
-    <Router key={nestedBase} base={path}>
+    <Router key={nestedBase} base={mainPath}>
       {children}
     </Router>
   );

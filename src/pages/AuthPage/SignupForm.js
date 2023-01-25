@@ -87,7 +87,7 @@ const SignupForm = ({ handleSubmit }) => {
         {isLastStep ? "Sign up" : "Next step"}
       </Button>
       <div className="switch-auth-action-link-container">
-        <Link href="/auth/login" className="create-acc-link">
+        <Link href="/login" className="create-acc-link">
           Log in
         </Link>
       </div>
