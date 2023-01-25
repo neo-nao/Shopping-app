@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import Product from "../../components/common/Product/Product";
 import {
   SliderContainer,
@@ -29,6 +29,10 @@ const ProductSlider = ({ products }) => {
   const currentSlide = useRef();
   const nextSlide = useRef();
   const upcomingSlide = useRef();
+
+  useEffect(() => {
+    return () => (slideStateIndex = 1);
+  }, []);
 
   const itemsSliderIndexLogic = sliderIndexLogic(products.length);
 
