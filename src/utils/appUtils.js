@@ -133,15 +133,18 @@ class random {
   }
 }
 
-const sliderIndexLogic = (sliderArray) => (index) => {
-  const maxIndex = sliderArray - 1;
+const sliderIndexLogic = (sliderArrayLength) => (index) => {
+  const maxIndex = sliderArrayLength - 1;
 
-  console.log(index);
-  if (index < 0 && index < -maxIndex) return (index % -maxIndex) * -1;
+  if (index < 0 && index < -maxIndex) {
+    return (index % -maxIndex) * -1;
+  }
 
-  if (index < 0 && index > -maxIndex) return maxIndex - index;
+  if (index < 0 && index > -maxIndex) {
+    return maxIndex + 1 - -index;
+  }
 
-  if (index > maxIndex) return (index % maxIndex) - 1;
+  if (index > maxIndex) return index % (maxIndex + 1);
 
   return index;
 };
