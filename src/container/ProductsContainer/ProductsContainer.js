@@ -1,11 +1,6 @@
 import { useState, useEffect, memo, useMemo, lazy, Suspense } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { useLocation } from "wouter";
-import {
-  filterProducts,
-  clearFilter,
-  resetFilter,
-} from "../../redux/prodcuts/productsSlice";
 import Dropdown from "../../components/common/Dropdown/Dropdown";
 import {
   ItemsContainer,
@@ -23,14 +18,14 @@ const Product = lazy(() => import("../../components/common/Product/Product"));
 const ProductsContainer = ({
   productsFetchState: { loading, error, products },
   getAsyncProducts,
+  filter: {
+    filteredProducts,
+    actions: { filterProducts, clearFilter, resetFilter },
+  },
 }) => {
   const [dynamicURL, setDynamicURL] = useState(null);
 
   const [currentOption, setCurrentOption] = useState(null);
-
-  const filteredProducts = useSelector(
-    (state) => state.products.filteredOptions
-  );
 
   const initialStateCopy = useMemo(
     () => [
