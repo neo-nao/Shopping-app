@@ -1,6 +1,6 @@
 import { memo } from "react";
 import { useDispatch } from "react-redux";
-import { Link, useLocation } from "wouter";
+import { Link, useLocation, useRoute } from "wouter";
 import styled from "styled-components";
 import { toggleMobileMenu } from "../../redux/elements/elementSlice";
 import { flexbox } from "../../styles/extendableStyles/ExtendableStyles.styled";
@@ -58,12 +58,11 @@ const NavList = styled.ul`
 
 const Navbar = ({ navDatas, direction }) => {
   const dispatch = useDispatch();
+  const [location] = useLocation();
 
   const handleCloseMenu = () => {
     direction === "vertical" && dispatch(toggleMobileMenu());
   };
-
-  const location = useLocation();
 
   return (
     <nav style={{ width: "100%" }}>
@@ -72,12 +71,13 @@ const Navbar = ({ navDatas, direction }) => {
           <li key={id} onClick={handleCloseMenu}>
             <Link
               href={
-                to === "/products" || to === "/special-offers"
-                  ? location.search || to
+                (location === "/products" && to === "/products") ||
+                (location === "/special-offers" && to === "/special-offers")
+                  ? ""
                   : to
               }
             >
-              {text}
+              <a className={location === to ? "link-active" : ""}>{text}</a>
             </Link>
           </li>
         ))}
