@@ -74,7 +74,7 @@ const productDatas = [
     category: "daily usage",
     type: "oldSchool",
     shoe: "old school",
-    color: ["white"],
+    colors: ["white"],
     shoeImages: [
       "https://s2.uupload.ir/files/oldschool-whiteblack_(2)_pmy.jpg",
     ],
@@ -88,7 +88,7 @@ const productDatas = [
     id: 2,
     category: "hiking",
     type: "work boots",
-    color: ["black", "white", "brown"],
+    colors: ["black", "white", "brown"],
     shoeImages: [
       "https://s2.uupload.ir/files/sneaker-blackwhitebrown-1_p68h.jpg",
     ],
@@ -102,7 +102,7 @@ const productDatas = [
     id: 3,
     category: "dancing",
     type: "chuck taylor",
-    color: ["black", "white"],
+    colors: ["black", "white"],
     shoeImages: [
       "https://s2.uupload.ir/files/sneaker-blackwhite-1_(1)_vyp.jpg",
     ],
@@ -116,7 +116,7 @@ const productDatas = [
     id: 4,
     category: "dancing",
     type: "sneaker",
-    color: ["dark brown", "white"],
+    colors: ["brown", "white"],
     shoeImages: ["https://s2.uupload.ir/files/sneaker-darkbrown_(1)_z0y7.jpg"],
     price: "49.9",
     isDiscount: true,

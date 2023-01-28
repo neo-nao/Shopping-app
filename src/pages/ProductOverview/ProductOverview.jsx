@@ -1,4 +1,4 @@
-import { useState, useLayoutEffect } from "react";
+import { useState, useEffect, useLayoutEffect } from "react";
 import { useRouter } from "wouter";
 import styled from "styled-components";
 import FullPageHeight from "../../components/common/FullPageHeight/FullPageHeight";
@@ -29,6 +29,7 @@ const Container = styled.div`
 const ImageContainer = styled.div`
   width: 100%;
   height: 300px;
+  user-select: none;
 
   .item-img {
     width: 100%;
@@ -37,51 +38,55 @@ const ImageContainer = styled.div`
   }
 `;
 
-let testColors = [
-  { id: 1, color: "dodgerblue", active: true },
-  { id: 2, color: "violet", active: false },
-  { id: 3, color: "blueviolet", active: false },
-];
-
 const ProductOverview = ({ params }) => {
   const [product, setProduct] = useState(null);
+  const [colorsState, setColorsState] = useState(null);
   const router = useRouter();
 
   const itemId = Number(params.id);
   const isIdInt = Number.isInteger(itemId);
 
   useLayoutEffect(() => {
-    const fetchProduct = async (id) => {
-      const response = await fetchFunc("/products/" + id);
-
-      setProduct(response);
-    };
     if (isIdInt) {
-      fetchProduct(itemId);
+      if (!router.itemState) {
+        const fetchProduct = async (id) => {
+          const response = await fetchFunc("/products/" + id);
+
+          setProduct(response);
+        };
+        fetchProduct(itemId);
+      } else setProduct(router.itemState);
     }
   }, []);
 
+  const createColors = (colors) => {
+    const colorsObj = colors.map((color, idx) => ({
+      id: idx,
+      color,
+      active: false,
+    }));
+
+    setColorsState(colorsObj);
+  };
+
+  useEffect(() => {
+    product && createColors(product.colors);
+  }, [product]);
+
   const handleColorClick = (id) => {
-    const colorsCopy = [...testColors];
+    const colorsCopy = colorsState.map((color) => {
+      return { ...color, active: false };
+    });
+
     const clickedColor = colorsCopy.find((color) => color.id === id);
-    colorsCopy.forEach((color) => (color.active = false));
     clickedColor.active = true;
-    testColors = colorsCopy;
-    console.log(testColors);
+
+    setColorsState(colorsCopy);
   };
 
   const renderElements = () => {
-    if (router.itemState || product) {
-      const {
-        type,
-        shoe,
-        price,
-        isDiscount,
-        offPrice,
-        priceType,
-        shoeImages,
-        itemStars,
-      } = router.itemState ?? product;
+    if (product) {
+      const { type, shoe, price, priceType, shoeImages, itemStars } = product;
 
       return isIdInt ? (
         <Container>
@@ -90,7 +95,12 @@ const ProductOverview = ({ params }) => {
               id: "slide-" + idx,
               innerElement: (
                 <ImageContainer>
-                  <img src={shoeImage} alt="shoe" className="item-img" />
+                  <img
+                    src={shoeImage}
+                    alt="shoe"
+                    className="item-img"
+                    draggable="false"
+                  />
                 </ImageContainer>
               ),
             }))}
@@ -100,7 +110,12 @@ const ProductOverview = ({ params }) => {
             <Price price={price} priceType={priceType} />
             <Stars filledStars={itemStars} />
           </div>
-          <ItemColors colors={testColors} handleColorClick={handleColorClick} />
+          {colorsState && (
+            <ItemColors
+              colors={colorsState}
+              handleColorClick={handleColorClick}
+            />
+          )}
         </Container>
       ) : (
         <NotFoundPage />

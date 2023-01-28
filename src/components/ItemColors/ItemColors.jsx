@@ -1,11 +1,12 @@
 import styled from "styled-components";
 
 const Color = styled.div`
+  transition: box-shadow 0.15s ease-in-out;
   display: inline-block;
   width: 25px;
   height: 25px;
   border-radius: 50%;
-  box-shadow: 0 0 0 ${(props) => (props.active ? "2px" : "0")} var(--black);
+  box-shadow: 0 0 0 ${(props) => (props.active ? "3px" : "1px")} var(--black);
   background-color: ${(props) => props.color};
   position: relative;
   overflow: hidden;
