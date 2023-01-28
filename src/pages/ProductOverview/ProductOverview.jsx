@@ -4,14 +4,26 @@ import styled from "styled-components";
 import FullPageHeight from "../../components/common/FullPageHeight/FullPageHeight";
 import { fetchFunc } from "../../services/requestServices";
 import NotFoundPage from "../NotFoundPage/NotFoundPage";
-import ProductTitle from "../../components/ProductTitle/ProductTitle";
+import Slider from "../../container/Slider/Slider";
+import { firstLetterUpperCase } from "../../utils/appUtils";
+import Stars from "../../components/common/Product/Stars";
+import Price from "../../components/Price/Price";
+import { flexbox } from "../../styles/extendableStyles/ExtendableStyles.styled";
+import ItemColors from "../../components/ItemColors/ItemColors";
 
 const Container = styled.div`
   width: 92.5%;
   height: fit-content;
-  border: 2px solid #c1c1c1;
-  padding: 10px;
   margin: auto;
+
+  & .item-title {
+    font-size: 35px;
+    padding: 1rem 0;
+  }
+
+  & .item-rates {
+    ${flexbox({ justify: "space-between" })}
+  }
 `;
 
 const ImageContainer = styled.div`
@@ -24,6 +36,12 @@ const ImageContainer = styled.div`
     object-fit: cover;
   }
 `;
+
+let testColors = [
+  { id: 1, color: "dodgerblue", active: true },
+  { id: 2, color: "violet", active: false },
+  { id: 3, color: "blueviolet", active: false },
+];
 
 const ProductOverview = ({ params }) => {
   const [product, setProduct] = useState(null);
@@ -43,6 +61,15 @@ const ProductOverview = ({ params }) => {
     }
   }, []);
 
+  const handleColorClick = (id) => {
+    const colorsCopy = [...testColors];
+    const clickedColor = colorsCopy.find((color) => color.id === id);
+    colorsCopy.forEach((color) => (color.active = false));
+    clickedColor.active = true;
+    testColors = colorsCopy;
+    console.log(testColors);
+  };
+
   const renderElements = () => {
     if (router.itemState || product) {
       const {
@@ -52,16 +79,28 @@ const ProductOverview = ({ params }) => {
         isDiscount,
         offPrice,
         priceType,
-        shoeImage,
+        shoeImages,
         itemStars,
       } = router.itemState ?? product;
 
       return isIdInt ? (
         <Container>
-          <ImageContainer>
-            <img src={shoeImage} alt="shoe" className="item-img" />
-          </ImageContainer>
-          <ProductTitle shoe={shoe} type={type} itemStars={itemStars} />
+          <Slider
+            items={shoeImages.map((shoeImage, idx) => ({
+              id: "slide-" + idx,
+              innerElement: (
+                <ImageContainer>
+                  <img src={shoeImage} alt="shoe" className="item-img" />
+                </ImageContainer>
+              ),
+            }))}
+          />
+          <h1 className="item-title">{firstLetterUpperCase(shoe ?? type)}</h1>
+          <div className="item-rates">
+            <Price price={price} priceType={priceType} />
+            <Stars filledStars={itemStars} />
+          </div>
+          <ItemColors colors={testColors} handleColorClick={handleColorClick} />
         </Container>
       ) : (
         <NotFoundPage />

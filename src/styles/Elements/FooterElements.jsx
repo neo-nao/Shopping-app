@@ -20,7 +20,7 @@ const FooterContainer = styled.div`
   height: 100%;
   ${containerWidth()}
   ${flexbox({ dir: "var(--flex-dir)", justify: "space-between" })}
-padding: 0.5rem;
+  padding: 0.5rem;
   margin: auto;
 
   & ul {

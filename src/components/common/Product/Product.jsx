@@ -79,7 +79,7 @@ const Product = ({
   isDiscount,
   offPrice,
   priceType,
-  shoeImage,
+  shoeImages,
   itemStars = 0,
 }) => {
   const userAccount = useSelector((state) => state.user.user);
@@ -125,14 +125,18 @@ const Product = ({
             isDiscount,
             offPrice,
             priceType,
-            shoeImage,
+            shoeImages,
             itemStars,
           })
         }
         className="item-link"
       >
         <ImageSection className="image-section">
-          <LazyLoadImage src={shoeImage} alt="ITEM" draggable="false" />
+          <LazyLoadImage
+            src={shoeImages && shoeImages[0]}
+            alt="ITEM"
+            draggable="false"
+          />
         </ImageSection>
         <DescriptionSection>
           <ProductTitle shoe={shoe} type={type} itemStars={itemStars} />

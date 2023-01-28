@@ -3,7 +3,7 @@ import { flexbox } from "../../styles/extendableStyles/ExtendableStyles.styled";
 
 const SliderContainer = styled.section`
   width: 100%;
-  height: calc(100vh - 6.25rem);
+  height: 100%;
   background-color: #e1e1e1;
   overflow: hidden;
   position: relative;

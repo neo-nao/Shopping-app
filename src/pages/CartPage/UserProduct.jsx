@@ -45,7 +45,7 @@ const UserProduct = ({ product }) => {
   return (
     <UserProductContainer className={`user-item-${product.id}`}>
       <ImageContainer
-        style={{ backgroundImage: `url('${product.shoeImage}')` }}
+        style={{ backgroundImage: `url('${product.shoeImages[0]}')` }}
       ></ImageContainer>
       <DetailsContainer>
         <ul style={{ width: "100%" }}>

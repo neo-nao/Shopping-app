@@ -14,15 +14,32 @@ const ProfileSection = styled.section`
 const ProfileContainer = styled.div`
   width: clamp(200px, 90%, 40rem);
   height: fit-content;
-  border: 2px solid var(--black);
   border-radius: 25px;
   margin-top: -50px;
   background: var(--white);
   padding: 15px;
+
+  & .seperator {
+    margin: auto;
+    height: 1px;
+    background: var(--black);
+    animation: open 1s ease forwards;
+
+    @keyframes open {
+      from {
+        width: 0;
+      }
+      to {
+        width: 100%;
+      }
+    }
+  }
 `;
 
 const ProfileDetailList = styled.ul`
-  margin-bottom: 2rem;
+  margin-bottom: 20px;
+  border: 2px solid var(--black);
+  padding: 15px;
 
   & > li {
     padding: 1rem 0;
@@ -48,9 +65,7 @@ const AuthButton = styled.button`
   font-weight: bolder;
   font-family: var(--primary-font);
   padding: 1rem 0;
-  border-radius: 1rem;
   background: none;
-  border: 2px solid var(--black);
   color: var(--black);
   cursor: pointer;
   user-select: none;
@@ -58,6 +73,37 @@ const AuthButton = styled.button`
   &:hover {
     background: var(--black);
     color: var(--white);
+  }
+
+  &.login-button {
+    animation: showLoginButton 1s ease forwards;
+  }
+  &.signup-button {
+    animation: showSignupButton 1s ease forwards;
+  }
+  &.logout-button {
+    margin-top: 20px;
+  }
+
+  @keyframes showLoginButton {
+    from {
+      opacity: 0;
+      transform: translateY(20%);
+    }
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+  @keyframes showSignupButton {
+    from {
+      opacity: 0;
+      transform: translateY(-20%);
+    }
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
   }
 `;
 
@@ -99,6 +145,9 @@ const ManageAccountPage = () => {
           <li title={lastName}>Last name : {lastName}</li>
           <li title={displayEmail}>Email : {displayEmail}</li>
           <li title={passwordValue}>Password : {passwordValue}</li>
+          <AuthButton className="logout-button" onClick={handleLogout}>
+            Log out
+          </AuthButton>
         </ProfileDetailList>
       );
     }
@@ -108,14 +157,19 @@ const ManageAccountPage = () => {
     <ProfileSection>
       <ProfileContainer>
         {renderDetailList()}
-        {userAccount ? (
-          <AuthButton onClick={handleLogout}>Log out</AuthButton>
-        ) : (
+        {!userAccount && (
           <AuthButtonsContainer>
-            <AuthButton onClick={() => navigate("/auth/login")}>
+            <AuthButton
+              className="login-button"
+              onClick={() => navigate("/auth/login")}
+            >
               Login
             </AuthButton>
-            <AuthButton onClick={() => navigate("/auth/sign-up")}>
+            <hr className="seperator" />
+            <AuthButton
+              className="signup-button"
+              onClick={() => navigate("/auth/sign-up")}
+            >
               Create Accuont
             </AuthButton>
           </AuthButtonsContainer>
