@@ -35,8 +35,9 @@ const indexReducer = (state, action) => {
 };
 
 let slideCountTime = 0;
+let firstXPos = null;
 
-const Slider = ({ items }) => {
+const Slider = ({ items, controlButtons, touchable }) => {
   const [sliderState, dispatch] = useReducer(indexReducer, sliderInitialState);
 
   const sliderRef = useRef();
@@ -71,26 +72,67 @@ const Slider = ({ items }) => {
     };
   }, []);
 
+  const handleDrag = (event, mouseEvent) => {
+    const xPos = event.pageX;
+    let touchXPos = event.changedTouches && event.changedTouches[0].pageX;
+
+    switch (mouseEvent) {
+      case "mousedown": {
+        firstXPos = xPos;
+        break;
+      }
+      case "mouseup": {
+        const isLeftOrRight =
+          xPos < firstXPos ? "left" : xPos > firstXPos && "right";
+
+        isLeftOrRight === "left"
+          ? slide("right")
+          : isLeftOrRight === "right" && slide("left");
+        break;
+      }
+      case "touchstart": {
+        firstXPos = touchXPos;
+        break;
+      }
+      case "touchend": {
+        const isLeftOrRight =
+          touchXPos < firstXPos ? "left" : touchXPos > firstXPos && "right";
+
+        isLeftOrRight === "left"
+          ? slide("right")
+          : isLeftOrRight === "right" && slide("left");
+        break;
+      }
+      default:
+        console.error("mouse event is invalid");
+    }
+  };
+
   return (
-    <SliderContainer>
+    <SliderContainer
+      onMouseDown={(e) => handleDrag(e, "mousedown")}
+      onMouseUp={(e) => handleDrag(e, "mouseup")}
+      onTouchStart={(e) => handleDrag(e, "touchstart")}
+      onTouchEnd={(e) => handleDrag(e, "touchend")}
+    >
       <CarouselSlider ref={sliderRef}>
         {items.map(({ id, innerElement }) => (
           <SliderItem key={id}>{innerElement}</SliderItem>
         ))}
       </CarouselSlider>
-
-      {[
-        { dir: "left", el: <BiLeftArrow /> },
-        { dir: "right", el: <BiRightArrow /> },
-      ].map((val, index) => (
-        <SlideChangeButton
-          key={index}
-          direction={val.dir}
-          onClick={() => slide(val.dir)}
-        >
-          {val.el}
-        </SlideChangeButton>
-      ))}
+      {controlButtons &&
+        [
+          { dir: "left", el: <BiLeftArrow /> },
+          { dir: "right", el: <BiRightArrow /> },
+        ].map((val, index) => (
+          <SlideChangeButton
+            key={index}
+            direction={val.dir}
+            onClick={() => slide(val.dir)}
+          >
+            {val.el}
+          </SlideChangeButton>
+        ))}
     </SliderContainer>
   );
 };

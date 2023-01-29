@@ -1,7 +1,6 @@
 import { useState, useEffect, useLayoutEffect } from "react";
 import { useRouter } from "wouter";
 import styled from "styled-components";
-import FullPageHeight from "../../components/common/FullPageHeight/FullPageHeight";
 import { fetchFunc } from "../../services/requestServices";
 import NotFoundPage from "../NotFoundPage/NotFoundPage";
 import Slider from "../../container/Slider/Slider";
@@ -10,18 +9,21 @@ import Stars from "../../components/common/Product/Stars";
 import Price from "../../components/Price/Price";
 import { flexbox } from "../../styles/extendableStyles/ExtendableStyles.styled";
 import ItemColors from "../../components/ItemColors/ItemColors";
+import ItemDescription from "../../components/ItemDescription/ItemDescription";
 
 const Container = styled.div`
-  width: 92.5%;
+  width: 90%;
   height: fit-content;
   margin: auto;
+  padding: 10px 0 50px;
 
   & .item-title {
     font-size: 35px;
-    padding: 1rem 0;
+    padding-top: 1rem;
   }
 
   & .item-rates {
+    margin: 1rem 0;
     ${flexbox({ justify: "space-between" })}
   }
 `;
@@ -104,10 +106,11 @@ const ProductOverview = ({ params }) => {
                 </ImageContainer>
               ),
             }))}
+            touchable
           />
           <h1 className="item-title">{firstLetterUpperCase(shoe ?? type)}</h1>
           <div className="item-rates">
-            <Price price={price} priceType={priceType} />
+            <Price price={price} priceType={priceType} fontSize="27.5px" />
             <Stars filledStars={itemStars} />
           </div>
           {colorsState && (
@@ -116,6 +119,19 @@ const ProductOverview = ({ params }) => {
               handleColorClick={handleColorClick}
             />
           )}
+          <ItemDescription style={{ marginTop: "1.5rem" }}>
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Neque unde
+            autem non, officia atque modi, magni animi iusto suscipit
+            repellendus similique nostrum commodi nobis ab. Accusantium
+            assumenda minima quasi possimus eligendi, et fuga consectetur totam
+            blanditiis, incidunt quas nam maxime aut voluptates. Excepturi id
+            cupiditate ab deserunt iste in repudiandae mollitia nam aliquam,
+            voluptas obcaecati error? Officia perferendis expedita odio, eos
+            tenetur tempora debitis necessitatibus vel totam velit. Odit vero ea
+            earum, adipisci illum enim dolorum beatae blanditiis eius minus, in
+            esse vel, perspiciatis cum culpa? Quod minima maiores consequatur
+            natus sequi, illum, officiis deleniti repellendus in porro illo cum.
+          </ItemDescription>
         </Container>
       ) : (
         <NotFoundPage />
@@ -123,7 +139,7 @@ const ProductOverview = ({ params }) => {
     }
   };
 
-  return <FullPageHeight>{renderElements()}</FullPageHeight>;
+  return renderElements();
 };
 
 export default ProductOverview;
