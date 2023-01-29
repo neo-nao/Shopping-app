@@ -10,24 +10,35 @@ const PriceContainer = styled.div`
   }
 `;
 
-const PriceTitle = ({ priceType, onDiscount, children }) => {
+const PriceTitle = ({ priceType, onDiscount, fontSize = "20px", children }) => {
   return (
-    <h1
+    <h2
       style={{
         textDecoration: onDiscount && "line-through",
         color: onDiscount && "var(--gray)",
+        fontSize,
       }}
     >
       <span style={{ marginRight: "2.5px" }}>{children}</span>
       {priceType === "USD" && "$"}
-    </h1>
+    </h2>
   );
 };
 
-const Price = ({ isDiscount, offPrice, price, priceType = "USD" }) => {
+const Price = ({
+  isDiscount,
+  offPrice,
+  price,
+  priceType = "USD",
+  fontSize,
+}) => {
   return (
     <PriceContainer className="price-container">
-      <PriceTitle priceType={priceType} onDiscount={isDiscount}>
+      <PriceTitle
+        priceType={priceType}
+        onDiscount={isDiscount}
+        fontSize={fontSize}
+      >
         {price}
       </PriceTitle>
       {isDiscount && <PriceTitle priceType={priceType}>{offPrice}</PriceTitle>}

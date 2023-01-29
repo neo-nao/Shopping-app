@@ -25,6 +25,7 @@ const HomePage = () => {
               innerElement: <ThirdSlideElements />,
             },
           ]}
+          controlButtons
         />
       </HomeSliderContainer>
       <OfferPreview />
