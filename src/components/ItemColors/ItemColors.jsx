@@ -6,14 +6,14 @@ const Color = styled.div`
   width: 25px;
   height: 25px;
   border-radius: 50%;
-  box-shadow: 0 0 0 ${(props) => (props.active ? "3px" : "1px")} var(--black);
+  box-shadow: 0 0 0 ${(props) => (props.active ? "4px" : "1px")} var(--black);
   background-color: ${(props) => props.color};
   position: relative;
   overflow: hidden;
   cursor: pointer;
 
   &:not(:last-child) {
-    margin-right: 7.5px;
+    margin-right: 10px;
   }
 
   &::before {

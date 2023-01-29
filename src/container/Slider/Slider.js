@@ -108,13 +108,17 @@ const Slider = ({ items, controlButtons, touchable }) => {
     }
   };
 
+  const touchableEvents = touchable
+    ? {
+        onMouseDown: (e) => handleDrag(e, "mousedown"),
+        onMouseUp: (e) => handleDrag(e, "mouseup"),
+        onTouchStart: (e) => handleDrag(e, "touchstart"),
+        onTouchEnd: (e) => handleDrag(e, "touchend"),
+      }
+    : {};
+
   return (
-    <SliderContainer
-      onMouseDown={(e) => handleDrag(e, "mousedown")}
-      onMouseUp={(e) => handleDrag(e, "mouseup")}
-      onTouchStart={(e) => handleDrag(e, "touchstart")}
-      onTouchEnd={(e) => handleDrag(e, "touchend")}
-    >
+    <SliderContainer {...touchableEvents}>
       <CarouselSlider ref={sliderRef}>
         {items.map(({ id, innerElement }) => (
           <SliderItem key={id}>{innerElement}</SliderItem>
