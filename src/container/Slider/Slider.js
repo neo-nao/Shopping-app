@@ -37,7 +37,7 @@ const indexReducer = (state, action) => {
 let slideCountTime = 0;
 let firstXPos = null;
 
-const Slider = ({ items, controlButtons, touchable }) => {
+const Slider = ({ items, controlButtons, touchable, ...rest }) => {
   const [sliderState, dispatch] = useReducer(indexReducer, sliderInitialState);
 
   const sliderRef = useRef();
@@ -118,7 +118,7 @@ const Slider = ({ items, controlButtons, touchable }) => {
     : {};
 
   return (
-    <SliderContainer {...touchableEvents}>
+    <SliderContainer {...touchableEvents} {...rest}>
       <CarouselSlider ref={sliderRef}>
         {items.map(({ id, innerElement }) => (
           <SliderItem key={id}>{innerElement}</SliderItem>

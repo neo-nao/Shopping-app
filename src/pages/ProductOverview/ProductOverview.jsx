@@ -7,15 +7,20 @@ import Slider from "../../container/Slider/Slider";
 import { firstLetterUpperCase } from "../../utils/appUtils";
 import Stars from "../../components/common/Product/Stars";
 import Price from "../../components/Price/Price";
+import AddItemButton from "../../components/AddItemButton/AddItemButton";
 import { flexbox } from "../../styles/extendableStyles/ExtendableStyles.styled";
 import ItemColors from "../../components/ItemColors/ItemColors";
 import ItemDescription from "../../components/ItemDescription/ItemDescription";
 
 const Container = styled.div`
-  width: 90%;
+  width: 100%;
   height: fit-content;
-  margin: auto;
-  padding: 10px 0 50px;
+  padding: 10px 0 0;
+
+  & > .page-content-container {
+    margin: auto;
+    width: 92.5%;
+  }
 
   & .item-title {
     font-size: 35px;
@@ -38,6 +43,18 @@ const ImageContainer = styled.div`
     height: 100%;
     object-fit: cover;
   }
+`;
+
+const AddItemButtonContainer = styled.div`
+  position: sticky;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 75px;
+  border-top: 2px solid var(--gray);
+  background: var(--white);
+  margin-top: 25px;
+  ${flexbox()}
 `;
 
 const ProductOverview = ({ params }) => {
@@ -87,11 +104,13 @@ const ProductOverview = ({ params }) => {
   };
 
   const renderElements = () => {
-    if (product) {
-      const { type, shoe, price, priceType, shoeImages, itemStars } = product;
+    if (!product) return;
 
-      return isIdInt ? (
-        <Container>
+    const { type, shoe, price, priceType, shoeImages, itemStars } = product;
+
+    return isIdInt ? (
+      <Container>
+        <div className="page-content-container">
           <Slider
             items={shoeImages.map((shoeImage, idx) => ({
               id: "slide-" + idx,
@@ -132,11 +151,17 @@ const ProductOverview = ({ params }) => {
             esse vel, perspiciatis cum culpa? Quod minima maiores consequatur
             natus sequi, illum, officiis deleniti repellendus in porro illo cum.
           </ItemDescription>
-        </Container>
-      ) : (
-        <NotFoundPage />
-      );
-    }
+        </div>
+        <AddItemButtonContainer>
+          <AddItemButton
+            itemId={product.id}
+            style={{ height: "65%", width: "92.5%" }}
+          />
+        </AddItemButtonContainer>
+      </Container>
+    ) : (
+      <NotFoundPage />
+    );
   };
 
   return renderElements();

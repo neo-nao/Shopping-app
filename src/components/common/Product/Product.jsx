@@ -1,10 +1,5 @@
 import { memo } from "react";
-import { Link, useLocation, useRouter } from "wouter";
-import { useSelector, useDispatch } from "react-redux";
-import {
-  asyncPostUserItem,
-  removeUserItemPending,
-} from "../../../redux/user/userSlice";
+import { Link, useRouter } from "wouter";
 import styled from "styled-components";
 import { flexbox } from "../../../styles/extendableStyles/ExtendableStyles.styled";
 import Button from "../Button/Button";
@@ -12,6 +7,7 @@ import { IoAddSharp } from "react-icons/io5";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import Price from "../../Price/Price";
 import ProductTitle from "../../ProductTitle/ProductTitle";
+import AddItemButton from "../../AddItemButton/AddItemButton";
 
 const Item = styled.div`
   transition: border 0.2s linear;
@@ -83,35 +79,7 @@ const Product = ({
   shoeImages,
   itemStars = 0,
 }) => {
-  const userAccount = useSelector((state) => state.user.user);
-
-  const dispatch = useDispatch();
-
-  const [, navigate] = useLocation();
   const router = useRouter();
-
-  const checkIsItemAdded = () => {
-    return userAccount.cart.items.find((item) => item.productID === id) ?? null;
-  };
-
-  const handleAddToCart = (e) => {
-    e.preventDefault();
-    if (userAccount) {
-      const userToken = userAccount.userToken;
-      const addedItem = checkIsItemAdded();
-      !addedItem
-        ? dispatch(asyncPostUserItem({ productID: id, userToken: userToken }))
-        : dispatch(
-            removeUserItemPending({ userToken, productID: addedItem.productID })
-          );
-    } else {
-      navigate("/auth/login");
-    }
-  };
-
-  const isItemAdded =
-    userAccount &&
-    userAccount.cart.items.map((item) => item.productID).indexOf(id) > -1;
 
   return (
     <Item>
@@ -149,18 +117,7 @@ const Product = ({
               price={price}
               priceType={priceType}
             />
-            <Button onClick={handleAddToCart} active={isItemAdded}>
-              <span style={{ padding: "0 5px" }}>
-                {isItemAdded ? "Remove" : "Add"}
-              </span>
-              <IoAddSharp
-                style={{
-                  transition: "transform .2s ease",
-                  fontSize: "22.5px",
-                  transform: isItemAdded ? "rotate(45deg)" : "",
-                }}
-              />
-            </Button>
+            <AddItemButton itemId={id} />
           </div>
         </DescriptionSection>
       </Link>
