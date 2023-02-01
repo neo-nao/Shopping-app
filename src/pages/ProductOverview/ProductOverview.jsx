@@ -1,6 +1,5 @@
 import { useState, useEffect, useLayoutEffect } from "react";
 import { useRouter } from "wouter";
-import styled from "styled-components";
 import { fetchFunc } from "../../services/requestServices";
 import NotFoundPage from "../NotFoundPage/NotFoundPage";
 import Slider from "../../container/Slider/Slider";
@@ -8,54 +7,13 @@ import { firstLetterUpperCase } from "../../utils/appUtils";
 import Stars from "../../components/common/Product/Stars";
 import Price from "../../components/Price/Price";
 import AddItemButton from "../../components/AddItemButton/AddItemButton";
-import { flexbox } from "../../styles/extendableStyles/ExtendableStyles.styled";
 import ItemColors from "../../components/ItemColors/ItemColors";
 import ItemDescription from "../../components/ItemDescription/ItemDescription";
-
-const Container = styled.div`
-  width: 100%;
-  height: fit-content;
-  padding: 10px 0 0;
-
-  & > .page-content-container {
-    margin: auto;
-    width: 92.5%;
-  }
-
-  & .item-title {
-    font-size: 35px;
-    padding-top: 1rem;
-  }
-
-  & .item-rates {
-    margin: 1rem 0;
-    ${flexbox({ justify: "space-between" })}
-  }
-`;
-
-const ImageContainer = styled.div`
-  width: 100%;
-  height: 300px;
-  user-select: none;
-
-  .item-img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-`;
-
-const AddItemButtonContainer = styled.div`
-  position: sticky;
-  left: 0;
-  bottom: 0;
-  width: 100%;
-  height: 75px;
-  border-top: 2px solid var(--gray);
-  background: var(--white);
-  margin-top: 25px;
-  ${flexbox()}
-`;
+import {
+  Container,
+  ImageContainer,
+  AddItemButtonContainer,
+} from "./ProductOverviewStyles.styled";
 
 const ProductOverview = ({ params }) => {
   const [product, setProduct] = useState(null);
@@ -111,33 +69,41 @@ const ProductOverview = ({ params }) => {
     return isIdInt ? (
       <Container>
         <div className="page-content-container">
-          <Slider
-            items={shoeImages.map((shoeImage, idx) => ({
-              id: "slide-" + idx,
-              innerElement: (
-                <ImageContainer>
-                  <img
-                    src={shoeImage}
-                    alt="shoe"
-                    className="item-img"
-                    draggable="false"
-                  />
-                </ImageContainer>
-              ),
-            }))}
-            touchable
-          />
-          <h1 className="item-title">{firstLetterUpperCase(shoe ?? type)}</h1>
-          <div className="item-rates">
-            <Price price={price} priceType={priceType} fontSize="27.5px" />
-            <Stars filledStars={itemStars} />
+          <div className="item-details-container">
+            <div className="slider-container">
+              <Slider
+                items={shoeImages.map((shoeImage, idx) => ({
+                  id: "slide-" + idx,
+                  innerElement: (
+                    <ImageContainer>
+                      <img
+                        src={shoeImage}
+                        alt="shoe"
+                        className="item-img"
+                        draggable="false"
+                      />
+                    </ImageContainer>
+                  ),
+                }))}
+                touchable
+              />
+            </div>
+            <section className="item-details-section">
+              <h1 className="item-title">
+                {firstLetterUpperCase(shoe ?? type)}
+              </h1>
+              <div className="item-rates">
+                <Price price={price} priceType={priceType} fontSize="27.5px" />
+                <Stars filledStars={itemStars} />
+              </div>
+              {colorsState && (
+                <ItemColors
+                  colors={colorsState}
+                  handleColorClick={handleColorClick}
+                />
+              )}
+            </section>
           </div>
-          {colorsState && (
-            <ItemColors
-              colors={colorsState}
-              handleColorClick={handleColorClick}
-            />
-          )}
           <ItemDescription style={{ marginTop: "1.5rem" }}>
             Lorem ipsum dolor sit amet consectetur adipisicing elit. Neque unde
             autem non, officia atque modi, magni animi iusto suscipit
@@ -155,7 +121,13 @@ const ProductOverview = ({ params }) => {
         <AddItemButtonContainer>
           <AddItemButton
             itemId={product.id}
-            style={{ height: "65%", width: "92.5%" }}
+            text="Add item"
+            activeText="Remove item"
+            style={{
+              height: "calc(100% - 20px)",
+              width: "calc(100% - 20px)",
+              fontSize: "22.5px",
+            }}
           />
         </AddItemButtonContainer>
       </Container>

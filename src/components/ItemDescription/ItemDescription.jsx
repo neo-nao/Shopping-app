@@ -1,7 +1,8 @@
 import styled from "styled-components";
 
 const DescriptionContainer = styled.div`
-  width: clamp(160px, 100%, 375px);
+  min-width: 160px;
+  width: 100%;
   margin: auto;
 
   & > h3 {
