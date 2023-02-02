@@ -102,21 +102,29 @@ const ProductOverview = ({ params }) => {
                   handleColorClick={handleColorClick}
                 />
               )}
+              <ItemDescription style={{ marginTop: "1.5rem" }}>
+                A great, awesome-designed and comfortable shoe that fits your
+                feet and makes you feel motivated and ready to go for work out.
+                Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                Aliquam, nostrum. Nam dignissimos tenetur amet vel, non sed
+                quidem id provident. Lorem, ipsum dolor sit amet consectetur
+                adipisicing elit. Recusandae, temporibus? Eaque alias, eum
+                adipisci incidunt omnis rem officiis obcaecati unde.
+              </ItemDescription>
+              <div className="add-item-button-container">
+                <AddItemButton
+                  itemId={product.id}
+                  text="Add item"
+                  activeText="Remove item"
+                  style={{
+                    height: "45px",
+                    width: "100%",
+                    fontSize: "22.5px",
+                  }}
+                />
+              </div>
             </section>
           </div>
-          <ItemDescription style={{ marginTop: "1.5rem" }}>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Neque unde
-            autem non, officia atque modi, magni animi iusto suscipit
-            repellendus similique nostrum commodi nobis ab. Accusantium
-            assumenda minima quasi possimus eligendi, et fuga consectetur totam
-            blanditiis, incidunt quas nam maxime aut voluptates. Excepturi id
-            cupiditate ab deserunt iste in repudiandae mollitia nam aliquam,
-            voluptas obcaecati error? Officia perferendis expedita odio, eos
-            tenetur tempora debitis necessitatibus vel totam velit. Odit vero ea
-            earum, adipisci illum enim dolorum beatae blanditiis eius minus, in
-            esse vel, perspiciatis cum culpa? Quod minima maiores consequatur
-            natus sequi, illum, officiis deleniti repellendus in porro illo cum.
-          </ItemDescription>
         </div>
         <AddItemButtonContainer>
           <AddItemButton

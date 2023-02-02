@@ -49,7 +49,7 @@ const Footer = () => {
               </li>
               <li>
                 <a
-                  href="https://github.com/lucy-chann"
+                  href="https://github.com/naomi-sann"
                   rel="noreferrer noopener"
                   target="_blank"
                 >
