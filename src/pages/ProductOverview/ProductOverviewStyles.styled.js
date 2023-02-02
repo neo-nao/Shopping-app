@@ -2,13 +2,13 @@ import styled from "styled-components";
 import { flexbox } from "../../styles/extendableStyles/ExtendableStyles.styled";
 
 const Container = styled.div`
-  width: 100%;
-  height: 100%;
-  padding: 10px 0 0;
-
   & > .page-content-container {
-    margin: auto;
+    margin: 10px auto;
     width: 92.5%;
+  }
+
+  & .slider-container {
+    height: 300px;
   }
 
   & .item-title {
@@ -21,42 +21,65 @@ const Container = styled.div`
     ${flexbox({ justify: "space-between" })}
   }
 
-  @media (min-width: 750px) {
+  & .add-item-button-container {
+    display: none;
+    margin-top: 25px;
+  }
+
+  @media (min-width: 375px) {
+    & .slider-container {
+      height: 80vw;
+    }
+  }
+
+  @media (min-width: 700px) {
+    & .slider-container {
+      width: 350px;
+      height: 350px;
+      max-width: 400px;
+      flex-grow: 3;
+      flex-shrink: 0;
+    }
+
+    & .item-details-container {
+      ${flexbox({ align: "flex-start" })}
+    }
+
+    & .item-details-section {
+      height: 100%;
+      margin-left: 20px;
+    }
+
+    & .add-item-button-container {
+      display: block;
+    }
+  }
+
+  @media (min-width: 950px) {
+    & .page-content-container {
+      width: clamp(375px, 80%, 1500px);
+    }
+
     & .slider-container {
       width: 400px;
       height: 400px;
     }
 
-    & .item-details-container {
-      ${flexbox()}
-    }
-
     & .item-details-section {
-      height: 100%;
-      flex-grow: 1;
-      margin-left: 20px;
+      margin-left: 30px;
     }
-  }
-
-  @media (min-width: 950px) {
-    width: clamp(375px, 80%, 1500px);
-    margin: auto;
   }
 `;
 
 const ImageContainer = styled.div`
   width: 100%;
-  height: 300px;
+  height: 100%;
   user-select: none;
 
   .item-img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-  }
-
-  @media (min-width: 950px) {
-    height: 100%;
   }
 `;
 
@@ -70,6 +93,10 @@ const AddItemButtonContainer = styled.div`
   background: var(--white);
   margin-top: 25px;
   ${flexbox()}
+
+  @media (min-width:700px) {
+    display: none;
+  }
 `;
 
 export { Container, ImageContainer, AddItemButtonContainer };
