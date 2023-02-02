@@ -1,4 +1,4 @@
-import { useState, useEffect, useLayoutEffect, memo, useCallback } from "react";
+import { useState, useEffect, useLayoutEffect } from "react";
 import { useRouter } from "wouter";
 import { fetchFunc } from "../../services/requestServices";
 import NotFoundPage from "../NotFoundPage/NotFoundPage";
