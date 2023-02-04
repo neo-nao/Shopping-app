@@ -93,8 +93,9 @@ const AddItemButtonContainer = styled.div`
   background: var(--white);
   margin-top: 25px;
   ${flexbox()}
+  z-index:2;
 
-  @media (min-width:700px) {
+  @media (min-width: 700px) {
     display: none;
   }
 `;
