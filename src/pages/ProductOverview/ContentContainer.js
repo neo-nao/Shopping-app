@@ -10,6 +10,8 @@ import { firstLetterUpperCase } from "../../utils/appUtils";
 const ContentContainer = ({ item, colorsState, handleColorClick }) => {
   const { id, shoe, type, price, priceType, shoeImages, itemStars } = item;
 
+  const { color } = colorsState.find((c) => c.active) ?? colorsState[0];
+
   return (
     <div className="page-content-container">
       <div className="item-details-container">
@@ -55,6 +57,7 @@ const ContentContainer = ({ item, colorsState, handleColorClick }) => {
           <div className="add-item-button-container">
             <AddItemButton
               itemId={id}
+              itemColor={color}
               text="Add item"
               activeText="Remove item"
               style={{

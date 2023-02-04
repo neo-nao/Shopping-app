@@ -2,8 +2,6 @@ import { memo } from "react";
 import { Link, useRouter } from "wouter";
 import styled from "styled-components";
 import { flexbox } from "../../../styles/extendableStyles/ExtendableStyles.styled";
-import Button from "../Button/Button";
-import { IoAddSharp } from "react-icons/io5";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import Price from "../../Price/Price";
 import ProductTitle from "../../ProductTitle/ProductTitle";
@@ -117,7 +115,7 @@ const Product = ({
               price={price}
               priceType={priceType}
             />
-            <AddItemButton itemId={id} />
+            <AddItemButton itemId={id} itemColor={colors && colors[0]} />
           </div>
         </DescriptionSection>
       </Link>

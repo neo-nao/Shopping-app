@@ -13,9 +13,11 @@ const asyncFetchUserCart = createAsyncThunk(
       const userOwnedItems =
         (await fetchFunc(`/usersCart?userToken=${payload}`)) || [];
 
-      return await userOwnedItems.map(({ id, productID, quantity }) => {
-        return { id, productID, quantity };
-      });
+      return await userOwnedItems.map(
+        ({ id, productID, itemColor, quantity }) => {
+          return { id, productID, itemColor, quantity };
+        }
+      );
     } catch (err) {
       return rejectWithValue(err);
     }
@@ -158,10 +160,11 @@ const userSlice = createSlice({
       })
       .addCase(
         asyncPostUserItem.fulfilled,
-        (state, { payload: { id, productID, quantity } }) => {
+        (state, { payload: { id, productID, itemColor, quantity } }) => {
           state.user.cart.items.push({
             id,
             productID,
+            itemColor,
             quantity,
           });
         }

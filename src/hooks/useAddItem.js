@@ -5,7 +5,7 @@ import {
   removeUserItemPending,
 } from "../redux/user/userSlice";
 
-const useAddItem = (itemId) => {
+const useAddItem = (itemId, itemColor) => {
   const userAccount = useSelector((state) => state.user.user);
 
   const dispatch = useDispatch();
@@ -22,7 +22,11 @@ const useAddItem = (itemId) => {
       const addedItem = checkIsItemAdded();
       !addedItem
         ? dispatch(
-            asyncPostUserItem({ productID: itemId, userToken: userToken })
+            asyncPostUserItem({
+              productID: itemId,
+              itemColor,
+              userToken: userToken,
+            })
           )
         : dispatch(
             removeUserItemPending({ userToken, productID: addedItem.productID })

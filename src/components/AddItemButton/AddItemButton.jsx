@@ -4,11 +4,12 @@ import { IoAddSharp } from "react-icons/io5";
 
 const AddItemButton = ({
   itemId,
+  itemColor,
   text = "Add",
   activeText = "Remove",
   style,
 }) => {
-  const [isItemAdded, addItem] = useAddItem(itemId);
+  const [isItemAdded, addItem] = useAddItem(itemId, itemColor);
 
   return (
     <Button onClick={addItem} active={isItemAdded} style={style}>

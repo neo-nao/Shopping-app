@@ -1,4 +1,4 @@
-import { useState, useEffect, useLayoutEffect, memo, useCallback } from "react";
+import { useState, useEffect, useLayoutEffect } from "react";
 import { useRouter } from "wouter";
 import { fetchFunc } from "../../services/requestServices";
 import NotFoundPage from "../NotFoundPage/NotFoundPage";
@@ -59,6 +59,9 @@ const ProductOverview = ({ params }) => {
 
   const renderElements = () => {
     if (!product) return;
+    if (!colorsState) return;
+
+    const { color } = colorsState.find((c) => c.active) ?? colorsState[0];
 
     return isIdInt ? (
       <Container>
@@ -70,6 +73,7 @@ const ProductOverview = ({ params }) => {
         <AddItemButtonContainer>
           <AddItemButton
             itemId={product.id}
+            itemColor={color}
             text="Add item"
             activeText="Remove item"
             style={{

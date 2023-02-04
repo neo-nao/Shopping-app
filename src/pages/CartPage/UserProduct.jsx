@@ -34,7 +34,7 @@ const PriceContainer = styled.div`
   }
 `;
 
-const UserProduct = ({ product }) => {
+const UserProduct = ({ userItem: { product, itemColor } }) => {
   const userToken = useSelector((state) => state.user.user.userToken);
   const dispatch = useDispatch();
 
@@ -56,9 +56,7 @@ const UserProduct = ({ product }) => {
             <ProductParagraph>Category : {product.category}</ProductParagraph>
           </li>
           <li>
-            <ProductParagraph>
-              Color : {product.color.join(", ")}
-            </ProductParagraph>
+            <ProductParagraph>Color : {itemColor}</ProductParagraph>
           </li>
         </ul>
         <ItemIntegrationContainer>

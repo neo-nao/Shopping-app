@@ -61,13 +61,13 @@ const CartPage = () => {
     if (user) {
       if (user.cart.items.length > 0 && userProducts.length)
         for (let i = 0; i < user.cart.items.length; i++) {
-          const { id, quantity, productID } = user.cart.items[i];
+          const { id, quantity, itemColor, productID } = user.cart.items[i];
 
           const product = userProducts.find((p) => p.id === productID);
 
           userProductElements.push(
             completeOverview ? (
-              <UserProduct key={id} product={product} quantity={quantity} />
+              <UserProduct key={id} userItem={{ product, itemColor }} />
             ) : (
               <ShortItemDetail key={id} product={product} quantity={quantity} />
             )
