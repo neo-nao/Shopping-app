@@ -1,4 +1,4 @@
-import { useState, useEffect, memo, useMemo, lazy, Suspense } from "react";
+import { useEffect, memo, useMemo, lazy, Suspense, useReducer } from "react";
 import { useDispatch } from "react-redux";
 import { useLocation } from "wouter";
 import Dropdown from "../../components/common/Dropdown/Dropdown";
@@ -6,179 +6,79 @@ import {
   ItemsContainer,
   FilterSection,
   selectDropdownStyles,
+  filterDropdownDatas,
 } from "./productsContainerDatas";
-import { MdOutlineDone } from "react-icons/md";
 import Loading from "../../components/common/Loading/Loading";
 import FullPageHeight from "../../components/common/FullPageHeight/FullPageHeight";
 import MessageBox from "../../components/common/MessageBox/MessageBox";
 import { CgUnavailable } from "react-icons/cg";
+import useFilterItem, { availableFilters } from "../../hooks/useFilterItem";
 
 const Product = lazy(() => import("../../components/common/Product/Product"));
 
-const ProductsContainer = ({
-  productsFetchState: { loading, error, products },
-  getAsyncProducts,
-  filter: {
-    filteredProducts,
-    actions: { filterProducts, clearFilter, resetFilter },
-  },
-}) => {
-  const [dynamicURL, setDynamicURL] = useState(null);
+const initialFilterParams = [];
 
-  const [currentOption, setCurrentOption] = useState(null);
+const filterParamsReducer = (state, action) => {
+  switch (action.type) {
+    case "addFilter": {
+      const filterInput = action.payload.filterInput;
+      const filterValue = action.payload.filterValue;
 
-  const initialStateCopy = useMemo(
-    () => [
-      {
-        id: 1,
-        openerText: "Category",
-        options: [
-          { id: 1, text: "Unset", accessText: "Unset" },
-          { id: 2, text: "Athlete", accessText: "Athlete" },
-          { id: 3, text: "Walking", accessText: "Walking" },
-          { id: 4, text: "Hiking", accessText: "Hiking" },
-          { id: 5, text: "Dancing", accessText: "Dancing" },
-        ],
-      },
-      {
-        id: 2,
-        openerText: "Type",
-        options: [
-          { id: 1, text: "Unset", accessText: "Unset" },
-          { id: 2, text: "Sneaker", accessText: "Sneaker" },
-          { id: 3, text: "Chuck taylor", accessText: "Chuck taylor" },
-          { id: 4, text: "Boots", accessText: "Boots" },
-          { id: 5, text: "Kids", accessText: "Kids" },
-          { id: 6, text: "Formal", accessText: "Formal" },
-        ],
-        dropdownMenuStyle: `
-  ${selectDropdownStyles.dropdownMenuStyle}
-  @media (max-width:355px) and (min-width:261px){
-  left: calc(-100% - 20px);
-  }
-  `,
-      },
-      {
-        id: 3,
-        openerText: "Color",
-        options: [
-          { id: 1, text: "Unset", accessText: "Unset" },
-          { id: 2, text: "Red", accessText: "Red" },
-          { id: 3, text: "Orange", accessText: "Orange" },
-          { id: 4, text: "Yellow", accessText: "Yellow" },
-          { id: 5, text: "Green", accessText: "Green" },
-          { id: 6, text: "Blue", accessText: "Blue" },
-          { id: 7, text: "Purple", accessText: "Purple" },
-          { id: 8, text: "Brown", accessText: "Brown" },
-          { id: 9, text: "Black", accessText: "Black" },
-          { id: 10, text: "White", accessText: "White" },
-        ],
-        dropdownMenuStyle: `
-  ${selectDropdownStyles.dropdownMenuStyle}
-  @media (max-width:500px) and (min-width:378px){
-  left: calc(-100% - 11px) !important;
-  }
-  @media (max-width:266px){
-  left: 0;
-  }
-  `,
-      },
-    ],
-    []
-  );
+      let isFilterAdded = { isAdded: false, index: null };
 
-  const [filterOptionsData, setFilterOptionsData] = useState(initialStateCopy);
-
-  const dispatch = useDispatch();
-
-  const [, navigate] = useLocation();
-
-  useMemo(() => {
-    if (currentOption) {
-      const optionSelectedFilters = filteredProducts[currentOption];
-
-      const filterDataCopy = [...filterOptionsData];
-
-      const currentFilterInputIndex = filterDataCopy.findIndex(
-        (filterData) => filterData.openerText.toLowerCase() === currentOption
-      );
-
-      const currentFilterInput = filterDataCopy[currentFilterInputIndex];
-
-      const filteredOptions = currentFilterInput.options.filter((option) =>
-        optionSelectedFilters.includes(option.accessText)
-      );
-
-      currentFilterInput.options.forEach((option) => {
-        option.text = option.accessText;
-      });
-
-      filteredOptions.forEach(
-        (option) =>
-          (option.text = (
-            <>
-              {option.text}
-              <MdOutlineDone />
-            </>
-          ))
-      );
-
-      filterDataCopy[currentFilterInputIndex] = currentFilterInput;
-
-      let fullURL = "";
-
-      const handleIt = (key, filterValue) => {
-        const url = new URLSearchParams({
-          [key]: filterValue.toLowerCase(),
-        }).toString();
-
-        fullURL += (!fullURL ? "?" : "&") + url;
-      };
-
-      for (const key in filteredProducts) {
-        filteredProducts[key].forEach((filterValue) =>
-          handleIt(key, filterValue)
-        );
+      for (let i = 0; i < state.length; i++) {
+        if (state[i][0] === filterInput && state[i][1] === filterValue)
+          isFilterAdded = { isAdded: true, index: i };
       }
 
-      setDynamicURL(fullURL);
+      if (isFilterAdded.isAdded)
+        return state.filter((filter, idx) => idx !== isFilterAdded.index);
 
-      setFilterOptionsData(filterDataCopy);
+      return [...state, [filterInput, filterValue]];
     }
-  }, [filteredProducts]);
+    case "resetFilter": {
+      return [];
+    }
+    default:
+      return state;
+  }
+};
+
+const ProductsContainer = ({
+  productsFetchState: { loading, error, products },
+  filter,
+}) => {
+  const [filterParams, filterParamDispatcher] = useReducer(
+    filterParamsReducer,
+    initialFilterParams
+  );
+  useFilterItem(filter);
+  const dispatch = useDispatch();
+  const [, navigate] = useLocation();
 
   useEffect(() => {
-    dynamicURL && navigate(dynamicURL);
-    dynamicURL !== null && dispatch(getAsyncProducts(dynamicURL));
-  }, [dynamicURL]);
+    const searchParameter = filterParams.length
+      ? "?" + filterParams.map((fp) => fp.join("=")).join("&")
+      : "";
 
-  useEffect(() => {
-    if (products) {
-      !products.length && dispatch(getAsyncProducts(dynamicURL));
-    } else {
-      dispatch(getAsyncProducts(dynamicURL));
-    }
-
-    return () => {
-      dispatch(resetFilter());
-    };
-  }, []);
+    navigate(searchParameter);
+  }, [filterParams]);
 
   const handleFilterSelect = (handlerKey, options, itemId) => {
     const selectedOption = options.find((option) => option.id === itemId);
 
-    setCurrentOption(handlerKey);
     if (selectedOption.accessText !== "Unset") {
-      dispatch(
-        filterProducts({
-          tagKey: handlerKey,
-          tagValue: selectedOption.accessText,
-        })
-      );
+      filterParamDispatcher({
+        type: "addFilter",
+        payload: {
+          filterInput: handlerKey.toLowerCase(),
+          filterValue: selectedOption.accessText.toLowerCase(),
+        },
+      });
     } else {
-      if (filteredProducts[handlerKey].length) {
-        dispatch(clearFilter(handlerKey));
-      }
+      filterParamDispatcher({
+        type: "resetFilter",
+      });
     }
   };
 
@@ -231,33 +131,22 @@ const ProductsContainer = ({
             </FullPageHeight>
           }
         >
-          {!loading && !error && products && (
-            <FilterSection>
-              {filterOptionsData.map(
-                ({ id, openerText, options, dropdownMenuStyle }) => {
-                  return (
-                    <Dropdown
-                      key={id}
-                      openerButtonText={openerText}
-                      dropdownItemslist={options}
-                      handleDropdownItemClick={(itemId) =>
-                        handleFilterSelect(
-                          openerText.toLowerCase(),
-                          options,
-                          itemId
-                        )
-                      }
-                      {...selectDropdownStyles}
-                      dropdownMenuStyle={
-                        dropdownMenuStyle ??
-                        selectDropdownStyles.dropdownMenuStyle
-                      }
-                    />
-                  );
-                }
-              )}
-            </FilterSection>
-          )}
+          {/* {!loading && !error && products && ( */}
+          <FilterSection>
+            {filterDropdownDatas.map(
+              ({ id, openerText, dropdownMenuStyle }) => {
+                return (
+                  <Dropdown
+                    key={id}
+                    dropdownItemslist={availableFilters}
+                    openerButtonText={openerText}
+                    {...selectDropdownStyles}
+                  />
+                );
+              }
+            )}
+          </FilterSection>
+          {/* )} */}
           {renderItems}
         </Suspense>
       </section>

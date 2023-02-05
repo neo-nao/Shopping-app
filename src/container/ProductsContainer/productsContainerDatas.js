@@ -47,4 +47,24 @@ left: -1px;
 `,
 };
 
-export { ItemsContainer, FilterSection, selectDropdownStyles };
+const filterDropdownDatas = [
+  {
+    id: 1,
+    openerText: "Category",
+  },
+  {
+    id: 2,
+    openerText: "Type",
+  },
+  {
+    id: 3,
+    openerText: "Color",
+  },
+];
+
+export {
+  ItemsContainer,
+  FilterSection,
+  selectDropdownStyles,
+  filterDropdownDatas,
+};
