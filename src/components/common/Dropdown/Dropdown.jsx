@@ -17,6 +17,7 @@ const Dropdown = ({
   dropdownMenuStyle,
   dropdownItemStyle,
   closeOnClick,
+  toggleable,
 }) => {
   const [isDropdownOpened, setIsDropdownOpened] = useState(false);
 
@@ -68,7 +69,7 @@ const Dropdown = ({
         dropdownMenuStyle={dropdownMenuStyle}
       >
         <DropdownList dropdownItemStyle={dropdownItemStyle}>
-          {dropdownItemslist.map(({ id, to, text }) => {
+          {dropdownItemslist.map(({ id, to, text, isToggled }) => {
             return (
               <li key={id}>
                 {to ? (
@@ -79,7 +80,9 @@ const Dropdown = ({
                     {text}
                   </Link>
                 ) : (
-                  <button onClick={() => handleClick(id)}>{text}</button>
+                  <button onClick={() => handleClick(id)}>
+                    {text} {isToggled ? "active" : ""}
+                  </button>
                 )}
               </li>
             );

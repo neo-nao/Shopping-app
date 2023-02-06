@@ -1,4 +1,12 @@
-import { useEffect, memo, useMemo, lazy, Suspense, useReducer } from "react";
+import {
+  useState,
+  useEffect,
+  memo,
+  useMemo,
+  lazy,
+  Suspense,
+  useReducer,
+} from "react";
 import { useDispatch } from "react-redux";
 import { useLocation } from "wouter";
 import Dropdown from "../../components/common/Dropdown/Dropdown";
@@ -7,12 +15,13 @@ import {
   FilterSection,
   selectDropdownStyles,
   filterDropdownDatas,
+  filterValues,
 } from "./productsContainerDatas";
 import Loading from "../../components/common/Loading/Loading";
 import FullPageHeight from "../../components/common/FullPageHeight/FullPageHeight";
 import MessageBox from "../../components/common/MessageBox/MessageBox";
 import { CgUnavailable } from "react-icons/cg";
-import useFilterItem, { availableFilters } from "../../hooks/useFilterItem";
+import useFilterItem from "../../hooks/useFilterItem";
 
 const Product = lazy(() => import("../../components/common/Product/Product"));
 
@@ -52,6 +61,7 @@ const ProductsContainer = ({
     filterParamsReducer,
     initialFilterParams
   );
+  const [dropdownFilters, setDropdownFilters] = useState(filterValues);
   useFilterItem(filter);
   const dispatch = useDispatch();
   const [, navigate] = useLocation();
@@ -64,18 +74,59 @@ const ProductsContainer = ({
     navigate(searchParameter);
   }, [filterParams]);
 
+  const handleDropdownFilter = ({ handlerKey, selectedFilterId }) => {
+    const toggleFilter = (filterInputIndex) => {
+      const filteredInputs = dropdownFilters.filter(
+        (fi, idx) => idx !== filterInputIndex
+      );
+      const currentInputCopy = [...dropdownFilters[filterInputIndex]];
+
+      const selectedFilter = currentInputCopy.find(
+        (f) => f.id === selectedFilterId
+      );
+
+      if (!selectedFilter.isToggled) selectedFilter.isToggled = true;
+      else selectedFilter.isToggled = false;
+
+      filteredInputs.splice(filterInputIndex, 0, currentInputCopy);
+
+      setDropdownFilters(filteredInputs);
+    };
+
+    switch (handlerKey.toLowerCase()) {
+      case "category": {
+        toggleFilter(0);
+        break;
+      }
+      case "type": {
+        toggleFilter(1);
+        break;
+      }
+      case "color": {
+        toggleFilter(2);
+        break;
+      }
+      default:
+        console.error("dropdown input not found!");
+    }
+  };
+
   const handleFilterSelect = (handlerKey, options, itemId) => {
     const selectedOption = options.find((option) => option.id === itemId);
 
-    if (selectedOption.accessText !== "Unset") {
+    if (selectedOption.id !== 1) {
+      handleDropdownFilter({ handlerKey, selectedFilterId: selectedOption.id });
+
       filterParamDispatcher({
         type: "addFilter",
         payload: {
           filterInput: handlerKey.toLowerCase(),
-          filterValue: selectedOption.accessText.toLowerCase(),
+          filterValue: selectedOption.text.toLowerCase(),
         },
       });
     } else {
+      setDropdownFilters(filterValues);
+
       filterParamDispatcher({
         type: "resetFilter",
       });
@@ -121,6 +172,25 @@ const ProductsContainer = ({
     }
   }, [loading]);
 
+  const renderFilterDropdown = useMemo(
+    () =>
+      filterDropdownDatas.map(({ id, openerText }, idx) => {
+        return (
+          <Dropdown
+            key={id}
+            dropdownItemslist={dropdownFilters[idx]}
+            openerButtonText={openerText}
+            handleDropdownItemClick={(itemId) =>
+              handleFilterSelect(openerText, dropdownFilters[idx], itemId)
+            }
+            toggleable
+            {...selectDropdownStyles}
+          />
+        );
+      }),
+    [dropdownFilters]
+  );
+
   return (
     <>
       <section>
@@ -132,20 +202,7 @@ const ProductsContainer = ({
           }
         >
           {/* {!loading && !error && products && ( */}
-          <FilterSection>
-            {filterDropdownDatas.map(
-              ({ id, openerText, dropdownMenuStyle }) => {
-                return (
-                  <Dropdown
-                    key={id}
-                    dropdownItemslist={availableFilters}
-                    openerButtonText={openerText}
-                    {...selectDropdownStyles}
-                  />
-                );
-              }
-            )}
-          </FilterSection>
+          <FilterSection>{renderFilterDropdown}</FilterSection>
           {/* )} */}
           {renderItems}
         </Suspense>

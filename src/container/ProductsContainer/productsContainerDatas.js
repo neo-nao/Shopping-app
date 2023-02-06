@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { availableFilters } from "../../hooks/useFilterItem";
 import { containerWidth } from "../../styles/extendableStyles/ExtendableStyles.styled";
 
 const ItemsContainer = styled.div`
@@ -37,12 +38,9 @@ left: -1px;
 `,
   dropdownItemStyle: `
   position:relative;
-  & svg{
-    font-size:17.5px;
-    position:absolute;
-    top:50%;
-    left:100%;
-    transform:translate(-150%,-50%);
+  
+  & button{
+    text-transform:capitalize;
   }
 `,
 };
@@ -62,9 +60,23 @@ const filterDropdownDatas = [
   },
 ];
 
+let filterValues = [];
+
+for (const filter of availableFilters) {
+  const generatedFilterValues = filter.values.map((filterValue, index) => ({
+    id: index + 2,
+    text: filterValue,
+  }));
+
+  generatedFilterValues.unshift({ id: 1, text: "unset" });
+
+  filterValues.push(generatedFilterValues);
+}
+
 export {
   ItemsContainer,
   FilterSection,
   selectDropdownStyles,
   filterDropdownDatas,
+  filterValues,
 };
