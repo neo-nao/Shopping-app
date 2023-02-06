@@ -1,31 +1,15 @@
-import {
-  useState,
-  useEffect,
-  memo,
-  useMemo,
-  lazy,
-  Suspense,
-  useReducer,
-} from "react";
+import { useEffect, memo, useMemo, lazy, Suspense, useReducer } from "react";
 import { useDispatch } from "react-redux";
 import { useLocation } from "wouter";
-import Dropdown from "../../components/common/Dropdown/Dropdown";
-import {
-  ItemsContainer,
-  FilterSection,
-  selectDropdownStyles,
-  filterDropdownDatas,
-  filterValues,
-} from "./productsContainerDatas";
+import { ItemsContainer, FilterSection } from "./productsContainerDatas";
 import Loading from "../../components/common/Loading/Loading";
 import FullPageHeight from "../../components/common/FullPageHeight/FullPageHeight";
 import MessageBox from "../../components/common/MessageBox/MessageBox";
 import { CgUnavailable } from "react-icons/cg";
 import useFilterItem from "../../hooks/useFilterItem";
+import FilterDropdown from "./FilterDropdown";
 
 const Product = lazy(() => import("../../components/common/Product/Product"));
-
-const initialFilterParams = [];
 
 const filterParamsReducer = (state, action) => {
   switch (action.type) {
@@ -46,7 +30,11 @@ const filterParamsReducer = (state, action) => {
       return [...state, [filterInput, filterValue]];
     }
     case "resetFilter": {
-      return [];
+      const filteredState = state.filter(
+        (f) => f[0] !== action.payload.filterInput.toLowerCase()
+      );
+
+      return filteredState;
     }
     default:
       return state;
@@ -55,83 +43,29 @@ const filterParamsReducer = (state, action) => {
 
 const ProductsContainer = ({
   productsFetchState: { loading, error, products },
+  getAsyncProducts,
   filter,
 }) => {
   const [filterParams, filterParamDispatcher] = useReducer(
     filterParamsReducer,
-    initialFilterParams
+    []
   );
-  const [dropdownFilters, setDropdownFilters] = useState(filterValues);
   useFilterItem(filter);
   const dispatch = useDispatch();
-  const [, navigate] = useLocation();
+  const [location, navigate] = useLocation();
 
   useEffect(() => {
-    const searchParameter = filterParams.length
-      ? "?" + filterParams.map((fp) => fp.join("=")).join("&")
-      : "";
+    const searchParameter =
+      filterParams.length > 0
+        ? "?" + filterParams.map((fp) => fp.join("=")).join("&")
+        : location;
 
     navigate(searchParameter);
   }, [filterParams]);
 
-  const handleDropdownFilter = ({ handlerKey, selectedFilterId }) => {
-    const toggleFilter = (filterInputIndex) => {
-      const filteredInputs = dropdownFilters.filter(
-        (fi, idx) => idx !== filterInputIndex
-      );
-      const currentInputCopy = [...dropdownFilters[filterInputIndex]];
-
-      const selectedFilter = currentInputCopy.find(
-        (f) => f.id === selectedFilterId
-      );
-
-      if (!selectedFilter.isToggled) selectedFilter.isToggled = true;
-      else selectedFilter.isToggled = false;
-
-      filteredInputs.splice(filterInputIndex, 0, currentInputCopy);
-
-      setDropdownFilters(filteredInputs);
-    };
-
-    switch (handlerKey.toLowerCase()) {
-      case "category": {
-        toggleFilter(0);
-        break;
-      }
-      case "type": {
-        toggleFilter(1);
-        break;
-      }
-      case "color": {
-        toggleFilter(2);
-        break;
-      }
-      default:
-        console.error("dropdown input not found!");
-    }
-  };
-
-  const handleFilterSelect = (handlerKey, options, itemId) => {
-    const selectedOption = options.find((option) => option.id === itemId);
-
-    if (selectedOption.id !== 1) {
-      handleDropdownFilter({ handlerKey, selectedFilterId: selectedOption.id });
-
-      filterParamDispatcher({
-        type: "addFilter",
-        payload: {
-          filterInput: handlerKey.toLowerCase(),
-          filterValue: selectedOption.text.toLowerCase(),
-        },
-      });
-    } else {
-      setDropdownFilters(filterValues);
-
-      filterParamDispatcher({
-        type: "resetFilter",
-      });
-    }
-  };
+  useEffect(() => {
+    dispatch(getAsyncProducts());
+  }, []);
 
   const renderProducts = () => {
     const productsArr = [];
@@ -142,6 +76,8 @@ const ProductsContainer = ({
       if (i === products.length - 1) return productsArr;
     }
   };
+
+  console.log(loading, error, products);
 
   const renderItems = useMemo(() => {
     if (loading)
@@ -172,25 +108,6 @@ const ProductsContainer = ({
     }
   }, [loading]);
 
-  const renderFilterDropdown = useMemo(
-    () =>
-      filterDropdownDatas.map(({ id, openerText }, idx) => {
-        return (
-          <Dropdown
-            key={id}
-            dropdownItemslist={dropdownFilters[idx]}
-            openerButtonText={openerText}
-            handleDropdownItemClick={(itemId) =>
-              handleFilterSelect(openerText, dropdownFilters[idx], itemId)
-            }
-            toggleable
-            {...selectDropdownStyles}
-          />
-        );
-      }),
-    [dropdownFilters]
-  );
-
   return (
     <>
       <section>
@@ -201,9 +118,11 @@ const ProductsContainer = ({
             </FullPageHeight>
           }
         >
-          {/* {!loading && !error && products && ( */}
-          <FilterSection>{renderFilterDropdown}</FilterSection>
-          {/* )} */}
+          {!loading && !error && products && (
+            <FilterSection>
+              <FilterDropdown filterParamDispatcher={filterParamDispatcher} />
+            </FilterSection>
+          )}
           {renderItems}
         </Suspense>
       </section>

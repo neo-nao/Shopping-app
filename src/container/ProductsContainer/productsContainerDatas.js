@@ -60,23 +60,27 @@ const filterDropdownDatas = [
   },
 ];
 
-let filterValues = [];
+const getFilterValues = () => {
+  let filterValues = [];
 
-for (const filter of availableFilters) {
-  const generatedFilterValues = filter.values.map((filterValue, index) => ({
-    id: index + 2,
-    text: filterValue,
-  }));
+  for (const filter of availableFilters) {
+    const generatedFilterValues = filter.values.map((filterValue, index) => ({
+      id: index + 2,
+      text: filterValue,
+    }));
 
-  generatedFilterValues.unshift({ id: 1, text: "unset" });
+    generatedFilterValues.unshift({ id: 1, text: "unset" });
 
-  filterValues.push(generatedFilterValues);
-}
+    filterValues.push(generatedFilterValues);
+  }
+
+  return filterValues;
+};
 
 export {
   ItemsContainer,
   FilterSection,
   selectDropdownStyles,
   filterDropdownDatas,
-  filterValues,
+  getFilterValues,
 };
