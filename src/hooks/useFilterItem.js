@@ -29,17 +29,11 @@ const availableFilters = [
   },
 ];
 
-const useFilterItem = ({
-  filteredProducts,
-  actions: { filterProducts, clearFilter, resetFilter },
-}) => {
+const useFilterItem = (
+  filterParams,
+  { fetchItems, pageFilter: { filterProducts } }
+) => {
   const dispatch = useDispatch();
-
-  const searchParams = window.location.search.slice(1);
-
-  const params = new URLSearchParams(searchParams);
-
-  const paramsArr = [...params.entries()];
 
   const filterItem = (filterInput, filterValue) => {
     let isValidFilter = false;
@@ -52,26 +46,38 @@ const useFilterItem = ({
         isValidFilter = true;
     });
 
-    isValidFilter &&
+    if (isValidFilter) {
+      let reqUrl = "?";
+
+      const filterUrl = filterParams
+        .map((fp) => `${fp[0]}=${fp[1].replaceAll(/\s/g, "+")}`)
+        .join("&");
+
+      reqUrl += filterUrl;
+
       dispatch(
         filterProducts({
           tagKey: filterInput,
           tagValue: filterValue,
         })
       );
+      dispatch(fetchItems(reqUrl));
+    }
   };
 
-  const resetItemFilter = () => {
-    dispatch(resetFilter());
-  };
+  // const resetItemFilter = () => {};
 
   useEffect(() => {
-    paramsArr.length
-      ? paramsArr.forEach((param) => {
-          filterItem(param[0], param[1]);
-        })
-      : resetItemFilter();
-  }, [searchParams]);
+    if (!filterParams) return;
+
+    if (filterParams.length) {
+      filterParams.forEach((param) => {
+        filterItem(param[0], param[1]);
+      });
+    } else {
+      dispatch(fetchItems());
+    }
+  }, [filterParams]);
 };
 
 export { availableFilters };

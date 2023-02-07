@@ -55,7 +55,7 @@ const productsSlice = createSlice({
     },
     resetFilter: (state) => {
       state.filteredOptions = initialState.filteredOptions;
-      state.products = initialState.products;
+      state.products = [];
     },
   },
   extraReducers: (builder) => {

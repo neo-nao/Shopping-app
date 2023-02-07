@@ -1,4 +1,12 @@
-import { useEffect, memo, useMemo, lazy, Suspense, useReducer } from "react";
+import {
+  useEffect,
+  memo,
+  useMemo,
+  lazy,
+  Suspense,
+  useReducer,
+  useLayoutEffect,
+} from "react";
 import { useDispatch } from "react-redux";
 import { useLocation } from "wouter";
 import { ItemsContainer, FilterSection } from "./productsContainerDatas";
@@ -13,21 +21,44 @@ const Product = lazy(() => import("../../components/common/Product/Product"));
 
 const filterParamsReducer = (state, action) => {
   switch (action.type) {
+    case "loadFilter": {
+      const filterParams = [];
+
+      const searchParams = window.location.search;
+
+      const params = new URLSearchParams(searchParams);
+
+      for (const p of params) {
+        const isAdded = filterParams.some(
+          (fp) =>
+            fp[0].toLowerCase() === p[0].toLowerCase() &&
+            fp[1].toLowerCase() === p[1].toLocaleLowerCase()
+        );
+
+        !isAdded && filterParams.push(p);
+      }
+
+      return filterParams;
+    }
     case "addFilter": {
       const filterInput = action.payload.filterInput;
       const filterValue = action.payload.filterValue;
 
       let isFilterAdded = { isAdded: false, index: null };
 
-      for (let i = 0; i < state.length; i++) {
-        if (state[i][0] === filterInput && state[i][1] === filterValue)
-          isFilterAdded = { isAdded: true, index: i };
+      if (state) {
+        for (let i = 0; i < state.length; i++) {
+          if (state[i][0] === filterInput && state[i][1] === filterValue)
+            isFilterAdded = { isAdded: true, index: i };
+        }
+
+        if (isFilterAdded.isAdded)
+          return state.filter((filter, idx) => idx !== isFilterAdded.index);
+
+        return [...state, [filterInput, filterValue]];
+      } else {
+        return [[filterInput, filterValue]];
       }
-
-      if (isFilterAdded.isAdded)
-        return state.filter((filter, idx) => idx !== isFilterAdded.index);
-
-      return [...state, [filterInput, filterValue]];
     }
     case "resetFilter": {
       const filteredState = state.filter(
@@ -46,15 +77,20 @@ const ProductsContainer = ({
   getAsyncProducts,
   filter,
 }) => {
-  const [filterParams, filterParamDispatcher] = useReducer(
+  const [filterParams, filterParamsDispatcher] = useReducer(
     filterParamsReducer,
-    []
+    null
   );
-  useFilterItem(filter);
+  useFilterItem(filterParams, {
+    fetchItems: getAsyncProducts,
+    pageFilter: filter.actions,
+  });
   const dispatch = useDispatch();
   const [location, navigate] = useLocation();
 
   useEffect(() => {
+    if (!filterParams) return;
+
     const searchParameter =
       filterParams.length > 0
         ? "?" + filterParams.map((fp) => fp.join("=")).join("&")
@@ -63,8 +99,8 @@ const ProductsContainer = ({
     navigate(searchParameter);
   }, [filterParams]);
 
-  useEffect(() => {
-    dispatch(getAsyncProducts());
+  useLayoutEffect(() => {
+    filterParamsDispatcher({ type: "loadFilter" });
   }, []);
 
   const renderProducts = () => {
@@ -76,8 +112,6 @@ const ProductsContainer = ({
       if (i === products.length - 1) return productsArr;
     }
   };
-
-  console.log(loading, error, products);
 
   const renderItems = useMemo(() => {
     if (loading)
@@ -120,7 +154,9 @@ const ProductsContainer = ({
         >
           {!loading && !error && products && (
             <FilterSection>
-              <FilterDropdown filterParamDispatcher={filterParamDispatcher} />
+              <FilterDropdown
+                filterParams={{ filterParams, filterParamsDispatcher }}
+              />
             </FilterSection>
           )}
           {renderItems}

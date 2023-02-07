@@ -10,7 +10,7 @@ import {
   getFilterValues,
 } from "./productsContainerDatas";
 
-const FilterDropdown = ({ filterParamDispatcher }) => {
+const FilterDropdown = ({ filterParams: { filterParamsDispatcher } }) => {
   const [categoryTogglingDropdown, categoryDispatcher] = useTogglingDropdown(
     getFilterValues()[0]
   );
@@ -38,7 +38,7 @@ const FilterDropdown = ({ filterParamDispatcher }) => {
         default:
       }
 
-      filterParamDispatcher({
+      filterParamsDispatcher({
         type: "addFilter",
         payload: {
           filterInput: handlerKey.toLowerCase(),
@@ -59,7 +59,7 @@ const FilterDropdown = ({ filterParamDispatcher }) => {
         default:
       }
 
-      filterParamDispatcher({
+      filterParamsDispatcher({
         type: "resetFilter",
         payload: { filterInput: handlerKey },
       });
