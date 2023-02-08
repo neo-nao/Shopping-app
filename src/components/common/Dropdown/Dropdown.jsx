@@ -17,7 +17,6 @@ const Dropdown = ({
   dropdownMenuStyle,
   dropdownItemStyle,
   closeOnClick,
-  toggleable,
 }) => {
   const [isDropdownOpened, setIsDropdownOpened] = useState(false);
 
@@ -80,8 +79,14 @@ const Dropdown = ({
                     {text}
                   </Link>
                 ) : (
-                  <button onClick={() => handleClick(id)}>
-                    {text} {isToggled ? "active" : ""}
+                  <button
+                    onClick={() => handleClick(id)}
+                    style={{
+                      background: isToggled ? "var(--black)" : "",
+                      color: isToggled ? "var(--white)" : "",
+                    }}
+                  >
+                    {text}
                   </button>
                 )}
               </li>

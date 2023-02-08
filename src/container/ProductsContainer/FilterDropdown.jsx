@@ -1,6 +1,7 @@
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import Dropdown from "../../components/common/Dropdown/Dropdown";
 import useTogglingDropdown, {
+  activateDropdownAction,
   resetDropdownAction,
   toggleDropdownAction,
 } from "../../hooks/useTogglingDropdown";
@@ -10,16 +11,56 @@ import {
   getFilterValues,
 } from "./productsContainerDatas";
 
-const FilterDropdown = ({ filterParams: { filterParamsDispatcher } }) => {
+const FilterDropdown = ({
+  filterParams: { filterParams, filterParamsDispatcher },
+}) => {
   const [categoryTogglingDropdown, categoryDispatcher] = useTogglingDropdown(
-    getFilterValues()[0]
+    getFilterValues(filterParams)[0]
   );
   const [typeTogglingDropdown, typeDispatcher] = useTogglingDropdown(
-    getFilterValues()[1]
+    getFilterValues(filterParams)[1]
   );
   const [colorTogglingDropdown, colorDispatcher] = useTogglingDropdown(
-    getFilterValues()[2]
+    getFilterValues(filterParams)[2]
   );
+
+  const handleFilterDropdown = () => {
+    if (!filterParams) return;
+
+    for (const filter of filterParams) {
+      switch (filter[0]) {
+        case "category": {
+          categoryTogglingDropdown.forEach((cf) => {
+            if (filter[1] === cf.text.toLowerCase()) {
+              categoryDispatcher(activateDropdownAction(cf.id));
+            }
+          });
+          break;
+        }
+        case "type": {
+          typeTogglingDropdown.forEach((tf) => {
+            if (filter[1] === tf.text.toLowerCase()) {
+              typeDispatcher(activateDropdownAction(tf.id));
+            }
+          });
+          break;
+        }
+        case "color": {
+          colorTogglingDropdown.forEach((cf) => {
+            if (filter[1] === cf.text.toLowerCase()) {
+              colorDispatcher(activateDropdownAction(cf.id));
+            }
+          });
+          break;
+        }
+        default:
+      }
+    }
+  };
+
+  useEffect(() => {
+    handleFilterDropdown();
+  }, [filterParams]);
 
   const handleFilterSelect = (handlerKey, options, itemId) => {
     const selectedOption = options.find((option) => option.id === itemId);

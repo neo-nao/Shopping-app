@@ -50,7 +50,13 @@ const useFilterItem = (
       let reqUrl = "?";
 
       const filterUrl = filterParams
-        .map((fp) => `${fp[0]}=${fp[1].replaceAll(/\s/g, "+")}`)
+        .map(
+          (fp) =>
+            `${fp[0] === "color" ? "colors" : fp[0]}=${fp[1].replaceAll(
+              /\s/g,
+              "+"
+            )}`
+        )
         .join("&");
 
       reqUrl += filterUrl;
@@ -64,8 +70,6 @@ const useFilterItem = (
       dispatch(fetchItems(reqUrl));
     }
   };
-
-  // const resetItemFilter = () => {};
 
   useEffect(() => {
     if (!filterParams) return;

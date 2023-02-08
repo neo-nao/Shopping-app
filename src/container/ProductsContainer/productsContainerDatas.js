@@ -60,14 +60,16 @@ const filterDropdownDatas = [
   },
 ];
 
-const getFilterValues = () => {
+const getFilterValues = (activeFilters) => {
   let filterValues = [];
 
   for (const filter of availableFilters) {
-    const generatedFilterValues = filter.values.map((filterValue, index) => ({
-      id: index + 2,
-      text: filterValue,
-    }));
+    let generatedFilterValues = filter.values.map((filterValue, index) => {
+      return {
+        id: index + 2,
+        text: filterValue,
+      };
+    });
 
     generatedFilterValues.unshift({ id: 1, text: "unset" });
 

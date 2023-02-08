@@ -17,6 +17,8 @@ function togglingDropdownReducer(state, action) {
       const selectedOption = stateCopy.find(
         (option) => option.id === action.payload.optionId
       );
+
+      console.log(selectedOption);
       selectedOption.isToggled = true;
 
       return stateCopy;

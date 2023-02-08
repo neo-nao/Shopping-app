@@ -7,7 +7,6 @@ import {
   useReducer,
   useLayoutEffect,
 } from "react";
-import { useDispatch } from "react-redux";
 import { useLocation } from "wouter";
 import { ItemsContainer, FilterSection } from "./productsContainerDatas";
 import Loading from "../../components/common/Loading/Loading";
@@ -46,6 +45,8 @@ const filterParamsReducer = (state, action) => {
 
       let isFilterAdded = { isAdded: false, index: null };
 
+      const newFilter = [filterInput, filterValue];
+
       if (state) {
         for (let i = 0; i < state.length; i++) {
           if (state[i][0] === filterInput && state[i][1] === filterValue)
@@ -55,9 +56,9 @@ const filterParamsReducer = (state, action) => {
         if (isFilterAdded.isAdded)
           return state.filter((filter, idx) => idx !== isFilterAdded.index);
 
-        return [...state, [filterInput, filterValue]];
+        return [...state, newFilter];
       } else {
-        return [[filterInput, filterValue]];
+        return [newFilter];
       }
     }
     case "resetFilter": {
@@ -85,7 +86,6 @@ const ProductsContainer = ({
     fetchItems: getAsyncProducts,
     pageFilter: filter.actions,
   });
-  const dispatch = useDispatch();
   const [location, navigate] = useLocation();
 
   useEffect(() => {
