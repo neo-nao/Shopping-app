@@ -19,14 +19,16 @@ const ProductOverview = ({ params }) => {
 
   useLayoutEffect(() => {
     if (isIdInt) {
-      if (!router.itemState) {
-        const fetchProduct = async (id) => {
-          const response = await fetchFunc("/products/" + id);
+      const fetchProduct = async () => {
+        const response = await fetchFunc("/products/" + itemId);
 
-          setProduct(response);
-        };
-        fetchProduct(itemId);
-      } else setProduct(router.itemState);
+        setProduct(response);
+      };
+
+      if (!router.itemState) fetchProduct();
+      else if (router.itemState && router.itemState.id !== itemId)
+        fetchProduct();
+      else setProduct(router.itemState);
     }
   }, []);
 

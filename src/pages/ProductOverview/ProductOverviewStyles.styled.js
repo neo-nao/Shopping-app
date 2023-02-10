@@ -3,12 +3,17 @@ import { flexbox } from "../../styles/extendableStyles/ExtendableStyles.styled";
 
 const Container = styled.div`
   & > .page-content-container {
-    margin: 10px auto;
+    margin: 0 auto 30px;
     width: 92.5%;
   }
 
-  & .slider-container {
+  & .slider-image-container {
     height: 300px;
+    cursor: grab;
+
+    &:active {
+      cursor: grabbing;
+    }
   }
 
   & .item-title {
@@ -27,13 +32,13 @@ const Container = styled.div`
   }
 
   @media (min-width: 375px) {
-    & .slider-container {
+    & .slider-image-container {
       height: 80vw;
     }
   }
 
   @media (min-width: 700px) {
-    & .slider-container {
+    & .slider-image-container {
       width: 350px;
       height: 350px;
       max-width: 400px;
@@ -60,7 +65,7 @@ const Container = styled.div`
       width: clamp(375px, 80%, 1500px);
     }
 
-    & .slider-container {
+    & .slider-image-container {
       width: 400px;
       height: 400px;
     }
@@ -79,7 +84,7 @@ const ImageContainer = styled.div`
   .item-img {
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: contain;
   }
 `;
 

@@ -72,15 +72,18 @@ const useFilterItem = (
   };
 
   useEffect(() => {
+    let isMounted = true;
     if (!filterParams) return;
 
     if (filterParams.length) {
       filterParams.forEach((param) => {
-        filterItem(param[0], param[1]);
+        isMounted && filterItem(param[0], param[1]);
       });
     } else {
-      dispatch(fetchItems());
+      isMounted && dispatch(fetchItems());
     }
+
+    return () => (isMounted = false);
   }, [filterParams]);
 };
 

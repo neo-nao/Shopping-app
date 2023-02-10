@@ -1,10 +1,11 @@
 import { useEffect, useRef } from "react";
 import styled from "styled-components";
 import { SlideContainerStyle } from "../../styles/Elements/SliderElements";
-import bgImage from "../../assets/images/fluid-gradient-1.jpg";
+import bgImage from "../../assets/SlideImages/fluid-gradient.jpg";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import shoeImage from "../../assets/SlideImages/./slide-shoe-img-1.png";
 import { placeCenter } from "../../styles/extendableStyles/ExtendableStyles.styled";
+import { Link } from "wouter";
 
 const SlideContainer = styled(SlideContainerStyle)`
   background-image: url(${bgImage});
@@ -172,7 +173,9 @@ const SecondSlideElements = () => {
         className="shoe-image"
         draggable="false"
       />
-      <ViewDetailButton>View details</ViewDetailButton>
+      <Link href="/products/9">
+        <ViewDetailButton>View details</ViewDetailButton>
+      </Link>
     </SlideContainer>
   );
 };

@@ -7,6 +7,7 @@ import ButtonOutlined from "../../components/ButtonOutlined/ButtonOutlined";
 import { themes } from "../../components/ButtonOutlined/ButtonOutlined";
 import { SlideContainerStyle } from "../../styles/Elements/SliderElements";
 import { getWindowDimensions } from "../../hooks/useWindowDimensions";
+import { Link } from "wouter";
 
 const windowDimensions = getWindowDimensions();
 
@@ -155,12 +156,13 @@ const FirstSlideElements = () => {
 
   return (
     <FirstSlideContainer onMouseMove={handleMouseMove} ref={slideContainerRef}>
-      <ButtonOutlined
-        {...(windowDimensions.width > 900
-          ? themes.reverseBlack
-          : themes.reverseWhite)}
-        width="clamp(2rem,65%,400px)"
-        cssStyle={`
+      <Link href="/products/1">
+        <ButtonOutlined
+          {...(windowDimensions.width > 900
+            ? themes.reverseBlack
+            : themes.reverseWhite)}
+          width="clamp(2rem,65%,400px)"
+          cssStyle={`
           position: absolute;
           top: 75%;
           left: 50%;
@@ -172,9 +174,10 @@ const FirstSlideElements = () => {
             top:20%;
           }
         `}
-      >
-        Order
-      </ButtonOutlined>
+        >
+          Order
+        </ButtonOutlined>
+      </Link>
       <TextContainer>
         <SlideTitle ref={titleRef}>Classic black & white</SlideTitle>
       </TextContainer>

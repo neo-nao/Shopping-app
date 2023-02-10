@@ -1,57 +1,29 @@
-import { useRef, useEffect, useReducer } from "react";
+import { useRef, useEffect } from "react";
 import {
   SliderContainer,
   CarouselSlider,
   SliderItem,
   SlideChangeButton,
 } from "./SliderStyled";
+import useSlider, {
+  sliderStateAction,
+  slideCountTime,
+  updateSlideCountTime,
+} from "../../hooks/useSlider";
 import { BiLeftArrow, BiRightArrow } from "react-icons/bi";
 
-const sliderInitialState = {
-  index: 0,
-  isSliding: false,
-};
-
-const indexReducer = (state, action) => {
-  const { index } = state;
-  const items = 3;
-  switch (action.type) {
-    case "slide-left": {
-      const updatedIndex = index - 1 < 0 ? items - 1 : index - 1;
-
-      return { ...state, index: updatedIndex };
-    }
-    case "slide-right": {
-      const updatedIndex = index + 1 > items - 1 ? 0 : index + 1;
-
-      return { ...state, index: updatedIndex };
-    }
-    case "sliderStatus": {
-      return { ...state, isSliding: action.payload };
-    }
-    default:
-      return state;
-  }
-};
-
-let slideCountTime = 0;
 let firstXPos = null;
 
-const Slider = ({ items, controlButtons, touchable, ...rest }) => {
-  const [sliderState, dispatch] = useReducer(indexReducer, sliderInitialState);
-
+const Slider = ({ items, controlButtons, touchable, setSlider, ...rest }) => {
+  const [sliderState, dispatch, slide] = useSlider(items.length);
   const sliderRef = useRef();
 
-  const slide = (direction) => {
-    slideCountTime = 0;
-    !sliderState.isSliding && dispatch({ type: `slide-${direction}` });
-    dispatch({ type: "sliderStatus", payload: true });
-  };
-
   useEffect(() => {
+    if (setSlider) setSlider([sliderState, dispatch]);
+
     sliderState.isSliding &&
       setTimeout(() => {
-        dispatch({ type: "sliderStatus", payload: false });
+        dispatch(sliderStateAction(false));
       }, 600);
 
     if (sliderRef.current)
@@ -61,14 +33,14 @@ const Slider = ({ items, controlButtons, touchable, ...rest }) => {
 
   useEffect(() => {
     const autoSLideCountTime = setInterval(() => {
-      slideCountTime++;
+      const newVal = updateSlideCountTime(slideCountTime + 1);
 
-      slideCountTime >= 25 && slide("right");
+      newVal >= 25 && slide("right");
     }, 200);
 
     return () => {
       clearInterval(autoSLideCountTime);
-      slideCountTime = 0;
+      updateSlideCountTime(0);
     };
   }, []);
 

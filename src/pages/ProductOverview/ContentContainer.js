@@ -6,32 +6,39 @@ import ItemColors from "../../components/ItemColors/ItemColors";
 import ItemDescription from "../../components/ItemDescription/ItemDescription";
 import AddItemButton from "../../components/AddItemButton/AddItemButton";
 import { firstLetterUpperCase } from "../../utils/appUtils";
+import SliderImages from "../../components/SliderImages/SliderImages";
+import { useState } from "react";
 
 const ContentContainer = ({ item, colorsState, handleColorClick }) => {
   const { id, shoe, type, price, priceType, shoeImages, itemStars } = item;
-
   const { color } = colorsState.find((c) => c.active) ?? colorsState[0];
+
+  const [slider, setSlider] = useState(null);
 
   return (
     <div className="page-content-container">
       <div className="item-details-container">
         <div className="slider-container">
-          <Slider
-            items={shoeImages.map((shoeImage, idx) => ({
-              id: "slide-" + idx,
-              innerElement: (
-                <ImageContainer>
-                  <img
-                    src={shoeImage}
-                    alt="shoe"
-                    className="item-img"
-                    draggable="false"
-                  />
-                </ImageContainer>
-              ),
-            }))}
-            touchable
-          />
+          <div className="slider-image-container">
+            <Slider
+              items={shoeImages.map((shoeImage, idx) => ({
+                id: "slide-" + idx,
+                innerElement: (
+                  <ImageContainer>
+                    <img
+                      src={shoeImage}
+                      alt="shoe"
+                      className="item-img"
+                      draggable="false"
+                    />
+                  </ImageContainer>
+                ),
+              }))}
+              setSlider={setSlider}
+              touchable
+            />
+          </div>
+          <SliderImages images={shoeImages} slider={slider} />
         </div>
         <section className="item-details-section">
           <h1 className="item-title">{firstLetterUpperCase(shoe ?? type)}</h1>
