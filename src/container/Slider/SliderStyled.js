@@ -4,7 +4,7 @@ import { flexbox } from "../../styles/extendableStyles/ExtendableStyles.styled";
 const SliderContainer = styled.section`
   width: 100%;
   height: 100%;
-  background-color: #e1e1e1;
+  background-color: var(--white);
   overflow: hidden;
   position: relative;
 `;
