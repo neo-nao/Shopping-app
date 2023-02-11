@@ -7,21 +7,21 @@ import {
 
 const SliderImagesContainer = styled.div`
   margin-top: 15px;
-  border: 1px solid var(--black);
+  border-top: 2px solid var(--black);
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  padding: 10px;
+  padding-top: 15px;
   gap: 10px;
 
   & img {
     width: 100%;
     height: 45px;
     object-fit: cover;
-    opacity: 0.5;
+    filter: opacity(0.4);
     cursor: pointer;
 
     &.active {
-      opacity: 1;
+      filter: opacity(1) saturate(200%);
     }
   }
 `;

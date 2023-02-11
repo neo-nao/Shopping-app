@@ -8,6 +8,8 @@ import {
   AddItemButtonContainer,
 } from "./ProductOverviewStyles.styled";
 import ContentContainer from "./ContentContainer";
+import Loading from "../../components/common/Loading/Loading";
+import FullPageHeight from "../../components/common/FullPageHeight/FullPageHeight";
 
 const ProductOverview = ({ params }) => {
   const [product, setProduct] = useState(null);
@@ -60,7 +62,12 @@ const ProductOverview = ({ params }) => {
   };
 
   const renderElements = () => {
-    if (!product) return;
+    if (!product)
+      return (
+        <FullPageHeight centerElements>
+          <Loading title="Fetching item..." />
+        </FullPageHeight>
+      );
     if (!colorsState) return;
 
     const { color } = colorsState.find((c) => c.active) ?? colorsState[0];
