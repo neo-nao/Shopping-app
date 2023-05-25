@@ -15,7 +15,7 @@
     "react-scripts": "5.0.1",
     "styled-components": "^5.3.6",
     "web-vitals": "^3.1.1",
-    "wouter": "^2.9.2"
+    "wouter": "^2.11.0"
   },
   "scripts": {
     "start": "react-scripts start",
