@@ -1,9 +1,6 @@
 import { useSelector, useDispatch } from "react-redux";
 import { useLocation } from "wouter";
-import {
-  asyncPostUserItem,
-  removeUserItemPending,
-} from "../redux/user/userSlice";
+import { addItem, removeItem } from "../redux/user/userSlice";
 
 const useAddItem = (itemId, itemColor) => {
   const userAccount = useSelector((state) => state.user.user);
@@ -13,34 +10,20 @@ const useAddItem = (itemId, itemColor) => {
   const [, navigate] = useLocation();
 
   const checkIsItemAdded = () =>
-    userAccount.cart.items.find((item) => item.productID === itemId) ?? null;
+    userAccount.cart.items.some((item) => item.id === itemId) ?? null;
 
   const handleAddToCart = (e) => {
     e.preventDefault();
     if (userAccount) {
-      const userToken = userAccount.userToken;
-      const addedItem = checkIsItemAdded();
-      !addedItem
-        ? dispatch(
-            asyncPostUserItem({
-              productID: itemId,
-              itemColor,
-              userToken: userToken,
-            })
-          )
-        : dispatch(
-            removeUserItemPending({ userToken, productID: addedItem.productID })
-          );
+      dispatch(
+        checkIsItemAdded() ? removeItem(itemId) : addItem({ itemId, itemColor })
+      );
     } else {
       navigate("/auth/login");
     }
   };
 
-  const isItemAdded =
-    userAccount &&
-    userAccount.cart.items.map((item) => item.productID).indexOf(itemId) > -1;
-
-  return [isItemAdded, handleAddToCart];
+  return [userAccount ? checkIsItemAdded() : false, handleAddToCart];
 };
 
 export default useAddItem;

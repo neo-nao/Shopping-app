@@ -1,16 +1,13 @@
 import { useEffect } from "react";
 import { Route, useLocation, Switch } from "wouter";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  asyncUserFetch,
-  createUserAccountPending,
-} from "../../redux/user/userSlice";
 import LoginForm from "./LoginForm";
 import SignupForm from "./SignupForm";
 import NotFoundPage from "../NotFoundPage/NotFoundPage";
 import { firstLetterUpperCase } from "../../utils/appUtils";
 import { hideAlert, showAlert } from "../../redux/alert/alertSlice";
 import { FormContainer, AuthForm } from "./AuthComps.styled";
+import { createAccount } from "../../redux/user/userSlice";
 
 const validateValues = (valueObject) => {
   const errorProperties = [];
@@ -51,18 +48,15 @@ const validateValues = (valueObject) => {
 const AuthPage = ({ navigate }) => {
   const [pathname] = useLocation();
 
-  const {
-    user: { user },
-  } = useSelector((state) => state);
+  const { user } = useSelector((state) => state.user);
   const dispatch = useDispatch();
 
   useEffect(() => {
     if (user) {
-      !localStorage.getItem("user-token") &&
-        localStorage.setItem("user-token", user.userToken);
-
+      !localStorage.getItem("user-account") &&
+        localStorage.setItem("user-account", JSON.stringify(user));
       navigate("/");
-      dispatch(hideAlert());
+      setTimeout(() => dispatch(hideAlert()), 300);
     }
   }, [user]);
 
@@ -94,24 +88,12 @@ const AuthPage = ({ navigate }) => {
 
     switch (action) {
       case "login": {
-        errors.length === 0 &&
-          dispatch(
-            asyncUserFetch({
-              email,
-              password,
-            })
-          );
+        !errors.length && dispatch(createAccount());
+
         break;
       }
       case "signup": {
-        errors.length === 0 &&
-          dispatch(
-            createUserAccountPending({
-              ...formValues,
-              displayEmail: email,
-              email: email.toLowerCase(),
-            })
-          );
+        !errors.length && dispatch(createAccount(formValues));
 
         break;
       }

@@ -128,8 +128,7 @@ const AlertBox = () => {
               lineHeight: "30px",
               whiteSpace: "break-spaces",
               wordBreak: "break-all",
-            }}
-          >
+            }}>
             {paragraph}
           </p>
         </section>

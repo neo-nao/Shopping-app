@@ -1,22 +1,21 @@
 import { useEffect } from "react";
 import { useLocation } from "wouter";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { Route, Switch } from "wouter";
-import { asyncUserFetch } from "./redux/user/userSlice";
 import routes from "./routes";
 import Layout from "./layout/Layout";
 import NestedRoutes from "./container/NestedRoutes/NestedRoutes";
+import { login } from "./redux/user/userSlice";
 
 function App() {
   const [, navigate] = useLocation();
 
-  const user = useSelector((state) => state.user.user);
-
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const UTK = localStorage.getItem("user-token");
-    !user && UTK && dispatch(asyncUserFetch({ UTK }));
+    const userAccount = localStorage.getItem("user-account");
+
+    userAccount && dispatch(login(JSON.parse(userAccount)));
   }, []);
 
   return (

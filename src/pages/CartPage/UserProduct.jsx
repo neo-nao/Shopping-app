@@ -12,7 +12,6 @@ import {
 import ProductQuantity from "../../components/ProductQuantity/ProductQuantity";
 import { FaTrashAlt } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
-import { removeUserItemPending } from "../../redux/user/userSlice";
 import styled from "styled-components";
 
 const PriceContainer = styled.div`
@@ -38,15 +37,14 @@ const UserProduct = ({ userItem: { product, itemColor } }) => {
   const userToken = useSelector((state) => state.user.user.userToken);
   const dispatch = useDispatch();
 
-  const handleRemoveItem = () => {
-    dispatch(removeUserItemPending({ userToken, productID: product.id }));
-  };
+  const handleRemoveItem = () => {};
 
   return (
     <UserProductContainer className={`user-item-${product.id}`}>
       <ImageContainer
-        style={{ backgroundImage: `url('${product.shoeImages[0]}')` }}
-      ></ImageContainer>
+        style={{
+          backgroundImage: `url('${product.shoeImages[0]}')`,
+        }}></ImageContainer>
       <DetailsContainer>
         <ul style={{ width: "100%" }}>
           <li>

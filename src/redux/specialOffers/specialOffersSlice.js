@@ -1,29 +1,32 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { showAlert } from "../alert/alertSlice";
-import { fetchFunc } from "../../services/requestServices";
+import datas from "../../data/datas";
 
-const specialOffersURL = "/products?isDiscount=true";
+const getFilteredProducts = (params) => {
+  let filteredProducts = [];
+  for (const param of params) {
+    const filteredItems = datas.products.filter((p) => {
+      return (
+        p.isDiscount &&
+        (param[0] === "color"
+          ? p.colors.includes(param[1])
+          : p[param[0]] === param[1])
+      );
+    });
+
+    filteredProducts.push(...filteredItems);
+  }
+
+  return filteredProducts.filter((fp, index, arr) => {
+    return index === arr.findIndex((p) => p.id === fp.id);
+  });
+};
 
 const getAsyncSpecialOffers = createAsyncThunk(
   "specialOffers/fetch",
   async (params, { rejectWithValue, dispatch }) => {
-    try {
-      const url = params
-        ? specialOffersURL + params.replace("?", "&")
-        : specialOffersURL;
-
-      const response = await fetchFunc(url);
-
-      return response;
-    } catch (err) {
-      dispatch(
-        showAlert({
-          title: "Error",
-          paragraph: err,
-        })
-      );
-      rejectWithValue([], err);
-    }
+    return params
+      ? getFilteredProducts(params)
+      : datas.products.filter((p) => p.isDiscount);
   }
 );
 

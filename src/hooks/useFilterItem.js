@@ -47,27 +47,13 @@ const useFilterItem = (
     });
 
     if (isValidFilter) {
-      let reqUrl = "?";
-
-      const filterUrl = filterParams
-        .map(
-          (fp) =>
-            `${fp[0] === "color" ? "colors" : fp[0]}=${fp[1].replaceAll(
-              /\s/g,
-              "+"
-            )}`
-        )
-        .join("&");
-
-      reqUrl += filterUrl;
-
       dispatch(
         filterProducts({
           tagKey: filterInput,
           tagValue: filterValue,
         })
       );
-      dispatch(fetchItems(reqUrl));
+      dispatch(fetchItems(filterParams));
     }
   };
 

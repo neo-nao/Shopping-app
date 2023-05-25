@@ -9,7 +9,6 @@ import {
 } from "../../styles/Elements/CartPageElements.styled";
 import ShortItemDetail from "../../components/ShortItemDetail/ShortItemDetail";
 import UserProduct from "./UserProduct";
-import { fetchFunc } from "../../services/requestServices";
 import Loading from "../../components/common/Loading/Loading";
 import FullPageHeight from "../../components/common/FullPageHeight/FullPageHeight";
 import { GrLogin } from "react-icons/gr";
@@ -46,9 +45,7 @@ const CartPage = () => {
         .join("");
 
       const getProducts = async () => {
-        const res = reqParam ? await fetchFunc("/products" + reqParam) : [];
-
-        setUserProducts(res);
+        // setUserProducts(res);
       };
 
       getProducts().then(() => setProductFetchLoading(false));
@@ -136,8 +133,7 @@ const CartPage = () => {
                       width: "100%",
                       height: "3rem",
                       fontSize: "17.5px",
-                    }}
-                  >
+                    }}>
                     Purchase
                   </Button>
                 </div>

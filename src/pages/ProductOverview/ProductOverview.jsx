@@ -1,6 +1,6 @@
 import { useState, useEffect, useLayoutEffect } from "react";
 import { useRouter } from "wouter";
-import { fetchFunc } from "../../services/requestServices";
+import datas from "../../data/datas";
 import NotFoundPage from "../NotFoundPage/NotFoundPage";
 import AddItemButton from "../../components/AddItemButton/AddItemButton";
 import {
@@ -21,10 +21,12 @@ const ProductOverview = ({ params }) => {
 
   useLayoutEffect(() => {
     if (isIdInt) {
-      const fetchProduct = async () => {
-        const response = await fetchFunc("/products/" + itemId);
+      const fetchProduct = () => {
+        const item = datas.find((d) => d.id === itemId);
 
-        setProduct(response);
+        console.log(item);
+
+        setProduct(item);
       };
 
       if (!router.itemState) fetchProduct();

@@ -1,28 +1,28 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { fetchFunc } from "../../services/requestServices";
-import { showAlert } from "../alert/alertSlice";
+import datas from "../../data/datas";
 
-const productsURL = "/products";
+const getFilteredProducts = (params) => {
+  let filteredProducts = [];
+  for (const param of params) {
+    const filteredItems = datas.products.filter((p) => {
+      return param[0] === "color"
+        ? p.colors.includes(param[1])
+        : p[param[0]] === param[1];
+    });
+
+    filteredProducts.push(...filteredItems);
+  }
+
+  return filteredProducts.filter((fp, index, arr) => {
+    return index === arr.findIndex((p) => p.id === fp.id);
+  });
+};
 
 export const getAsyncProducts = createAsyncThunk(
   "products/fetchByIdStatus",
-  async (param, { rejectWithValue, dispatch }) => {
-    const url = param ? productsURL + param : productsURL;
-
-    const response = await fetchFunc(url);
-
-    if (response.errorMessage) {
-      dispatch(
-        showAlert({
-          title: "Error",
-          paragraph: response.errorMessage,
-        })
-      );
-      return rejectWithValue([], response.errorMessage);
-    }
-
-    return response;
+  (param, { rejectWithValue, dispatch }) => {
+    return param ? getFilteredProducts(param) : datas.products;
   }
 );
 

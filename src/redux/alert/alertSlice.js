@@ -20,22 +20,17 @@ const alertSlice = createSlice({
       state.paragraph = paragraph;
       state.removable = removable;
 
-      if (delay && delay !== 0) state.delay = delay;
+      if (delay && delay > 0) state.delay = delay;
       else state.delay = 0;
 
-      if (state.delay !== 0) {
+      if (state.delay > 0) {
+        setTimeout(() => (state.isShowing = true), delay);
       } else {
         state.isShowing = true;
       }
     },
-    hideAlert: (state, { payload }) => {
-      if (payload && payload.delay) state.delay = payload.delay;
-      else state.delay = 0;
-
-      if (state.delay !== 0) {
-      } else {
-        state.isShowing = false;
-      }
+    hideAlert: (state) => {
+      state.isShowing = false;
       state.title = "";
       state.paragraph = "";
     },
