@@ -5,6 +5,7 @@ const initialState = {
   title: "",
   paragraph: "",
   removable: true,
+  onRemove: null,
   delay: 0,
 };
 
@@ -14,11 +15,14 @@ const alertSlice = createSlice({
   reducers: {
     showAlert: (
       state,
-      { payload: { title, paragraph, removable = true, delay } }
+      {
+        payload: { title, paragraph, removable = true, onRemove = null, delay },
+      }
     ) => {
       state.title = title;
       state.paragraph = paragraph;
       state.removable = removable;
+      state.onRemove = onRemove;
 
       if (delay && delay > 0) state.delay = delay;
       else state.delay = 0;
@@ -29,10 +33,8 @@ const alertSlice = createSlice({
         state.isShowing = true;
       }
     },
-    hideAlert: (state) => {
-      state.isShowing = false;
-      state.title = "";
-      state.paragraph = "";
+    hideAlert: () => {
+      return initialState;
     },
   },
 });

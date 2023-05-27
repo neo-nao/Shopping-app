@@ -114,7 +114,7 @@ const ManageAccountPage = () => {
 
   const [, navigate] = useLocation();
 
-  const { name, lastName, displayEmail, password } = userAccount ?? {};
+  const { name, lastName, email, password } = userAccount ?? {};
 
   const handleLogout = () => {
     localStorage.removeItem("user-token");
@@ -143,7 +143,7 @@ const ManageAccountPage = () => {
         <ProfileDetailList>
           <li title={name}>Name : {name}</li>
           <li title={lastName}>Last name : {lastName}</li>
-          <li title={displayEmail}>Email : {displayEmail}</li>
+          <li title={email}>Email : {email}</li>
           <li title={passwordValue}>Password : {passwordValue}</li>
           <AuthButton className="logout-button" onClick={handleLogout}>
             Log out
@@ -161,15 +161,13 @@ const ManageAccountPage = () => {
           <AuthButtonsContainer>
             <AuthButton
               className="login-button"
-              onClick={() => navigate("/auth/login")}
-            >
+              onClick={() => navigate("/auth/login")}>
               Login
             </AuthButton>
             <hr className="seperator" />
             <AuthButton
               className="signup-button"
-              onClick={() => navigate("/auth/sign-up")}
-            >
+              onClick={() => navigate("/auth/sign-up")}>
               Create Accuont
             </AuthButton>
           </AuthButtonsContainer>

@@ -2,10 +2,12 @@ import FullPageHeight from "../../components/common/FullPageHeight/FullPageHeigh
 import MessageBox from "../../components/common/MessageBox/MessageBox";
 import { MdSearchOff } from "react-icons/md";
 
-const NotFoundPage = () => {
+const NotFoundPage = ({ title }) => {
   return (
     <FullPageHeight centerElements>
-      <MessageBox icon={<MdSearchOff />} title="Page not found!"></MessageBox>
+      <MessageBox
+        icon={<MdSearchOff />}
+        title={title ?? "Page not found!"}></MessageBox>
     </FullPageHeight>
   );
 };

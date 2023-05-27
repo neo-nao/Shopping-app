@@ -95,7 +95,7 @@ const PageElements = () => {
         slideIndex > 0 && setSlideIndex(slideIndex - 1);
         break;
       default:
-        console.log("slide action not valid");
+        console.error("slide action not valid");
     }
   };
 

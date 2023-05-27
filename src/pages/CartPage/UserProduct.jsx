@@ -11,8 +11,9 @@ import {
 } from "../../styles/Elements/CartPageElements.styled";
 import ProductQuantity from "../../components/ProductQuantity/ProductQuantity";
 import { FaTrashAlt } from "react-icons/fa";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import styled from "styled-components";
+import { removeItem } from "../../redux/user/userSlice";
 
 const PriceContainer = styled.div`
   width: calc(100% - 200px);
@@ -33,11 +34,12 @@ const PriceContainer = styled.div`
   }
 `;
 
-const UserProduct = ({ userItem: { product, itemColor } }) => {
-  const userToken = useSelector((state) => state.user.user.userToken);
+const UserProduct = ({ userItem: { product, color } }) => {
   const dispatch = useDispatch();
 
-  const handleRemoveItem = () => {};
+  const handleRemoveItem = () => dispatch(removeItem(product.id));
+
+  if (!product) return <h1>loading...</h1>;
 
   return (
     <UserProductContainer className={`user-item-${product.id}`}>
@@ -54,7 +56,7 @@ const UserProduct = ({ userItem: { product, itemColor } }) => {
             <ProductParagraph>Category : {product.category}</ProductParagraph>
           </li>
           <li>
-            <ProductParagraph>Color : {itemColor}</ProductParagraph>
+            <ProductParagraph>Color : {color}</ProductParagraph>
           </li>
         </ul>
         <ItemIntegrationContainer>

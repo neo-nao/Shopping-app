@@ -13,9 +13,9 @@ function App() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const userAccount = localStorage.getItem("user-account");
+    const userAccount = JSON.parse(localStorage.getItem("user-account"));
 
-    userAccount && dispatch(login(JSON.parse(userAccount)));
+    userAccount && userAccount.isLogged && dispatch(login(userAccount));
   }, []);
 
   return (

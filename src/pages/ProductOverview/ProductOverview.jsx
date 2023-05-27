@@ -22,9 +22,7 @@ const ProductOverview = ({ params }) => {
   useLayoutEffect(() => {
     if (isIdInt) {
       const fetchProduct = () => {
-        const item = datas.find((d) => d.id === itemId);
-
-        console.log(item);
+        const item = datas.products.find((d) => d.id === itemId);
 
         setProduct(item);
       };
@@ -64,17 +62,20 @@ const ProductOverview = ({ params }) => {
   };
 
   const renderElements = () => {
-    if (!product)
+    if (product === null)
       return (
         <FullPageHeight centerElements>
           <Loading title="Fetching item..." />
         </FullPageHeight>
       );
+    else if (product === undefined)
+      return <NotFoundPage title={"Product not found"} />;
+
     if (!colorsState) return;
 
     const { color } = colorsState.find((c) => c.active) ?? colorsState[0];
 
-    return isIdInt ? (
+    return isIdInt && product ? (
       <Container>
         <ContentContainer
           item={product}

@@ -7,7 +7,11 @@ import NotFoundPage from "../NotFoundPage/NotFoundPage";
 import { firstLetterUpperCase } from "../../utils/appUtils";
 import { hideAlert, showAlert } from "../../redux/alert/alertSlice";
 import { FormContainer, AuthForm } from "./AuthComps.styled";
-import { createAccount } from "../../redux/user/userSlice";
+import {
+  createAccount,
+  login,
+  clearLoginStatus,
+} from "../../redux/user/userSlice";
 
 const validateValues = (valueObject) => {
   const errorProperties = [];
@@ -48,17 +52,36 @@ const validateValues = (valueObject) => {
 const AuthPage = ({ navigate }) => {
   const [pathname] = useLocation();
 
-  const { user } = useSelector((state) => state.user);
+  const { user, loginStatus } = useSelector((state) => state.user);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (user) {
-      !localStorage.getItem("user-account") &&
-        localStorage.setItem("user-account", JSON.stringify(user));
+    setTimeout(() => dispatch(hideAlert()), 300);
+    if (user && loginStatus === "success") {
       navigate("/");
-      setTimeout(() => dispatch(hideAlert()), 300);
+    } else if (loginStatus === "fail") {
+      setTimeout(
+        () =>
+          dispatch(
+            showAlert({
+              title: "Invalid credentials !",
+              paragraph:
+                "User with this credentials was not found please correct your inputs and try again.",
+              removable: true,
+              onRemove: () => dispatch(clearLoginStatus()),
+            })
+          ),
+        850
+      );
     }
-  }, [user]);
+  }, [loginStatus]);
+
+  useEffect(() => {
+    return () => {
+      dispatch(hideAlert());
+      dispatch(clearLoginStatus());
+    };
+  }, []);
 
   const handleSubmit = (event, action, formValues) => {
     event.preventDefault();
@@ -88,7 +111,7 @@ const AuthPage = ({ navigate }) => {
 
     switch (action) {
       case "login": {
-        !errors.length && dispatch(createAccount());
+        !errors.length && dispatch(login({ email, password }));
 
         break;
       }

@@ -1,0 +1,29 @@
+{
+  "name": "Next shopping",
+  "short_name": "Next shopping - shoe production",
+  "description": "Next is an online shoe shopping center and the creator of various sort of shoes",
+  "icons": [
+    {
+      "src": "./fav-ico.png",
+      "type": "image/png",
+      "sizes": "91x91"
+    }
+  ],
+  "id": "/",
+  "start_url": "/",
+  "background_color": "#000",
+  "display": "fullscreen",
+  "theme_color": "#000",
+  "color_overrides": [
+    {
+      "media": "(prefers-color-scheme: dark)",
+      "theme_color": "#fff",
+      "background_color": "#000"
+    },
+    {
+      "media": "(prefers-color-scheme: light)",
+      "theme_color": "#000",
+      "background_color": "#fff"
+    }
+  ]
+}

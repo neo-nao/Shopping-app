@@ -68,7 +68,7 @@ const AlertBox = () => {
   const [DOMShowing, setDOMShowing] = useState(false);
   const alert = useSelector((state) => state.alert);
 
-  const { isShowing, title, paragraph, removable } = alert;
+  const { isShowing, title, paragraph, removable, onRemove } = alert;
 
   const dispatch = useDispatch();
 
@@ -76,6 +76,7 @@ const AlertBox = () => {
 
   const handleCloseAlert = () => {
     dispatch(hideAlert());
+    onRemove && onRemove();
   };
 
   useEffect(() => {
@@ -127,7 +128,7 @@ const AlertBox = () => {
               fontSize: "17.5px",
               lineHeight: "30px",
               whiteSpace: "break-spaces",
-              wordBreak: "break-all",
+              overflowWrap: "break-word",
             }}>
             {paragraph}
           </p>

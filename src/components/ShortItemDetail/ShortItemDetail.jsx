@@ -83,6 +83,8 @@ const ShoeTitle = styled.span`
 let isItemToggled = false;
 
 const ShortItemDetail = ({ product, quantity }) => {
+  if (!product) return <h1>loading...</h1>;
+
   const handleItemDetailClick = () => {
     if (!isItemToggled) {
       const element = document.querySelector(".user-item-" + product.id);

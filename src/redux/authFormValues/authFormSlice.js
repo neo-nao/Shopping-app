@@ -20,9 +20,8 @@ const authFormSlice = createSlice({
     setFormValue(state, { payload: { actionKey, propKey, value } }) {
       state[actionKey][propKey] = value;
     },
-    clearValues(state) {
-      state.login = initialState.login;
-      state.signup = initialState.signup;
+    clearValues() {
+      return initialState;
     },
   },
 });

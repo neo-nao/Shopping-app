@@ -21,7 +21,6 @@ html{
     --black: #000;
     --white: #fff;
     --primary-font: 'Roboto Condensed',-apple-system,sans-serif;
-    --geist-foreground: var(--black);
     --max-width: 1200px;
     --menu-font-size: 19px;
     --gray: #919191;
