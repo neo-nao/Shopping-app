@@ -7,6 +7,7 @@ import AboutUsPage from "./pages/AboutUsPage/AboutUsPage";
 import AuthPage from "./pages/AuthPage/AuthPage";
 import NotFoundPage from "./pages/NotFoundPage/NotFoundPage";
 import ProductOverview from "./pages/ProductOverview/ProductOverview";
+import AnjamMidam from "./pages/AnjamMidam/AnjamMidam";
 
 const routes = [
   { id: 1, path: "/", component: HomePage },
@@ -30,7 +31,12 @@ const routes = [
     nested: true,
     Element: AuthPage,
   },
-  { id: 8, component: NotFoundPage },
+  {
+    id: 8,
+    path: "/anjam-midam",
+    component: AnjamMidam,
+  },
+  { id: 9, component: NotFoundPage },
 ];
 
 export default routes;

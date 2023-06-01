@@ -1,6 +1,6 @@
 import { memo } from "react";
 import { useDispatch } from "react-redux";
-import { Link, useLocation, useRoute } from "wouter";
+import { Link, useLocation } from "wouter";
 import styled from "styled-components";
 import { toggleMobileMenu } from "../../redux/elements/elementSlice";
 import { flexbox } from "../../styles/extendableStyles/ExtendableStyles.styled";
