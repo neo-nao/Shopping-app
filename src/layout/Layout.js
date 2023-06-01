@@ -9,7 +9,6 @@ const navDatas = [
   { id: 2, to: "/products", text: "Products" },
   { id: 3, to: "/special-offers", text: "Special Offers" },
   { id: 4, to: "/about-us", text: "About us" },
-  { id: 5, to: "/anjam-midam", text: "Anjam midam" },
 ];
 
 const Main = styled.main`
