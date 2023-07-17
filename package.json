@@ -14,7 +14,7 @@
     "react-redux": "^8.0.5",
     "react-scripts": "5.0.1",
     "styled-components": "^5.3.6",
-    "web-vitals": "^3.1.1",
+    "web-vitals": "^3.4.0",
     "wouter": "^2.9.2"
   },
   "scripts": {
